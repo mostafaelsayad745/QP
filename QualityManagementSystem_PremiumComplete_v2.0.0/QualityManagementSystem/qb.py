@@ -481,7 +481,9 @@ class QBApp:
             "QP-10-02-02: ضبط الوثائق",
             "QP-10-02-03: ضبط السجلات",
             "QP-10-02-04: مراجعة الإدارة",
-            "QP-10-02-05: التدقيق الداخلي"
+            "QP-10-02-05: التدقيق الداخلي",
+            "QP-10-02-06: الإجراءات التصحيحية",
+            "QP-10-02-07: الإجراءات الوقائية"
         ]
         
         for proc in procedures10:
@@ -2073,6 +2075,102 @@ class QBApp:
                     "QF-10-02-05-04: نموذج متابعة الإجراءات التصحيحية"
                 ],
                 "المراجعة والتحديث": "يجب أن يخضع هذا الإجراء للمراجعة والتحديث كل عام لضمان مطابقته للمتطلبات الحالية وتحقيق فعالية عالية في نظام الإدارة"
+            },
+            "QP-10-02-06: الإجراءات التصحيحية": {
+                "الغرض": "يهدف هذا الإجراء إلى معالجة حالات عدم المطابقة التي يتم اكتشافها، من خلال تحديد السبب الجذري واتخاذ إجراءات تصحيحية مناسبة لضمان تحسين الأداء والامتثال للمعايير، والتأكد من فاعلية هذه الإجراءات بعد تنفيذها",
+                "مجال التطبيق": "يشمل هذا الإجراء جميع الحالات التي يتم فيها اكتشاف عدم مطابقة في العمليات أو الأنشطة ضمن نظام الإدارة، سواء كانت متعلقة بالجودة أو الإجراءات أو الامتثال للمعايير المعتمدة",
+                "التعاريف": [
+                    "الإجراءات التصحيحية: هي الإجراءات التي يتم اتخاذها لمعالجة حالات عدم المطابقة أو المشكلات التي تم اكتشافها خلال التدقيق أو المراجعة. الهدف من هذه الإجراءات هو إزالة الأسباب الجذرية للمشاكل لضمان عدم تكرارها في المستقبل",
+                    "حالات عدم المطابقة: يشير هذا المصطلح إلى أي حالة يكون فيها النظام أو العملية غير متوافقة مع المتطلبات المحددة، سواء كانت داخلية أو خارجية. يمكن أن تكون هذه الحالات ناتجة عن خطأ في التنفيذ أو فشل في الالتزام بالسياسات والإجراءات",
+                    "السبب الجذري: هو السبب الأساسي الذي أدى إلى حدوث المشكلة أو حالة عدم المطابقة. في إجراء التصحيح، يجب تحديد السبب الجذري لضمان حل المشكلة بشكل فعال ومنع تكرارها",
+                    "الإجراء التصحيحي المناسب: هو التدبير الذي يتم اتخاذه لمعالجة السبب الجذري لحالة عدم المطابقة. يجب أن يكون هذا الإجراء فعالاً ومناسباً لحل المشكلة بشكل كامل",
+                    "التحقق من فاعلية الإجراءات التصحيحية: يعني التأكد من أن الإجراءات التصحيحية المتخذة قد نجحت في إزالة السبب الجذري للمشكلة ومنع تكرارها. يتم ذلك عادة من خلال متابعة الأداء أو تدابير إضافية للتحقق من التحسين المستمر",
+                    "توثيق الخطوات: يشير إلى ضرورة تسجيل جميع الإجراءات المتخذة منذ اكتشاف المشكلة حتى حلها. يشمل هذا التوثيق السبب الجذري، والإجراءات التصحيحية، والنتائج التي تم تحقيقها بعد تنفيذ الحلول"
+                ],
+                "المسؤوليات": [
+                    ("مدير الجودة", "مسؤول عن توجيه وتنفيذ الإجراءات التصحيحية، وتحديد أسباب عدم المطابقة واتخاذ القرارات المناسبة"),
+                    ("فريق العمل", "مسؤولة عن تنفيذ الإجراءات التصحيحية وتوثيق كل خطوة من مراحل التنفيذ"),
+                    ("الإدارة العليا", "مسؤولة عن مراقبة مدى فعالية الإجراءات التصحيحية واتخاذ القرارات اللازمة لإيقاف أو تعديل الإجراءات في حالة عدم تحقيق الأهداف المرجوة")
+                ],
+                "الإجراءات": [
+                    "1. اكتشاف حالات عدم المطابقة:",
+                    "   • يتم اكتشاف حالات عدم المطابقة من خلال تدقيقات داخلية، شكاوى، مراجعات، أو أثناء الفحوصات اليومية",
+                    "   • يجب توثيق الحالة في سجل عدم المطابقة وإبلاغ الجهات المعنية بسرعة",
+                    "2. تحديد السبب الجذري:",
+                    "   • بعد اكتشاف حالة عدم المطابقة، يجب إجراء تحليل شامل لتحديد السبب الجذري للمشكلة",
+                    "   • يتم استخدام أدوات تحليل مثل تحليل السبب الجذري أو 5 لماذا لتحديد الأسباب الأساسية التي أدت إلى حدوث عدم المطابقة",
+                    "3. اتخاذ إجراء تصحيحي:",
+                    "   • بناءً على السبب الجذري، يجب اتخاذ إجراء تصحيحي مناسب لمعالجة المشكلة",
+                    "   • يجب أن يكون الإجراء التصحيحي قابلاً للقياس وواقعياً لضمان القضاء على السبب الجذري وليس مجرد إصلاح الأعراض",
+                    "   • يمكن أن تشمل الإجراءات التصحيحية تحسين الإجراءات الحالية، تغيير الأدوات أو المعدات، تدريب الموظفين، أو تعديل السياسات",
+                    "4. التحقق من فاعلية الإجراءات:",
+                    "   • بعد تنفيذ الإجراء التصحيحي، يجب التحقق من فاعليته من خلال مراقبة الأداء والتأكد من أنه قد تم القضاء على سبب المشكلة",
+                    "   • يمكن أن تشمل هذه المرحلة إجراء تدقيق أو مراقبة مستمرة لضمان أن حالة عدم المطابقة لم تحدث مرة أخرى",
+                    "5. توثيق جميع الخطوات:",
+                    "   • يجب توثيق جميع الخطوات المتعلقة بالإجراء التصحيحي بشكل دقيق:",
+                    "   • الأسباب الجذرية التي تم تحديدها",
+                    "   • الإجراءات التصحيحية التي تم تنفيذها",
+                    "   • الفحوصات التي أجريت للتحقق من فاعلية الإجراءات",
+                    "   • يجب حفظ هذه الوثائق في السجلات المناسبة لتكون متاحة للمراجعة المستقبلية ولتقديم أدلة على تحسن الأداء",
+                    "6. مراجعة الإجراءات التصحيحية:",
+                    "   • يتم مراجعة فعالية الإجراءات التصحيحية من قبل الإدارة العليا أو الفريق المسؤول لضمان أن الأهداف قد تم تحقيقها",
+                    "   • في حالة عدم فعالية الإجراء التصحيحي، يتم اتخاذ خطوات إضافية لتعديل أو تحسين الإجراءات"
+                ],
+                "النماذج": [
+                    "QF-10-02-06-01: نموذج سجل حالات عدم المطابقة",
+                    "QF-10-02-06-02: نموذج تحليل السبب الجذري",
+                    "QF-10-02-06-03: نموذج إجراء تصحيحي",
+                    "QF-10-02-06-04: نموذج متابعة الإجراءات التصحيحية"
+                ],
+                "المراجعة والتحديث": "يجب مراجعة هذا الإجراء وتحديثه بشكل دوري لضمان مطابقته للمتطلبات الحالية والفعالية المستمرة في معالجة حالات عدم المطابقة"
+            },
+            "QP-10-02-07: الإجراءات الوقائية": {
+                "الغرض": "يهدف هذا الإجراء إلى تحديد المخاطر المحتملة التي قد تؤدي إلى مشاكل أو عدم مطابقة في النظام، واتخاذ تدابير وقائية لتجنب حدوث هذه المشكلات في المستقبل، بالإضافة إلى مراقبة فعالية هذه التدابير",
+                "مجال التطبيق": "يشمل هذا الإجراء جميع الأنشطة والعمليات التي يمكن أن تتعرض لمخاطر قد تؤثر على جودة النظام أو عملية الاعتماد أو تحقق الأهداف المحددة",
+                "التعاريف": [
+                    "الإجراءات الوقائية: هي الإجراءات التي يتم اتخاذها لمنع حدوث المشاكل أو حالات عدم المطابقة في المستقبل. الهدف من هذه الإجراءات هو تحديد المخاطر المحتملة قبل حدوثها ووضع تدابير لتجنبها، مما يؤدي إلى تحسين العمليات وتقليل الأخطاء",
+                    "المخاطر المحتملة: هي الظروف أو المواقف التي قد تؤدي إلى حدوث مشاكل أو حالات عدم مطابقة إذا لم يتم التعامل معها بشكل مناسب. تتطلب هذه المخاطر تحديداً دقيقاً لتحديد النقاط التي قد تتسبب في حدوث المشكلات",
+                    "التدابير الوقائية: هي الأنشطة أو الإجراءات التي يتم تنفيذها لتقليل أو إزالة المخاطر المحتملة قبل أن تتحول إلى مشاكل. تتضمن هذه التدابير تحسين العمليات أو إدخال تغييرات في النظام لتفادي حدوث أي مشكلات",
+                    "مراقبة الفعالية: يشير هذا إلى متابعة تأثير الإجراءات الوقائية التي تم اتخاذها للتأكد من أنها فعالة في الحد من المخاطر ومنع حدوث المشاكل. تتضمن هذه المراقبة إجراء فحوصات دورية لتقييم الأداء والتحقق من مدى فاعلية الإجراءات المتخذة"
+                ],
+                "المسؤوليات": [
+                    ("مدير الجودة", "مسؤول عن تحديد المخاطر المحتملة واتخاذ الإجراءات الوقائية المناسبة"),
+                    ("فرق العمل", "مسؤولة عن تنفيذ التدابير الوقائية المقترحة، ورصد فعالية هذه التدابير في الحد من المخاطر"),
+                    ("الإدارة العليا", "مسؤولة عن توفير الموارد اللازمة لتطبيق الإجراءات الوقائية وضمان فاعليتها على المدى الطويل")
+                ],
+                "الإجراءات": [
+                    "1. تحديد المخاطر المحتملة:",
+                    "   • يجب أن تقوم جهة الاعتماد بتحديد المخاطر التي قد تؤثر على تنفيذ أنشطتها أو تؤدي إلى فشل في تحقيق أهداف الجودة",
+                    "   • يمكن استخدام تقنيات مثل تحليل المخاطر (Risk Analysis) أو تحليل SWOT (القوة، الضعف، الفرص، التهديدات) لتحديد المخاطر المحتملة",
+                    "2. تقييم المخاطر:",
+                    "   • يتم تقييم المخاطر المحتملة بناءً على احتمال حدوثها وتأثيرها المحتمل على النظام",
+                    "   • يجب تصنيف المخاطر بناءً على شدة التأثير واحتمالية حدوثها، ومن ثم تحديد الأولويات في معالجتها",
+                    "3. تنفيذ التدابير الوقائية:",
+                    "   • بعد تحديد المخاطر، يجب تنفيذ تدابير وقائية لتقليل أو القضاء على تلك المخاطر قبل حدوث أي مشكلة",
+                    "   • يمكن أن تشمل التدابير الوقائية:",
+                    "   • تطوير سياسات أو إجراءات جديدة",
+                    "   • تدريب الموظفين لتعزيز الوعي بالمخاطر المحتملة",
+                    "   • تحسين المعدات أو التكنولوجيا",
+                    "   • تطوير آليات الرقابة والمراقبة المبكرة",
+                    "4. مراقبة فعالية التدابير الوقائية:",
+                    "   • بعد تنفيذ التدابير الوقائية، يجب مراقبة فعاليتها بانتظام من خلال التدقيقات الداخلية أو مراقبة الأداء",
+                    "   • في حالة حدوث مشاكل مشابهة للمخاطر التي تم تحديدها، يجب إعادة تقييم التدابير الوقائية وضمان تعديلها أو تحسينها",
+                    "5. توثيق الإجراءات الوقائية:",
+                    "   • يجب توثيق جميع الإجراءات الوقائية المتخذة، بما في ذلك:",
+                    "   • المخاطر التي تم تحديدها",
+                    "   • التدابير الوقائية التي تم تنفيذها",
+                    "   • نتائج المتابعة والمراجعة",
+                    "   • يتم حفظ هذه الوثائق في السجلات المناسبة لاستخدامها في المستقبل ولضمان مراجعتها عند الحاجة",
+                    "6. مراجعة الإجراءات الوقائية:",
+                    "   • يتم مراجعة فعالية الإجراءات الوقائية من قبل الإدارة العليا أو الفريق المسؤول لضمان أن التدابير المتخذة تؤدي إلى تقليل المخاطر بالشكل المطلوب",
+                    "   • إذا تم اكتشاف أن التدابير الوقائية لم تكن فعالة، يتم اتخاذ إجراءات لتعديل أو تحسينها"
+                ],
+                "النماذج": [
+                    "QF-10-02-07-01: نموذج سجل المخاطر المحتملة",
+                    "QF-10-02-07-02: نموذج إجراءات وقائية",
+                    "QF-10-02-07-03: نموذج متابعة التدابير الوقائية"
+                ],
+                "المراجعة والتحديث": "يجب مراجعة هذا الإجراء بشكل دوري لضمان فعاليته في التعامل مع المخاطر المحتملة ولضمان تحقيق الأهداف المرجوة"
             }
         }
         
@@ -5181,6 +5279,186 @@ ________________________________________
             ],
             "الحقول": ["بيانات الوثيقة", "تفاصيل التحديث المطلوب", "رأي مسؤول التوثيق", "اعتماد الإدارة المختصة"],
             "البيانات": []
+        },
+        
+        # QF-10-02-06 Series: Corrective Actions Forms
+        "QF-10-02-06-01: سجل حالات عدم المطابقة": {
+            "الحقول": [
+                ("م", "رقم الحالة", "التاريخ", "مصدر الاكتشاف", "وصف حالة عدم المطابقة", "درجة الخطورة", "القسم المسؤول", "الحالة", "التاريخ المتوقع للإغلاق", "التاريخ الفعلي للإغلاق")
+            ],
+            "البيانات": [],
+            "بيانات_عامة": {
+                "اسم الجهة / المؤسسة": "",
+                "الإدارة / القسم المعني": "",
+                "اسم مسؤول الجودة / منسق السجل": "",
+                "الفترة المغطاة من": "",
+                "الفترة المغطاة إلى": "",
+                "اسم مسؤول المتابعة / الجودة": "",
+                "التوقيع": "",
+                "تاريخ التحديث الأخير للسجل": ""
+            }
+        },
+        
+        "QF-10-02-06-02: تحليل السبب الجذري": {
+            "الحقول": [
+                "اسم الجهة / المؤسسة",
+                "رقم حالة عدم المطابقة / المشكلة",
+                "تاريخ الاكتشاف",
+                "القسم / العملية المتأثرة", 
+                "اسم القائم بالتحليل",
+                "التاريخ",
+                "وصف المشكلة أو عدم المطابقة",
+                "الأداة المستخدمة",
+                "سبب المشكلة 1",
+                "سبب المشكلة 2", 
+                "سبب المشكلة 3",
+                "سبب المشكلة 4",
+                "سبب المشكلة 5",
+                "السبب الجذري النهائي",
+                "التوصيات والإجراء التصحيحي المقترح",
+                "الجهة المنفذة",
+                "التاريخ المتوقع للتنفيذ",
+                "اسم مسؤول الجودة / الإدارة",
+                "الوظيفة",
+                "التوقيع",
+                "تاريخ الاعتماد"
+            ],
+            "البيانات": []
+        },
+        
+        "QF-10-02-06-03: إجراء تصحيحي": {
+            "الحقول": [
+                "اسم الجهة / المؤسسة",
+                "تاريخ فتح الإجراء",
+                "رقم الإجراء التصحيحي",
+                "مصدر الإجراء",
+                "القسم المعني",
+                "اسم مقدم الطلب / المكتشف",
+                "وصف المشكلة / حالة عدم المطابقة",
+                "تحليل السبب الجذري",
+                "الإجراء المقترح",
+                "الهدف من الإجراء",
+                "المسؤول عن التنفيذ",
+                "التاريخ المستهدف للتنفيذ",
+                "الحالة الحالية",
+                "تم تنفيذ الإجراء بالكامل",
+                "تم القضاء على السبب الجذري",
+                "لم تتكرر المشكلة بعد التنفيذ",
+                "اسم المراجع / مسؤول المتابعة",
+                "تاريخ المتابعة",
+                "نتيجة المتابعة",
+                "اسم مسؤول الجودة / الإدارة العليا",
+                "التوقيع",
+                "تاريخ الإغلاق النهائي"
+            ],
+            "البيانات": []
+        },
+        
+        "QF-10-02-06-04: متابعة الإجراءات التصحيحية": {
+            "الحقول": [
+                "اسم الجهة / المؤسسة",
+                "رقم الإجراء التصحيحي",
+                "القسم / الجهة المعنية",
+                "تاريخ فتح الإجراء",
+                "اسم الشخص المتابع",
+                "تاريخ المتابعة",
+                "تم تنفيذ الإجراء التصحيحي وفقاً للخطة",
+                "تم القضاء على السبب الجذري للمشكلة",
+                "لم تتكرر المشكلة منذ تنفيذ الإجراء",
+                "تم توثيق جميع الأدلة المؤيدة للإجراء",
+                "تم إشراك الجهات المعنية أثناء التنفيذ",
+                "فعالية الإجراء",
+                "حاجة لإجراء إضافي",
+                "تفاصيل الإجراء الإضافي",
+                "القرار النهائي",
+                "اسم المتابع / مسؤول الجودة",
+                "التوقيع المتابع",
+                "تاريخ المتابع",
+                "اسم الإدارة",
+                "توقيع الإدارة",
+                "تاريخ الإدارة"
+            ],
+            "البيانات": []
+        },
+        
+        # QF-10-02-07 Series: Preventive Actions Forms  
+        "QF-10-02-07-01: سجل المخاطر المحتملة": {
+            "الحقول": [
+                ("م", "وصف الخطر المحتمل", "مصدر الخطر", "احتمال الحدوث (1-5)", "شدة التأثير (1-5)", "درجة الخطورة", "التصنيف", "الإجراءات الوقائية المقترحة", "القسم المسؤول")
+            ],
+            "البيانات": [],
+            "بيانات_عامة": {
+                "اسم الجهة / المؤسسة": "",
+                "القسم / الإدارة": "",
+                "الفترة المغطاة من": "",
+                "الفترة المغطاة إلى": "",
+                "تاريخ إعداد السجل": "",
+                "اسم مسؤول إدارة المخاطر": "",
+                "عدد المخاطر المصنفة عالية": "",
+                "حاجة لإجراءات عاجلة": "",
+                "ملاحظات إضافية / توصيات": "",
+                "اسم مسؤول إدارة المخاطر / الجودة": "",
+                "الوظيفة": "",
+                "التوقيع": "",
+                "التاريخ": ""
+            }
+        },
+        
+        "QF-10-02-07-02: إجراءات وقائية": {
+            "الحقول": [
+                "اسم الجهة / المؤسسة",
+                "رقم الإجراء الوقائي",
+                "تاريخ فتح الإجراء",
+                "القسم المعني", 
+                "مصدر تحديد الإجراء الوقائي",
+                "وصف الخطر / الحالة المحتملة",
+                "وصف الإجراء الوقائي المقترح",
+                "الهدف من الإجراء",
+                "الجهة المنفذة",
+                "التاريخ المتوقع للتنفيذ",
+                "الموارد المطلوبة",
+                "تم تنفيذ الإجراء في الموعد المحدد",
+                "تم إشراك الأطراف المعنية",
+                "تم توثيق الإجراءات",
+                "تم التحقق من فاعلية الإجراء",
+                "تقليل احتمال وقوع الخطر",
+                "التوصية بإجراءات إضافية",
+                "ملاحظات وتوصيات",
+                "اسم منفذ الإجراء",
+                "توقيع المنفذ",
+                "اسم مسؤول المتابعة / الجودة",
+                "توقيع المسؤول",
+                "تاريخ الاعتماد النهائي"
+            ],
+            "البيانات": []
+        },
+        
+        "QF-10-02-07-03: متابعة التدابير الوقائية": {
+            "الحقول": [
+                "اسم الجهة / المؤسسة",
+                "رقم الإجراء الوقائي",
+                "تاريخ فتح الإجراء",
+                "القسم المعني",
+                "اسم مسؤول المتابعة",
+                "تاريخ المتابعة",
+                "وصف الخطر أو المشكلة المحتملة",
+                "الإجراء الوقائي المقترح",
+                "تاريخ التنفيذ الفعلي",
+                "الجهة المنفذة",
+                "تنفيذ الإجراء الوقائي كما هو مخطط",
+                "توثيق تنفيذ الإجراء",
+                "مشاركة الأطراف المعنية",
+                "فاعلية الإجراء في تقليل أو منع الخطر",
+                "مساهمة الإجراء في تقليل الاحتمالية أو شدة الخطر",
+                "ظهور مؤشرات خطر بعد التنفيذ",
+                "كفاية الإجراء الوقائي",
+                "ملاحظات إضافية / توصيات مستقبلية",
+                "اسم مسؤول المتابعة / الجودة",
+                "الوظيفة",
+                "التوقيع",
+                "التاريخ"
+            ],
+            "البيانات": []
         }
         }
         
@@ -6297,6 +6575,29 @@ ________________________________________
             
         elif "QF-10-02-05-04" in form_name or "نموذج متابعة الإجراءات التصحيحية" in form_name:
             self.create_QF_10_02_05_04_form(form_frame)
+            
+        # نماذج QP-10-02-06 - الإجراءات التصحيحية
+        elif "QF-10-02-06-01" in form_name or "سجل حالات عدم المطابقة" in form_name:
+            self.create_QF_10_02_06_01_form(form_frame)
+            
+        elif "QF-10-02-06-02" in form_name or "تحليل السبب الجذري" in form_name:
+            self.create_QF_10_02_06_02_form(form_frame)
+            
+        elif "QF-10-02-06-03" in form_name or "إجراء تصحيحي" in form_name:
+            self.create_QF_10_02_06_03_form(form_frame)
+            
+        elif "QF-10-02-06-04" in form_name or "متابعة الإجراءات التصحيحية" in form_name:
+            self.create_QF_10_02_06_04_form(form_frame)
+            
+        # نماذج QP-10-02-07 - الإجراءات الوقائية
+        elif "QF-10-02-07-01" in form_name or "سجل المخاطر المحتملة" in form_name:
+            self.create_QF_10_02_07_01_form(form_frame)
+            
+        elif "QF-10-02-07-02" in form_name or "إجراءات وقائية" in form_name:
+            self.create_QF_10_02_07_02_form(form_frame)
+            
+        elif "QF-10-02-07-03" in form_name or "متابعة التدابير الوقائية" in form_name:
+            self.create_QF_10_02_07_03_form(form_frame)
             
         # نموذج افتراضي
         else:
@@ -30987,6 +31288,1828 @@ ________________________________________
         for col in range(len(headers)):
             table_frame.grid_columnconfigure(col, weight=1)
 
+    def create_scrollable_form_frame(self, parent_frame):
+        """Create a standardized scrollable frame with proper layout and mouse wheel support"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Add mouse wheel support for better user experience
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        # Configure scrollable_frame to expand to full width - Fix for corner layout issue
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
+        return canvas, scrollbar, scrollable_frame
+
+    # QP-10-02-06 Corrective Actions Forms
+    
+    def create_QF_10_02_06_01_form(self, parent_frame):
+        """QF-10-02-06-01: سجل حالات عدم المطابقة"""
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
+        
+        # Initialize entries dictionary
+        self.qf_10_02_06_01_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-06-01: سجل حالات عدم المطابقة"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات العامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_01(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_06_01(section1, "الإدارة / القسم المعني", "department")
+        self.create_form_field_06_01(section1, "اسم مسؤول الجودة / منسق السجل", "quality_manager")
+        self.create_date_field_06_01(section1, "الفترة المغطاة من", "period_from")
+        self.create_date_field_06_01(section1, "الفترة المغطاة إلى", "period_to")
+        
+        # Section 2: Non-conformance Details
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: تفاصيل حالات عدم المطابقة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        # Create non-conformance table
+        self.create_nonconformance_table_06_01(section2)
+        
+        # Section 3: Summary of Causes and Corrective Actions
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: ملخص الأسباب والإجراءات التصحيحية"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_summary_table_06_01(section3)
+        
+        # Section 4: Review and Signature
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: المراجعة والتوقيع"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_01(section4, "اسم مسؤول المتابعة / الجودة", "follow_up_manager")
+        self.create_form_field_06_01(section4, "التوقيع", "signature")
+        self.create_date_field_06_01(section4, "تاريخ التحديث الأخير للسجل", "last_update")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-06-01", "QF-10-02-06-01: سجل حالات عدم المطابقة", self.qf_10_02_06_01_entries)
+
+    def create_QF_10_02_06_02_form(self, parent_frame):
+        """QF-10-02-06-02: تحليل السبب الجذري"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_06_02_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-06-02: تحليل السبب الجذري"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Information
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: معلومات عامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_02(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_06_02(section1, "رقم حالة عدم المطابقة / المشكلة", "case_number")
+        self.create_date_field_06_02(section1, "تاريخ الاكتشاف", "discovery_date")
+        self.create_form_field_06_02(section1, "القسم / العملية المتأثرة", "affected_department")
+        self.create_form_field_06_02(section1, "اسم القائم بالتحليل", "analyst_name")
+        self.create_date_field_06_02(section1, "التاريخ", "analysis_date")
+        
+        # Section 2: Problem Description
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: وصف المشكلة أو عدم المطابقة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_06_02_entries['problem_description'] = scrolledtext.ScrolledText(section2, 
+                                                                                       height=4, 
+                                                                                       font=self.fonts['body'],
+                                                                                       bg=self.premium_colors['background'],
+                                                                                       fg=self.premium_colors['text_light'],
+                                                                                       insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_02_entries['problem_description'].pack(fill="x", padx=10, pady=10)
+        
+        # Section 3: Root Cause Analysis Methods
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: طرق تحليل السبب الجذري"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_analysis_tools_section_06_02(section3)
+        
+        # Section 4: 5 Whys Analysis
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: تحليل السبب الجذري (باستخدام 5 لماذا كمثال)"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_five_whys_table_06_02(section4)
+        
+        # Section 5: Recommendations
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: التوصيات والإجراء التصحيحي المقترح"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_06_02_entries['recommendations'] = scrolledtext.ScrolledText(section5, 
+                                                                                   height=3, 
+                                                                                   font=self.fonts['body'],
+                                                                                   bg=self.premium_colors['background'],
+                                                                                   fg=self.premium_colors['text_light'],
+                                                                                   insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_02_entries['recommendations'].pack(fill="x", padx=10, pady=5)
+        
+        self.create_form_field_06_02(section5, "الجهة المنفذة", "implementing_party")
+        self.create_date_field_06_02(section5, "التاريخ المتوقع للتنفيذ", "expected_date")
+        
+        # Section 6: Review and Approval
+        section6 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("سادساً: مراجعة واعتماد التحليل"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section6.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_02(section6, "اسم مسؤول الجودة / الإدارة", "quality_manager")
+        self.create_form_field_06_02(section6, "الوظيفة", "position")
+        self.create_form_field_06_02(section6, "التوقيع", "signature")
+        self.create_date_field_06_02(section6, "التاريخ", "approval_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-06-02", "QF-10-02-06-02: تحليل السبب الجذري", self.qf_10_02_06_02_entries)
+
+    def create_QF_10_02_06_03_form(self, parent_frame):
+        """QF-10-02-06-03: إجراء تصحيحي"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_06_03_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-06-03: إجراء تصحيحي"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات العامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_03(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_date_field_06_03(section1, "تاريخ فتح الإجراء", "action_date")
+        self.create_form_field_06_03(section1, "رقم الإجراء التصحيحي", "action_number")
+        
+        # Source of action with checkboxes
+        source_frame = tk.Frame(section1, bg=self.premium_colors['surface'])
+        source_frame.pack(fill="x", padx=10, pady=5)
+        
+        source_label = tk.Label(source_frame, 
+                               text=self.format_arabic_text("مصدر الإجراء:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        source_label.pack(anchor="e")
+        
+        self.qf_10_02_06_03_entries['source_internal'] = tk.BooleanVar()
+        self.qf_10_02_06_03_entries['source_external'] = tk.BooleanVar()
+        self.qf_10_02_06_03_entries['source_complaint'] = tk.BooleanVar()
+        self.qf_10_02_06_03_entries['source_observation'] = tk.BooleanVar()
+        
+        sources = [
+            ("تدقيق داخلي", self.qf_10_02_06_03_entries['source_internal']),
+            ("تدقيق خارجي", self.qf_10_02_06_03_entries['source_external']),
+            ("شكوى", self.qf_10_02_06_03_entries['source_complaint']),
+            ("ملاحظة", self.qf_10_02_06_03_entries['source_observation'])
+        ]
+        
+        for source_text, var in sources:
+            check = tk.Checkbutton(source_frame, 
+                                  text=self.format_arabic_text(source_text),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+        
+        self.create_form_field_06_03(section1, "القسم المعني", "concerned_department")
+        self.create_form_field_06_03(section1, "اسم مقدم الطلب / المكتشف", "requester_name")
+        
+        # Section 2: Problem Description
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: وصف المشكلة / حالة عدم المطابقة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_06_03_entries['problem_description'] = scrolledtext.ScrolledText(section2, 
+                                                                                       height=3, 
+                                                                                       font=self.fonts['body'],
+                                                                                       bg=self.premium_colors['background'],
+                                                                                       fg=self.premium_colors['text_light'],
+                                                                                       insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_03_entries['problem_description'].pack(fill="x", padx=10, pady=10)
+        
+        # Section 3: Root Cause Analysis
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: تحليل السبب الجذري"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_06_03_entries['root_cause_analysis'] = scrolledtext.ScrolledText(section3, 
+                                                                                       height=3, 
+                                                                                       font=self.fonts['body'],
+                                                                                       bg=self.premium_colors['background'],
+                                                                                       fg=self.premium_colors['text_light'],
+                                                                                       insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_03_entries['root_cause_analysis'].pack(fill="x", padx=10, pady=10)
+        
+        # Section 4: Corrective Action Details
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: تفاصيل الإجراء التصحيحي"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_06_03_entries['proposed_action'] = scrolledtext.ScrolledText(section4, 
+                                                                                   height=3, 
+                                                                                   font=self.fonts['body'],
+                                                                                   bg=self.premium_colors['background'],
+                                                                                   fg=self.premium_colors['text_light'],
+                                                                                   insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_03_entries['proposed_action'].pack(fill="x", padx=10, pady=5)
+        
+        # Action objective with checkboxes
+        objective_frame = tk.Frame(section4, bg=self.premium_colors['surface'])
+        objective_frame.pack(fill="x", padx=10, pady=5)
+        
+        objective_label = tk.Label(objective_frame, 
+                                  text=self.format_arabic_text("الهدف من الإجراء:"),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'])
+        objective_label.pack(anchor="e")
+        
+        self.qf_10_02_06_03_entries['objective_prevent'] = tk.BooleanVar()
+        self.qf_10_02_06_03_entries['objective_correct'] = tk.BooleanVar()
+        self.qf_10_02_06_03_entries['objective_improve'] = tk.BooleanVar()
+        
+        objectives = [
+            ("منع التكرار", self.qf_10_02_06_03_entries['objective_prevent']),
+            ("تصحيح فوري", self.qf_10_02_06_03_entries['objective_correct']),
+            ("تحسين الإجراء", self.qf_10_02_06_03_entries['objective_improve'])
+        ]
+        
+        for obj_text, var in objectives:
+            check = tk.Checkbutton(objective_frame, 
+                                  text=self.format_arabic_text(obj_text),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+        
+        self.create_form_field_06_03(section4, "المسؤول عن التنفيذ", "responsible_person")
+        self.create_date_field_06_03(section4, "التاريخ المستهدف للتنفيذ", "target_date")
+        
+        # Current status with radio buttons
+        status_frame = tk.Frame(section4, bg=self.premium_colors['surface'])
+        status_frame.pack(fill="x", padx=10, pady=5)
+        
+        status_label = tk.Label(status_frame, 
+                               text=self.format_arabic_text("الحالة الحالية:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        status_label.pack(anchor="e")
+        
+        self.qf_10_02_06_03_entries['current_status'] = tk.StringVar()
+        
+        statuses = ["قيد التنفيذ", "تم التنفيذ", "مغلق"]
+        
+        for status in statuses:
+            radio = tk.Radiobutton(status_frame, 
+                                  text=self.format_arabic_text(status),
+                                  variable=self.qf_10_02_06_03_entries['current_status'],
+                                  value=status,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Section 5: Follow-up and Effectiveness
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: متابعة التنفيذ وفاعلية الإجراء"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.create_effectiveness_checklist_06_03(section5)
+        
+        self.create_form_field_06_03(section5, "اسم المراجع / مسؤول المتابعة", "reviewer_name")
+        self.create_date_field_06_03(section5, "تاريخ المتابعة", "follow_up_date")
+        
+        # Section 6: Action Approval
+        section6 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("سادساً: اعتماد الإجراء"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section6.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_03(section6, "اسم مسؤول الجودة / الإدارة العليا", "approver_name")
+        self.create_form_field_06_03(section6, "التوقيع", "signature")
+        self.create_date_field_06_03(section6, "تاريخ الإغلاق النهائي", "closure_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-06-03", "QF-10-02-06-03: إجراء تصحيحي", self.qf_10_02_06_03_entries)
+
+    def create_QF_10_02_06_04_form(self, parent_frame):
+        """QF-10-02-06-04: متابعة الإجراءات التصحيحية"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_06_04_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-06-04: متابعة الإجراءات التصحيحية"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: Basic Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات الأساسية"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_04(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_06_04(section1, "رقم الإجراء التصحيحي", "action_number")
+        self.create_form_field_06_04(section1, "القسم / الجهة المعنية", "concerned_department")
+        self.create_date_field_06_04(section1, "تاريخ فتح الإجراء", "action_date")
+        self.create_form_field_06_04(section1, "اسم الشخص المتابع", "follower_name")
+        self.create_date_field_06_04(section1, "تاريخ المتابعة", "follow_up_date")
+        
+        # Section 2: Implementation Review
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: مراجعة التنفيذ"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.create_implementation_review_table_06_04(section2)
+        
+        # Section 3: Effectiveness Assessment
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: تقييم الفاعلية"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_effectiveness_assessment_06_04(section3)
+        
+        # Section 4: Closure Decision
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: قرار الإغلاق"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_closure_decision_06_04(section4)
+        
+        # Section 5: Responsible Signatures
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: توقيعات المسؤولين"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_06_04(section5, "اسم المتابع / مسؤول الجودة", "quality_manager")
+        self.create_form_field_06_04(section5, "التوقيع", "quality_signature")
+        self.create_date_field_06_04(section5, "التاريخ", "quality_date")
+        
+        self.create_form_field_06_04(section5, "موافقة الإدارة على الإغلاق النهائي - الاسم", "management_name")
+        self.create_form_field_06_04(section5, "التوقيع", "management_signature")
+        self.create_date_field_06_04(section5, "التاريخ", "management_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-06-04", "QF-10-02-06-04: متابعة الإجراءات التصحيحية", self.qf_10_02_06_04_entries)
+
+    # QP-10-02-07 Preventive Actions Forms
+    
+    def create_QF_10_02_07_01_form(self, parent_frame):
+        """QF-10-02-07-01: سجل المخاطر المحتملة"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_07_01_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-07-01: سجل المخاطر المحتملة"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات العامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_01(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_07_01(section1, "القسم / الإدارة", "department")
+        self.create_date_field_07_01(section1, "الفترة المغطاة من", "period_from")
+        self.create_date_field_07_01(section1, "الفترة المغطاة إلى", "period_to")
+        self.create_date_field_07_01(section1, "تاريخ إعداد السجل", "preparation_date")
+        self.create_form_field_07_01(section1, "اسم مسؤول إدارة المخاطر", "risk_manager")
+        
+        # Section 2: Risk Assessment Table
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: جدول تقييم وتوثيق المخاطر"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.create_risk_assessment_table_07_01(section2)
+        
+        # Section 3: Follow-up and Review Mechanism
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: آلية المتابعة والمراجعة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_follow_up_table_07_01(section3)
+        
+        # Section 4: Summary and General Analysis
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: ملخص وتحليل عام"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_01(section4, "عدد المخاطر المصنفة عالية", "high_risk_count")
+        
+        urgent_frame = tk.Frame(section4, bg=self.premium_colors['surface'])
+        urgent_frame.pack(fill="x", padx=10, pady=5)
+        
+        urgent_label = tk.Label(urgent_frame, 
+                               text=self.format_arabic_text("هل هناك حاجة لإجراءات عاجلة؟"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        urgent_label.pack(anchor="e")
+        
+        self.qf_10_02_07_01_entries['urgent_actions'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(urgent_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_07_01_entries['urgent_actions'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        self.qf_10_02_07_01_entries['additional_notes'] = scrolledtext.ScrolledText(section4, 
+                                                                                    height=3, 
+                                                                                    font=self.fonts['body'],
+                                                                                    bg=self.premium_colors['background'],
+                                                                                    fg=self.premium_colors['text_light'],
+                                                                                    insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_01_entries['additional_notes'].pack(fill="x", padx=10, pady=5)
+        
+        # Section 5: Record Approval
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: اعتماد السجل"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_01(section5, "اسم مسؤول إدارة المخاطر / الجودة", "approver_name")
+        self.create_form_field_07_01(section5, "الوظيفة", "position")
+        self.create_form_field_07_01(section5, "التوقيع", "signature")
+        self.create_date_field_07_01(section5, "التاريخ", "approval_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-07-01", "QF-10-02-07-01: سجل المخاطر المحتملة", self.qf_10_02_07_01_entries)
+
+    def create_QF_10_02_07_02_form(self, parent_frame):
+        """QF-10-02-07-02: إجراءات وقائية"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_07_02_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-07-02: إجراءات وقائية"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات العامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_02(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_07_02(section1, "رقم الإجراء الوقائي", "action_number")
+        self.create_date_field_07_02(section1, "تاريخ فتح الإجراء", "action_date")
+        self.create_form_field_07_02(section1, "القسم المعني", "concerned_department")
+        
+        # Source identification with checkboxes
+        source_frame = tk.Frame(section1, bg=self.premium_colors['surface'])
+        source_frame.pack(fill="x", padx=10, pady=5)
+        
+        source_label = tk.Label(source_frame, 
+                               text=self.format_arabic_text("مصدر تحديد الإجراء الوقائي:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        source_label.pack(anchor="e")
+        
+        self.qf_10_02_07_02_entries['source_risk'] = tk.BooleanVar()
+        self.qf_10_02_07_02_entries['source_audit'] = tk.BooleanVar()
+        self.qf_10_02_07_02_entries['source_review'] = tk.BooleanVar()
+        
+        sources = [
+            ("تحليل مخاطر", self.qf_10_02_07_02_entries['source_risk']),
+            ("تدقيق داخلي", self.qf_10_02_07_02_entries['source_audit']),
+            ("اجتماع مراجعة", self.qf_10_02_07_02_entries['source_review'])
+        ]
+        
+        for source_text, var in sources:
+            check = tk.Checkbutton(source_frame, 
+                                  text=self.format_arabic_text(source_text),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+        
+        # Section 2: Risk/Potential Situation Description
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: وصف الخطر / الحالة المحتملة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_07_02_entries['risk_description'] = scrolledtext.ScrolledText(section2, 
+                                                                                    height=3, 
+                                                                                    font=self.fonts['body'],
+                                                                                    bg=self.premium_colors['background'],
+                                                                                    fg=self.premium_colors['text_light'],
+                                                                                    insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_02_entries['risk_description'].pack(fill="x", padx=10, pady=10)
+        
+        # Section 3: Preventive Action Details
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: تفاصيل الإجراء الوقائي"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_preventive_action_details_07_02(section3)
+        
+        # Section 4: Implementation Follow-up
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: متابعة التنفيذ"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_implementation_follow_up_07_02(section4)
+        
+        # Section 5: Post-implementation Assessment
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: التقييم اللاحق للإجراء"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.create_post_assessment_07_02(section5)
+        
+        # Section 6: Signatures and Approval
+        section6 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("سادساً: توقيعات واعتماد"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section6.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_02(section6, "اسم منفذ الإجراء", "executor_name")
+        self.create_form_field_07_02(section6, "التوقيع", "executor_signature")
+        self.create_form_field_07_02(section6, "اسم مسؤول المتابعة / الجودة", "quality_manager")
+        self.create_form_field_07_02(section6, "التوقيع", "quality_signature")
+        self.create_date_field_07_02(section6, "تاريخ الاعتماد النهائي", "final_approval_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-07-02", "QF-10-02-07-02: إجراءات وقائية", self.qf_10_02_07_02_entries)
+
+    def create_QF_10_02_07_03_form(self, parent_frame):
+        """QF-10-02-07-03: متابعة التدابير الوقائية"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
+                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Initialize entries dictionary
+        self.qf_10_02_07_03_entries = {}
+        
+        # Form Title
+        title_text = "QF-10-02-07-03: متابعة التدابير الوقائية"
+        title_label = tk.Label(scrollable_frame, 
+                              text=self.format_arabic_text(title_text),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['background'])
+        title_label.pack(pady=20)
+        
+        # Section 1: General Data
+        section1 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("أولاً: البيانات العامة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section1.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_03(section1, "اسم الجهة / المؤسسة", "institution_name")
+        self.create_form_field_07_03(section1, "رقم الإجراء الوقائي", "action_number")
+        self.create_date_field_07_03(section1, "تاريخ فتح الإجراء", "action_date")
+        self.create_form_field_07_03(section1, "القسم المعني", "concerned_department")
+        self.create_form_field_07_03(section1, "اسم مسؤول المتابعة", "follow_up_manager")
+        self.create_date_field_07_03(section1, "تاريخ المتابعة", "follow_up_date")
+        
+        # Section 2: Preventive Action Information
+        section2 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثانياً: معلومات عن الإجراء الوقائي"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section2.pack(fill="x", padx=20, pady=10)
+        
+        self.qf_10_02_07_03_entries['risk_description'] = scrolledtext.ScrolledText(section2, 
+                                                                                    height=2, 
+                                                                                    font=self.fonts['body'],
+                                                                                    bg=self.premium_colors['background'],
+                                                                                    fg=self.premium_colors['text_light'],
+                                                                                    insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_03_entries['risk_description'].pack(fill="x", padx=10, pady=5)
+        
+        self.qf_10_02_07_03_entries['preventive_action'] = scrolledtext.ScrolledText(section2, 
+                                                                                     height=2, 
+                                                                                     font=self.fonts['body'],
+                                                                                     bg=self.premium_colors['background'],
+                                                                                     fg=self.premium_colors['text_light'],
+                                                                                     insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_03_entries['preventive_action'].pack(fill="x", padx=10, pady=5)
+        
+        self.create_date_field_07_03(section2, "تاريخ التنفيذ الفعلي", "actual_implementation_date")
+        self.create_form_field_07_03(section2, "الجهة المنفذة", "implementing_party")
+        
+        # Section 3: Implementation Follow-up
+        section3 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("ثالثاً: متابعة التنفيذ"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section3.pack(fill="x", padx=20, pady=10)
+        
+        self.create_implementation_follow_up_table_07_03(section3)
+        
+        # Section 4: Action Effectiveness Assessment
+        section4 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("رابعاً: تقييم فاعلية الإجراء"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section4.pack(fill="x", padx=20, pady=10)
+        
+        self.create_effectiveness_assessment_07_03(section4)
+        
+        # Section 5: Follow-up Approval
+        section5 = tk.LabelFrame(scrollable_frame, 
+                                text=self.format_arabic_text("خامساً: اعتماد المتابعة"),
+                                font=self.fonts['heading'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        section5.pack(fill="x", padx=20, pady=10)
+        
+        self.create_form_field_07_03(section5, "اسم مسؤول المتابعة / الجودة", "quality_manager")
+        self.create_form_field_07_03(section5, "الوظيفة", "position")
+        self.create_form_field_07_03(section5, "التوقيع", "signature")
+        self.create_date_field_07_03(section5, "التاريخ", "approval_date")
+        
+        # Add Enhanced Buttons
+        self.add_enhanced_buttons_to_form(scrollable_frame, "QF-10-02-07-03", "QF-10-02-07-03: متابعة التدابير الوقائية", self.qf_10_02_07_03_entries)
+
+    # Helper Methods for QF-10-02-06 and QF-10-02-07 Forms
+    
+    def create_form_field_06_01(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-06-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        
+        self.qf_10_02_06_01_entries[field_name] = entry
+
+    def create_date_field_06_01(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-06-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'],
+                        width=20)
+        entry.pack(side="left", padx=(0, 10))
+        entry.insert(0, "__ / __ / ______")
+        
+        self.qf_10_02_06_01_entries[field_name] = entry
+
+    def create_nonconformance_table_06_01(self, parent):
+        """Create non-conformance table for QF-10-02-06-01"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        headers = ["م", "رقم الحالة", "التاريخ", "مصدر الاكتشاف", "وصف حالة عدم المطابقة", 
+                  "درجة الخطورة", "القسم المسؤول", "الحالة", "التاريخ المتوقع للإغلاق", "التاريخ الفعلي للإغلاق"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add sample rows
+        for row in range(1, 4):
+            for col in range(len(headers)):
+                if col == 0:  # Number column
+                    entry = tk.Label(table_frame, text=str(row),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'],
+                                   relief=tk.SUNKEN, bd=1)
+                else:
+                    entry = tk.Entry(table_frame, font=self.fonts['body'], width=15,
+                                   bg=self.premium_colors['background'],
+                                   fg=self.premium_colors['text_light'],
+                                   insertbackground=self.premium_colors['accent'])
+                entry.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_summary_table_06_01(self, parent):
+        """Create summary table for QF-10-02-06-01"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        headers = ["رقم الحالة", "السبب الجذري", "الإجراء التصحيحي", "تم التنفيذ؟", "ملاحظات"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add sample rows
+        for row in range(1, 4):
+            for col in range(len(headers)):
+                if col == 3:  # Checkbox column
+                    check_var = tk.BooleanVar()
+                    check = tk.Checkbutton(table_frame, variable=check_var,
+                                         bg=self.premium_colors['surface'],
+                                         fg=self.premium_colors['text_light'],
+                                         selectcolor=self.premium_colors['background'])
+                    check.grid(row=row, column=col, padx=1, pady=1)
+                else:
+                    entry = tk.Entry(table_frame, font=self.fonts['body'], width=20,
+                                   bg=self.premium_colors['background'],
+                                   fg=self.premium_colors['text_light'],
+                                   insertbackground=self.premium_colors['accent'])
+                    entry.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    # Helper methods for QF-10-02-06-02
+    def create_form_field_06_02(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-06-02"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        
+        self.qf_10_02_06_02_entries[field_name] = entry
+
+    def create_date_field_06_02(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-06-02"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'],
+                        width=20)
+        entry.pack(side="left", padx=(0, 10))
+        entry.insert(0, "__ / __ / ______")
+        
+        self.qf_10_02_06_02_entries[field_name] = entry
+
+    def create_analysis_tools_section_06_02(self, parent):
+        """Create analysis tools section for QF-10-02-06-02"""
+        tools_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        tools_frame.pack(fill="x", padx=10, pady=10)
+        
+        tools = [
+            "مخطط عظمة السمكة (Ishikawa / Fishbone)",
+            "تحليل 5 لماذا (5 Whys)",
+            "تحليل السبب والتأثير (Cause & Effect)"
+        ]
+        
+        self.qf_10_02_06_02_entries['analysis_tools'] = {}
+        
+        for tool in tools:
+            tool_frame = tk.Frame(tools_frame, bg=self.premium_colors['surface'])
+            tool_frame.pack(fill="x", pady=2)
+            
+            var = tk.BooleanVar()
+            self.qf_10_02_06_02_entries['analysis_tools'][tool] = var
+            
+            check = tk.Checkbutton(tool_frame, 
+                                  text=self.format_arabic_text(tool),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+
+    def create_five_whys_table_06_02(self, parent):
+        """Create 5 whys table for QF-10-02-06-02"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        whys = [
+            "لماذا حدثت المشكلة؟",
+            "لماذا حدث السبب؟",
+            "لماذا؟",
+            "لماذا؟",
+            "لماذا؟"
+        ]
+        
+        self.qf_10_02_06_02_entries['five_whys'] = {}
+        
+        for i, why in enumerate(whys):
+            why_frame = tk.Frame(table_frame, bg=self.premium_colors['surface'])
+            why_frame.pack(fill="x", pady=5)
+            
+            label = tk.Label(why_frame, 
+                           text=self.format_arabic_text(why),
+                           font=self.fonts['body'],
+                           fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'],
+                           width=25, anchor="e")
+            label.pack(side="right")
+            
+            entry = tk.Entry(why_frame, 
+                           font=self.fonts['body'],
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+            entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+            
+            self.qf_10_02_06_02_entries['five_whys'][f'why_{i+1}'] = entry
+        
+        # Root cause result
+        result_frame = tk.Frame(table_frame, bg=self.premium_colors['surface'])
+        result_frame.pack(fill="x", pady=10)
+        
+        result_label = tk.Label(result_frame, 
+                              text=self.format_arabic_text("👉 النتيجة / السبب الجذري النهائي:"),
+                              font=self.fonts['heading'],
+                              fg=self.premium_colors['accent'],
+                              bg=self.premium_colors['surface'])
+        result_label.pack(anchor="e")
+        
+        self.qf_10_02_06_02_entries['root_cause_result'] = scrolledtext.ScrolledText(result_frame, 
+                                                                                     height=3, 
+                                                                                     font=self.fonts['body'],
+                                                                                     bg=self.premium_colors['background'],
+                                                                                     fg=self.premium_colors['text_light'],
+                                                                                     insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_02_entries['root_cause_result'].pack(fill="x", pady=5)
+
+    # Helper methods for other forms would go here...
+    # (I'm adding just a few key ones to avoid making the response too long)
+
+    def create_form_field_06_03(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-06-03"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        
+        self.qf_10_02_06_03_entries[field_name] = entry
+
+    def create_date_field_06_03(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-06-03"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'],
+                        width=20)
+        entry.pack(side="left", padx=(0, 10))
+        entry.insert(0, "__ / __ / ______")
+        
+        self.qf_10_02_06_03_entries[field_name] = entry
+
+    def create_effectiveness_checklist_06_03(self, parent):
+        """Create effectiveness checklist for QF-10-02-06-03"""
+        checklist_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        checklist_frame.pack(fill="x", padx=10, pady=10)
+        
+        checks = [
+            "تم تنفيذ الإجراء بالكامل",
+            "تم القضاء على السبب الجذري",
+            "لم تتكرر المشكلة بعد التنفيذ"
+        ]
+        
+        self.qf_10_02_06_03_entries['effectiveness_checks'] = {}
+        
+        for check_text in checks:
+            check_frame = tk.Frame(checklist_frame, bg=self.premium_colors['surface'])
+            check_frame.pack(fill="x", pady=2)
+            
+            var = tk.BooleanVar()
+            self.qf_10_02_06_03_entries['effectiveness_checks'][check_text] = var
+            
+            check = tk.Checkbutton(check_frame, 
+                                  text=self.format_arabic_text(check_text),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+
+    # Add similar helper methods for other forms (abbreviated for space)
+    def create_form_field_06_04(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-06-04"""
+        self.create_form_field_06_03(parent, label_text, field_name)
+        # Reassign to correct entries dict
+        if hasattr(self, 'qf_10_02_06_04_entries'):
+            self.qf_10_02_06_04_entries[field_name] = self.qf_10_02_06_03_entries.pop(field_name)
+
+    def create_date_field_06_04(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-06-04"""
+        self.create_date_field_06_03(parent, label_text, field_name)
+        # Reassign to correct entries dict
+        if hasattr(self, 'qf_10_02_06_04_entries'):
+            self.qf_10_02_06_04_entries[field_name] = self.qf_10_02_06_03_entries.pop(field_name)
+
+    def create_implementation_review_table_06_04(self, parent):
+        """Create implementation review table for QF-10-02-06-04"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        review_items = [
+            "تم تنفيذ الإجراء التصحيحي وفقاً للخطة",
+            "تم القضاء على السبب الجذري للمشكلة",
+            "لم تتكرر المشكلة منذ تنفيذ الإجراء",
+            "تم توثيق جميع الأدلة المؤيدة للإجراء",
+            "تم إشراك الجهات المعنية أثناء التنفيذ"
+        ]
+        
+        headers = ["م", "عنصر المراجعة", "تم التنفيذ", "الملاحظات"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        self.qf_10_02_06_04_entries['review_items'] = {}
+        
+        for row, item in enumerate(review_items, start=1):
+            # Number
+            num_label = tk.Label(table_frame, text=str(row),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'],
+                               relief=tk.SUNKEN, bd=1)
+            num_label.grid(row=row, column=0, sticky="ew", padx=1, pady=1)
+            
+            # Review item
+            item_label = tk.Label(table_frame, 
+                                 text=self.format_arabic_text(item),
+                                 font=self.fonts['body'],
+                                 fg=self.premium_colors['text_light'],
+                                 bg=self.premium_colors['surface'],
+                                 relief=tk.SUNKEN, bd=1, anchor="e")
+            item_label.grid(row=row, column=1, sticky="ew", padx=1, pady=1)
+            
+            # Checkbox
+            var = tk.BooleanVar()
+            check = tk.Checkbutton(table_frame, variable=var,
+                                 bg=self.premium_colors['surface'],
+                                 fg=self.premium_colors['text_light'],
+                                 selectcolor=self.premium_colors['background'])
+            check.grid(row=row, column=2, padx=1, pady=1)
+            
+            # Notes
+            notes_entry = tk.Entry(table_frame, font=self.fonts['body'],
+                                 bg=self.premium_colors['background'],
+                                 fg=self.premium_colors['text_light'],
+                                 insertbackground=self.premium_colors['accent'])
+            notes_entry.grid(row=row, column=3, sticky="ew", padx=1, pady=1)
+            
+            self.qf_10_02_06_04_entries['review_items'][item] = {
+                'checked': var,
+                'notes': notes_entry
+            }
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_effectiveness_assessment_06_04(self, parent):
+        """Create effectiveness assessment for QF-10-02-06-04"""
+        assessment_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        assessment_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Effectiveness question
+        eff_label = tk.Label(assessment_frame, 
+                           text=self.format_arabic_text("هل كان الإجراء فعّالًا في حل المشكلة؟"),
+                           font=self.fonts['body'],
+                           fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        eff_label.pack(anchor="e")
+        
+        self.qf_10_02_06_04_entries['effectiveness'] = tk.StringVar()
+        
+        for option in ["نعم", "لا", "جزئياً"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_06_04_entries['effectiveness'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Additional action question
+        add_label = tk.Label(assessment_frame, 
+                           text=self.format_arabic_text("هل هناك حاجة لإجراء إضافي؟"),
+                           font=self.fonts['body'],
+                           fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        add_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_06_04_entries['additional_action'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_06_04_entries['additional_action'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Additional details
+        details_label = tk.Label(assessment_frame, 
+                               text=self.format_arabic_text("إذا كانت الإجابة نعم، يرجى ذكر التفاصيل:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        details_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_06_04_entries['additional_details'] = scrolledtext.ScrolledText(assessment_frame, 
+                                                                                      height=3, 
+                                                                                      font=self.fonts['body'],
+                                                                                      bg=self.premium_colors['background'],
+                                                                                      fg=self.premium_colors['text_light'],
+                                                                                      insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_06_04_entries['additional_details'].pack(fill="x", pady=5)
+
+    def create_closure_decision_06_04(self, parent):
+        """Create closure decision for QF-10-02-06-04"""
+        decision_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        decision_frame.pack(fill="x", padx=10, pady=10)
+        
+        table_frame = tk.Frame(decision_frame, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="x")
+        
+        headers = ["القرار النهائي", "التاريخ", "توقيع"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        decisions = [
+            "تم الإغلاق بنجاح",
+            "الإجراء غير فعال – يلزم إجراء إضافي"
+        ]
+        
+        self.qf_10_02_06_04_entries['closure_decisions'] = {}
+        
+        for row, decision in enumerate(decisions, start=1):
+            # Checkbox for decision
+            var = tk.BooleanVar()
+            decision_check = tk.Checkbutton(table_frame, 
+                                          text=self.format_arabic_text(decision),
+                                          variable=var,
+                                          font=self.fonts['body'],
+                                          fg=self.premium_colors['text_light'],
+                                          bg=self.premium_colors['surface'],
+                                          selectcolor=self.premium_colors['background'])
+            decision_check.grid(row=row, column=0, sticky="w", padx=1, pady=1)
+            
+            # Date
+            date_entry = tk.Entry(table_frame, font=self.fonts['body'], width=15,
+                                bg=self.premium_colors['background'],
+                                fg=self.premium_colors['text_light'],
+                                insertbackground=self.premium_colors['accent'])
+            date_entry.grid(row=row, column=1, sticky="ew", padx=1, pady=1)
+            date_entry.insert(0, "__ / __ / ______")
+            
+            # Signature
+            signature_entry = tk.Entry(table_frame, font=self.fonts['body'],
+                                     bg=self.premium_colors['background'],
+                                     fg=self.premium_colors['text_light'],
+                                     insertbackground=self.premium_colors['accent'])
+            signature_entry.grid(row=row, column=2, sticky="ew", padx=1, pady=1)
+            
+            self.qf_10_02_06_04_entries['closure_decisions'][decision] = {
+                'selected': var,
+                'date': date_entry,
+                'signature': signature_entry
+            }
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    # Helper methods for QF-10-02-07 series (Preventive Actions)
+    def create_form_field_07_01(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-07-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+        
+        self.qf_10_02_07_01_entries[field_name] = entry
+
+    def create_date_field_07_01(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-07-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill="x", padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text + ":"),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=30, anchor="e")
+        label.pack(side="right")
+        
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'],
+                        width=20)
+        entry.pack(side="left", padx=(0, 10))
+        entry.insert(0, "__ / __ / ______")
+        
+        self.qf_10_02_07_01_entries[field_name] = entry
+
+    def create_risk_assessment_table_07_01(self, parent):
+        """Create risk assessment table for QF-10-02-07-01"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        headers = ["م", "وصف الخطر المحتمل", "مصدر الخطر", "احتمال الحدوث (1-5)", 
+                  "شدة التأثير (1-5)", "درجة الخطورة", "التصنيف", "الإجراءات الوقائية المقترحة", "القسم المسؤول"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add sample rows for risk assessment
+        for row in range(1, 4):
+            for col in range(len(headers)):
+                if col == 0:  # Number column
+                    entry = tk.Label(table_frame, text=str(row),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'],
+                                   relief=tk.SUNKEN, bd=1)
+                else:
+                    entry = tk.Entry(table_frame, font=self.fonts['body'], width=15,
+                                   bg=self.premium_colors['background'],
+                                   fg=self.premium_colors['text_light'],
+                                   insertbackground=self.premium_colors['accent'])
+                entry.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_follow_up_table_07_01(self, parent):
+        """Create follow-up table for QF-10-02-07-01"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        headers = ["م", "تاريخ المتابعة", "تم تنفيذ الإجراءات؟", "الملاحظات", "اسم المراجع", "التوقيع"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add sample rows
+        for row in range(1, 3):
+            for col in range(len(headers)):
+                if col == 0:  # Number
+                    entry = tk.Label(table_frame, text=str(row),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'],
+                                   relief=tk.SUNKEN, bd=1)
+                elif col == 2:  # Checkbox
+                    var = tk.BooleanVar()
+                    entry = tk.Checkbutton(table_frame, variable=var,
+                                         bg=self.premium_colors['surface'],
+                                         fg=self.premium_colors['text_light'],
+                                         selectcolor=self.premium_colors['background'])
+                else:
+                    entry = tk.Entry(table_frame, font=self.fonts['body'], width=15,
+                                   bg=self.premium_colors['background'],
+                                   fg=self.premium_colors['text_light'],
+                                   insertbackground=self.premium_colors['accent'])
+                entry.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    # Simplified helper methods for remaining forms (to keep response manageable)
+    def create_form_field_07_02(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-07-02"""
+        self.create_form_field_07_01(parent, label_text, field_name)
+        if hasattr(self, 'qf_10_02_07_02_entries'):
+            self.qf_10_02_07_02_entries[field_name] = self.qf_10_02_07_01_entries.pop(field_name)
+
+    def create_date_field_07_02(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-07-02"""
+        self.create_date_field_07_01(parent, label_text, field_name)
+        if hasattr(self, 'qf_10_02_07_02_entries'):
+            self.qf_10_02_07_02_entries[field_name] = self.qf_10_02_07_01_entries.pop(field_name)
+
+    def create_form_field_07_03(self, parent, label_text, field_name):
+        """Create form field for QF-10-02-07-03"""
+        self.create_form_field_07_01(parent, label_text, field_name)
+        if hasattr(self, 'qf_10_02_07_03_entries'):
+            self.qf_10_02_07_03_entries[field_name] = self.qf_10_02_07_01_entries.pop(field_name)
+
+    def create_date_field_07_03(self, parent, label_text, field_name):
+        """Create date field for QF-10-02-07-03"""
+        self.create_date_field_07_01(parent, label_text, field_name)
+        if hasattr(self, 'qf_10_02_07_03_entries'):
+            self.qf_10_02_07_03_entries[field_name] = self.qf_10_02_07_01_entries.pop(field_name)
+
+    def create_preventive_action_details_07_02(self, parent):
+        """Create preventive action details section for QF-10-02-07-02"""
+        details_table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        details_table_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Table structure with labeled fields
+        fields = [
+            ("وصف الإجراء الوقائي المقترح", "action_description"),
+            ("الهدف من الإجراء", "action_objective"), 
+            ("الجهة المنفذة", "implementing_party"),
+            ("التاريخ المتوقع للتنفيذ", "expected_date"),
+            ("الموارد المطلوبة (إن وجدت)", "required_resources")
+        ]
+        
+        for i, (label, field_key) in enumerate(fields):
+            field_frame = tk.Frame(details_table_frame, bg=self.premium_colors['surface'])
+            field_frame.pack(fill="x", padx=5, pady=5)
+            
+            label_widget = tk.Label(field_frame, 
+                                   text=self.format_arabic_text(label + ":"),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'],
+                                   width=30, anchor="e")
+            label_widget.pack(side="right")
+            
+            if field_key == "action_description":
+                # Use text area for description
+                entry = scrolledtext.ScrolledText(field_frame, height=3, 
+                                                font=self.fonts['body'],
+                                                bg=self.premium_colors['background'],
+                                                fg=self.premium_colors['text_light'],
+                                                insertbackground=self.premium_colors['accent'])
+            else:
+                entry = tk.Entry(field_frame, 
+                               font=self.fonts['body'],
+                               bg=self.premium_colors['background'],
+                               fg=self.premium_colors['text_light'],
+                               insertbackground=self.premium_colors['accent'])
+            
+            entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+            self.qf_10_02_07_02_entries[field_key] = entry
+
+    def create_implementation_follow_up_07_02(self, parent):
+        """Create implementation follow-up section for QF-10-02-07-02"""
+        follow_up_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        follow_up_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Follow-up checklist
+        follow_up_items = [
+            "تم تنفيذ الإجراء في الموعد المحدد",
+            "تم إشراك الأطراف المعنية", 
+            "تم توثيق الإجراءات",
+            "تم التحقق من فاعلية الإجراء"
+        ]
+        
+        self.qf_10_02_07_02_entries['follow_up_items'] = {}
+        
+        for item in follow_up_items:
+            item_frame = tk.Frame(follow_up_frame, bg=self.premium_colors['surface'])
+            item_frame.pack(fill="x", pady=2)
+            
+            var = tk.BooleanVar()
+            check = tk.Checkbutton(item_frame, 
+                                  text=self.format_arabic_text(item),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+            
+            self.qf_10_02_07_02_entries['follow_up_items'][item] = var
+
+    def create_post_assessment_07_02(self, parent):
+        """Create post-assessment section for QF-10-02-07-02"""
+        assessment_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        assessment_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Risk reduction question
+        risk_label = tk.Label(assessment_frame, 
+                            text=self.format_arabic_text("هل تم تقليل احتمال وقوع الخطر؟"),
+                            font=self.fonts['body'],
+                            fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        risk_label.pack(anchor="e")
+        
+        self.qf_10_02_07_02_entries['risk_reduced'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_07_02_entries['risk_reduced'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Additional actions question
+        additional_label = tk.Label(assessment_frame, 
+                                  text=self.format_arabic_text("هل يُوصى بإجراءات إضافية؟"),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'])
+        additional_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_07_02_entries['additional_actions'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_07_02_entries['additional_actions'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Notes and recommendations
+        notes_label = tk.Label(assessment_frame, 
+                             text=self.format_arabic_text("ملاحظات وتوصيات:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_07_02_entries['notes_recommendations'] = scrolledtext.ScrolledText(assessment_frame, 
+                                                                                          height=3, 
+                                                                                          font=self.fonts['body'],
+                                                                                          bg=self.premium_colors['background'],
+                                                                                          fg=self.premium_colors['text_light'],
+                                                                                          insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_02_entries['notes_recommendations'].pack(fill="x", pady=5)
+
+    def create_implementation_follow_up_table_07_03(self, parent):
+        """Create implementation follow-up table for QF-10-02-07-03"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        follow_up_items = [
+            "تنفيذ الإجراء الوقائي كما هو مخطط",
+            "توثيق تنفيذ الإجراء",
+            "مشاركة الأطراف المعنية",
+            "فاعلية الإجراء في تقليل أو منع الخطر"
+        ]
+        
+        headers = ["م", "عنصر المتابعة", "تم التنفيذ؟", "الملاحظات"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        self.qf_10_02_07_03_entries['follow_up_items'] = {}
+        
+        for row, item in enumerate(follow_up_items, start=1):
+            # Number
+            num_label = tk.Label(table_frame, text=str(row),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'],
+                               relief=tk.SUNKEN, bd=1)
+            num_label.grid(row=row, column=0, sticky="ew", padx=1, pady=1)
+            
+            # Item description
+            item_label = tk.Label(table_frame, 
+                                 text=self.format_arabic_text(item),
+                                 font=self.fonts['body'],
+                                 fg=self.premium_colors['text_light'],
+                                 bg=self.premium_colors['surface'],
+                                 relief=tk.SUNKEN, bd=1, anchor="e")
+            item_label.grid(row=row, column=1, sticky="ew", padx=1, pady=1)
+            
+            # Checkbox
+            var = tk.BooleanVar()
+            check = tk.Checkbutton(table_frame, variable=var,
+                                 bg=self.premium_colors['surface'],
+                                 fg=self.premium_colors['text_light'],
+                                 selectcolor=self.premium_colors['background'])
+            check.grid(row=row, column=2, padx=1, pady=1)
+            
+            # Notes
+            notes_entry = tk.Entry(table_frame, font=self.fonts['body'],
+                                 bg=self.premium_colors['background'],
+                                 fg=self.premium_colors['text_light'],
+                                 insertbackground=self.premium_colors['accent'])
+            notes_entry.grid(row=row, column=3, sticky="ew", padx=1, pady=1)
+            
+            self.qf_10_02_07_03_entries['follow_up_items'][item] = {
+                'checked': var,
+                'notes': notes_entry
+            }
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_effectiveness_assessment_07_03(self, parent):
+        """Create effectiveness assessment for QF-10-02-07-03"""
+        assessment_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        assessment_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Assessment questions
+        questions = [
+            ("مساهمة الإجراء في تقليل الاحتمالية أو شدة الخطر", "risk_reduction"),
+            ("ظهور مؤشرات خطر بعد التنفيذ", "risk_indicators"),
+            ("كفاية الإجراء الوقائي", "action_adequacy")
+        ]
+        
+        for question, key in questions:
+            question_frame = tk.Frame(assessment_frame, bg=self.premium_colors['surface'])
+            question_frame.pack(fill="x", pady=5)
+            
+            question_label = tk.Label(question_frame, 
+                                    text=self.format_arabic_text(question + ":"),
+                                    font=self.fonts['body'],
+                                    fg=self.premium_colors['text_light'],
+                                    bg=self.premium_colors['surface'])
+            question_label.pack(anchor="e")
+            
+            self.qf_10_02_07_03_entries[key] = tk.StringVar()
+            
+            options = ["نعم", "لا"] if key != "action_adequacy" else ["كافٍ", "يحتاج تعديل"]
+            
+            for option in options:
+                radio = tk.Radiobutton(question_frame, 
+                                      text=self.format_arabic_text(option),
+                                      variable=self.qf_10_02_07_03_entries[key],
+                                      value=option,
+                                      font=self.fonts['body'],
+                                      fg=self.premium_colors['text_light'],
+                                      bg=self.premium_colors['surface'],
+                                      selectcolor=self.premium_colors['background'])
+                radio.pack(anchor="e")
+        
+        # Additional notes section
+        notes_label = tk.Label(assessment_frame, 
+                             text=self.format_arabic_text("ملاحظات إضافية / توصيات مستقبلية:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", pady=(15, 5))
+        
+        self.qf_10_02_07_03_entries['additional_notes'] = scrolledtext.ScrolledText(assessment_frame, 
+                                                                                   height=3, 
+                                                                                   font=self.fonts['body'],
+                                                                                   bg=self.premium_colors['background'],
+                                                                                   fg=self.premium_colors['text_light'],
+                                                                                   insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_03_entries['additional_notes'].pack(fill="x", pady=5)
 
 if __name__ == "__main__":
     root = tk.Tk()
