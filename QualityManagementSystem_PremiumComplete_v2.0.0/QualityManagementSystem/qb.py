@@ -5348,9 +5348,43 @@ ________________________________________
         form_window.title(form_name)
         form_window.geometry("1000x700")
         form_window.configure(bg="#2D0A4D")
+        form_window.resizable(True, True)
+        
+        # Create main frame with scrolling capability
+        main_frame = tk.Frame(form_window, bg="#2D0A4D")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create canvas and scrollbar for scrolling
+        canvas = tk.Canvas(main_frame, bg="#2D0A4D", highlightthickness=0)
+        scrollbar = tk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg="#2D0A4D")
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
         
         # عنوان النموذج
-        title_frame = tk.Frame(form_window, bg="#4A1B8D", height=70)
+        title_frame = tk.Frame(scrollable_frame, bg="#4A1B8D", height=70)
         title_frame.pack(fill=tk.X)
         
         title_label = tk.Label(title_frame, 
@@ -5361,7 +5395,7 @@ ________________________________________
         title_label.pack(pady=20)
         
         # إطار النموذج
-        form_frame = tk.Frame(form_window, bg="#3C1361")
+        form_frame = tk.Frame(scrollable_frame, bg="#3C1361")
         form_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         # حقل تاريخ اليوم
@@ -23023,11 +23057,18 @@ ________________________________________
 
     def open_QF_10_01_01_form(self):
         """QF-10-01-01: سجل مكونات النظام الإداري - Complete implementation"""
-        self.clear_content()
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-01: سجل مكونات النظام الإداري")
+        form_window.geometry("1200x800")
+        form_window.configure(bg=self.premium_colors['background'])
+        
+        # Make window resizable and scrollable
+        form_window.resizable(True, True)
         
         # Create scrollable frame for the long form
-        canvas = tk.Canvas(self.content_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(self.content_frame, orient="vertical", command=canvas.yview)
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
         scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
         
         scrollable_frame.bind(
@@ -23037,6 +23078,19 @@ ________________________________________
         
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
@@ -23141,53 +23195,114 @@ ________________________________________
 
     def open_QF_10_01_02_form(self):
         """QF-10-01-02: تقرير مراجعة النظام الإداري"""
-        self.clear_content()
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-02: تقرير مراجعة النظام الإداري")
+        form_window.geometry("1000x700")
+        form_window.configure(bg=self.premium_colors['background'])
         
-        # Title
-        title_label = tk.Label(self.content_frame, text="QF-10-01-02: تقرير مراجعة النظام الإداري", 
-                             font=("Arial", 16, "bold"), bg="#f0f0f0")
-        title_label.pack(pady=10)
+        # Make window resizable
+        form_window.resizable(True, True)
         
-        # Form frame
-        form_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
+        # Create scrollable frame
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Title with premium styling
+        title_label = tk.Label(scrollable_frame, 
+                             text=self.format_arabic_text("QF-10-01-02: تقرير مراجعة النظام الإداري"), 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # Form frame with premium styling
+        form_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'], padx=20, pady=20)
         form_frame.pack(pady=10, padx=20, fill="both", expand=True)
         
-        # Form fields
+        # Form fields with premium styling
         entries = {}
         
         # Review Date
-        tk.Label(form_frame, text="تاريخ المراجعة:", font=("Arial", 12), bg="#f0f0f0").grid(row=0, column=1, sticky="e", padx=5, pady=5)
-        entries['review_date'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        tk.Label(form_frame, text=self.format_arabic_text("تاريخ المراجعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        entries['review_date'] = tk.Entry(form_frame, font=self.fonts['body'], width=30, 
+                                        bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['review_date'].grid(row=0, column=0, padx=5, pady=5)
         
         # Reviewer Name
-        tk.Label(form_frame, text="اسم المراجع:", font=("Arial", 12), bg="#f0f0f0").grid(row=1, column=1, sticky="e", padx=5, pady=5)
-        entries['reviewer_name'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        tk.Label(form_frame, text=self.format_arabic_text("اسم المراجع:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=1, column=1, sticky="e", padx=5, pady=5)
+        entries['reviewer_name'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                          bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['reviewer_name'].grid(row=1, column=0, padx=5, pady=5)
         
         # Review Scope
-        tk.Label(form_frame, text="نطاق المراجعة:", font=("Arial", 12), bg="#f0f0f0").grid(row=2, column=1, sticky="e", padx=5, pady=5)
-        entries['review_scope'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("نطاق المراجعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=2, column=1, sticky="e", padx=5, pady=5)
+        entries['review_scope'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                        bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['review_scope'].grid(row=2, column=0, padx=5, pady=5)
         
         # Findings
-        tk.Label(form_frame, text="النتائج:", font=("Arial", 12), bg="#f0f0f0").grid(row=3, column=1, sticky="e", padx=5, pady=5)
-        entries['findings'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=4)
+        tk.Label(form_frame, text=self.format_arabic_text("النتائج:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=3, column=1, sticky="e", padx=5, pady=5)
+        entries['findings'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=4,
+                                    bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['findings'].grid(row=3, column=0, padx=5, pady=5)
         
         # Strengths
-        tk.Label(form_frame, text="نقاط القوة:", font=("Arial", 12), bg="#f0f0f0").grid(row=4, column=1, sticky="e", padx=5, pady=5)
-        entries['strengths'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("نقاط القوة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=4, column=1, sticky="e", padx=5, pady=5)
+        entries['strengths'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                     bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['strengths'].grid(row=4, column=0, padx=5, pady=5)
         
         # Improvement Areas
-        tk.Label(form_frame, text="مجالات التحسين:", font=("Arial", 12), bg="#f0f0f0").grid(row=5, column=1, sticky="e", padx=5, pady=5)
-        entries['improvement_areas'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("مجالات التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=5, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_areas'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['improvement_areas'].grid(row=5, column=0, padx=5, pady=5)
         
         # Recommendations
-        tk.Label(form_frame, text="التوصيات:", font=("Arial", 12), bg="#f0f0f0").grid(row=6, column=1, sticky="e", padx=5, pady=5)
-        entries['recommendations'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=4)
+        tk.Label(form_frame, text=self.format_arabic_text("التوصيات:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=6, column=1, sticky="e", padx=5, pady=5)
+        entries['recommendations'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=4,
+                                           bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['recommendations'].grid(row=6, column=0, padx=5, pady=5)
         
         # Overall Assessment
@@ -23217,48 +23332,106 @@ ________________________________________
 
     def open_QF_10_01_03_form(self):
         """QF-10-01-03: سجل التحسين المستمر"""
-        self.clear_content()
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-03: سجل التحسين المستمر")
+        form_window.geometry("1000x700")
+        form_window.configure(bg=self.premium_colors['background'])
         
-        # Title
-        title_label = tk.Label(self.content_frame, text="QF-10-01-03: سجل التحسين المستمر", 
-                             font=("Arial", 16, "bold"), bg="#f0f0f0")
-        title_label.pack(pady=10)
+        # Make window resizable
+        form_window.resizable(True, True)
         
-        # Form frame
-        form_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
+        # Create scrollable frame
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Title with premium styling
+        title_label = tk.Label(scrollable_frame, 
+                             text=self.format_arabic_text("QF-10-01-03: سجل التحسين المستمر"), 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # Form frame with premium styling
+        form_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'], padx=20, pady=20)
         form_frame.pack(pady=10, padx=20, fill="both", expand=True)
         
-        # Form fields
+        # Form fields with premium styling
         entries = {}
         
         # Date
-        tk.Label(form_frame, text="التاريخ:", font=("Arial", 12), bg="#f0f0f0").grid(row=0, column=1, sticky="e", padx=5, pady=5)
-        entries['date'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        tk.Label(form_frame, text=self.format_arabic_text("التاريخ:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        entries['date'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                 bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['date'].grid(row=0, column=0, padx=5, pady=5)
         
         # Improvement ID
-        tk.Label(form_frame, text="رقم التحسين:", font=("Arial", 12), bg="#f0f0f0").grid(row=1, column=1, sticky="e", padx=5, pady=5)
-        entries['improvement_id'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        tk.Label(form_frame, text=self.format_arabic_text("رقم التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=1, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_id'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                           bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['improvement_id'].grid(row=1, column=0, padx=5, pady=5)
         
         # Area of Improvement
-        tk.Label(form_frame, text="مجال التحسين:", font=("Arial", 12), bg="#f0f0f0").grid(row=2, column=1, sticky="e", padx=5, pady=5)
-        entries['improvement_area'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        tk.Label(form_frame, text=self.format_arabic_text("مجال التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=2, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_area'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['improvement_area'].grid(row=2, column=0, padx=5, pady=5)
         
         # Current Situation
-        tk.Label(form_frame, text="الوضع الحالي:", font=("Arial", 12), bg="#f0f0f0").grid(row=3, column=1, sticky="e", padx=5, pady=5)
-        entries['current_situation'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("الوضع الحالي:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=3, column=1, sticky="e", padx=5, pady=5)
+        entries['current_situation'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['current_situation'].grid(row=3, column=0, padx=5, pady=5)
         
         # Proposed Improvement
-        tk.Label(form_frame, text="التحسين المقترح:", font=("Arial", 12), bg="#f0f0f0").grid(row=4, column=1, sticky="e", padx=5, pady=5)
-        entries['proposed_improvement'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("التحسين المقترح:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=4, column=1, sticky="e", padx=5, pady=5)
+        entries['proposed_improvement'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                                bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['proposed_improvement'].grid(row=4, column=0, padx=5, pady=5)
         
         # Expected Benefits
-        tk.Label(form_frame, text="الفوائد المتوقعة:", font=("Arial", 12), bg="#f0f0f0").grid(row=5, column=1, sticky="e", padx=5, pady=5)
-        entries['expected_benefits'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
+        tk.Label(form_frame, text=self.format_arabic_text("الفوائد المتوقعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=5, column=1, sticky="e", padx=5, pady=5)
+        entries['expected_benefits'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
         entries['expected_benefits'].grid(row=5, column=0, padx=5, pady=5)
         
         # Implementation Plan
