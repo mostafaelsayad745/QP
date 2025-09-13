@@ -24723,21 +24723,8 @@ ________________________________________
 
     def create_QF_10_01_01_form(self, parent_frame):
         """QF-10-01-01: سجل مكونات النظام الإداري - Form content for existing popup window"""
-        # Create scrollable frame for the long form
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary to store all entries
         self.qf_10_01_01_entries = {}
@@ -25087,21 +25074,8 @@ ________________________________________
 
     def create_QF_10_01_02_form(self, parent_frame):
         """QF-10-01-02: نموذج مراجعة النظام الإداري - Complete implementation"""
-        # Create scrollable frame for the comprehensive form
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary to store all entries
         self.qf_10_01_02_entries = {}
@@ -25808,21 +25782,8 @@ ________________________________________
 
     def create_QF_10_01_03_form(self, parent_frame):
         """QF-10-01-03: سجل التحسين المستمر - Complete implementation with current date"""
-        # Create scrollable frame for the comprehensive form
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary to store all entries
         self.qf_10_01_03_entries = {}
@@ -26328,21 +26289,8 @@ ________________________________________
     
     def create_QF_10_02_01_01_form(self, parent_frame):
         """QF-10-02-01-01: سجل وثائق نظام الإدارة"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_01_01_entries = {}
@@ -26476,21 +26424,8 @@ ________________________________________
 
     def create_QF_10_02_01_02_form(self, parent_frame):
         """QF-10-02-01-02: سجل مراجعة الوثائق"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_01_02_entries = {}
@@ -26592,21 +26527,8 @@ ________________________________________
 
     def create_QF_10_02_01_03_form(self, parent_frame):
         """QF-10-02-01-03: نموذج تحديث الوثائق"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_01_03_entries = {}
@@ -27180,21 +27102,8 @@ ________________________________________
     
     def create_QF_10_02_02_01_form(self, parent_frame):
         """QF-10-02-02-01: نموذج مراجعة الوثائق"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_02_01_entries = {}
@@ -27393,21 +27302,8 @@ ________________________________________
 
     def create_QF_10_02_02_02_form(self, parent_frame):
         """QF-10-02-02-02: نموذج توزيع الوثائق"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_02_02_entries = {}
@@ -27524,21 +27420,8 @@ ________________________________________
 
     def create_QF_10_02_02_03_form(self, parent_frame):
         """QF-10-02-02-03: نموذج حفظ الوثائق المؤرشفة"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_02_03_entries = {}
@@ -28001,21 +27884,8 @@ ________________________________________
     
     def create_QF_10_02_03_01_form(self, parent_frame):
         """QF-10-02-03-01: نموذج تحديد السجلات وحفظها"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_03_01_entries = {}
@@ -28107,21 +27977,8 @@ ________________________________________
 
     def create_QF_10_02_03_02_form(self, parent_frame):
         """QF-10-02-03-02: نموذج إجراء استرجاع السجلات"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_03_02_entries = {}
@@ -28251,21 +28108,8 @@ ________________________________________
 
     def create_QF_10_02_03_03_form(self, parent_frame):
         """QF-10-02-03-03: نموذج إجراءات التخلص من السجلات"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Form data dictionary
         self.qf_10_02_03_03_entries = {}
@@ -28749,18 +28593,8 @@ ________________________________________
     
     def create_QF_10_02_04_01_form(self, parent_frame):
         """QF-10-02-04-01: نموذج تقرير مراجعة الإدارة"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_04_01_entries = {}
@@ -28893,18 +28727,8 @@ ________________________________________
 
     def create_QF_10_02_04_02_form(self, parent_frame):
         """QF-10-02-04-02: نموذج قائمة التحقق للمراجعة السنوية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_04_02_entries = {}
@@ -29005,18 +28829,8 @@ ________________________________________
 
     def create_QF_10_02_04_03_form(self, parent_frame):
         """QF-10-02-04-03: نموذج تحليل التغذية الراجعة والشكاوى"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_04_03_entries = {}
@@ -29824,18 +29638,8 @@ ________________________________________
     
     def create_QF_10_02_05_01_form(self, parent_frame):
         """QF-10-02-05-01: نموذج خطة التدقيق الداخلي السنوي"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_05_01_entries = {}
@@ -29922,18 +29726,8 @@ ________________________________________
 
     def create_QF_10_02_05_02_form(self, parent_frame):
         """QF-10-02-05-02: نموذج تقرير التدقيق الداخلي"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_05_02_entries = {}
@@ -30139,18 +29933,8 @@ ________________________________________
 
     def create_QF_10_02_05_03_form(self, parent_frame):
         """QF-10-02-05-03: نموذج إجراءات تصحيحية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_05_03_entries = {}
@@ -30388,18 +30172,8 @@ ________________________________________
 
     def create_QF_10_02_05_04_form(self, parent_frame):
         """QF-10-02-05-04: نموذج متابعة الإجراءات التصحيحية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_05_04_entries = {}
@@ -31396,18 +31170,8 @@ ________________________________________
 
     def create_QF_10_02_06_02_form(self, parent_frame):
         """QF-10-02-06-02: تحليل السبب الجذري"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_06_02_entries = {}
@@ -31509,18 +31273,8 @@ ________________________________________
 
     def create_QF_10_02_06_03_form(self, parent_frame):
         """QF-10-02-06-03: إجراء تصحيحي"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_06_03_entries = {}
@@ -31720,18 +31474,8 @@ ________________________________________
 
     def create_QF_10_02_06_04_form(self, parent_frame):
         """QF-10-02-06-04: متابعة الإجراءات التصحيحية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_06_04_entries = {}
@@ -31813,18 +31557,8 @@ ________________________________________
     
     def create_QF_10_02_07_01_form(self, parent_frame):
         """QF-10-02-07-01: سجل المخاطر المحتملة"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_07_01_entries = {}
@@ -31932,18 +31666,8 @@ ________________________________________
 
     def create_QF_10_02_07_02_form(self, parent_frame):
         """QF-10-02-07-02: إجراءات وقائية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_07_02_entries = {}
@@ -32066,18 +31790,8 @@ ________________________________________
 
     def create_QF_10_02_07_03_form(self, parent_frame):
         """QF-10-02-07-03: متابعة التدابير الوقائية"""
-        # Create scrollable frame
-        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
-        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
-                                bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
-        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-        
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_07_03_entries = {}
