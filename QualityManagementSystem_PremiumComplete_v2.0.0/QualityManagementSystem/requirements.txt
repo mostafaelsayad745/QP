@@ -1,0 +1,29 @@
+# QB Academy Quality Management System v2.0 Requirements
+# Premium Arabic Enhancement Dependencies
+
+# Core GUI Framework (Usually included with Python)
+tkinter
+
+# Arabic Text Rendering - PREMIUM FEATURES
+arabic-reshaper>=3.0.0
+python-bidi>=0.4.2
+
+# Image Processing (Optional)
+Pillow>=9.0.0
+
+# PDF Generation (Optional) 
+reportlab>=3.6.0
+
+# Additional Libraries
+datetime
+sqlite3
+hashlib
+json
+os
+shutil
+
+# Installation Instructions:
+# pip install arabic-reshaper python-bidi Pillow reportlab
+
+# Note: tkinter, datetime, sqlite3, hashlib, json, os, shutil 
+# are part of Python standard library and don't need separate installation
