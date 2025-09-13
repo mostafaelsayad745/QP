@@ -6146,6 +6146,26 @@ ________________________________________
         elif "QF-10-02-01-03" in form_name or "نموذج تحديث الوثائق" in form_name:
             self.create_QF_10_02_01_03_form(form_frame)
             
+        # نماذج QP-10-02-02 - ضبط الوثائق
+        elif "QF-10-02-02-01" in form_name or "نموذج مراجعة الوثائق" in form_name:
+            self.create_QF_10_02_02_01_form(form_frame)
+            
+        elif "QF-10-02-02-02" in form_name or "نموذج توزيع الوثائق" in form_name:
+            self.create_QF_10_02_02_02_form(form_frame)
+            
+        elif "QF-10-02-02-03" in form_name or "نموذج حفظ الوثائق المؤرشفة" in form_name:
+            self.create_QF_10_02_02_03_form(form_frame)
+            
+        # نماذج QP-10-02-03 - ضبط السجلات
+        elif "QF-10-02-03-01" in form_name or "نموذج تحديد السجلات وحفظها" in form_name:
+            self.create_QF_10_02_03_01_form(form_frame)
+            
+        elif "QF-10-02-03-02" in form_name or "نموذج إجراء استرجاع السجلات" in form_name:
+            self.create_QF_10_02_03_02_form(form_frame)
+            
+        elif "QF-10-02-03-03" in form_name or "نموذج إجراءات التخلص من السجلات" in form_name:
+            self.create_QF_10_02_03_03_form(form_frame)
+            
         # نموذج افتراضي
         else:
             form_label = tk.Label(form_frame, 
@@ -26483,6 +26503,1575 @@ ________________________________________
         self.qf_10_02_01_03_entries[f'{field_name}_year'] = year_entry
         
         return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    # ==================== QF-10-02-02 Form Implementations ====================
+    
+    def create_QF_10_02_02_01_form(self, parent_frame):
+        """QF-10-02-02-01: نموذج مراجعة الوثائق"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_02_01_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-02-01: نموذج مراجعة الوثائق"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: معلومات الوثيقة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: معلومات الوثيقة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_01(section1_frame, "اسم الوثيقة:", "document_name")
+        
+        # Document type checkboxes
+        doc_type_frame = tk.Frame(section1_frame, bg=self.premium_colors['surface'])
+        doc_type_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        doc_type_label = tk.Label(doc_type_frame, 
+                                text=self.format_arabic_text("نوع الوثيقة:"),
+                                font=self.fonts['body'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        doc_type_label.pack(anchor="e", padx=5)
+        
+        doc_types = ["سياسة", "إجراء", "نموذج", "سجل", "دليل", "أخرى"]
+        for doc_type in doc_types:
+            doc_type_var = tk.BooleanVar()
+            cb = tk.Checkbutton(doc_type_frame, text=self.format_arabic_text(doc_type),
+                              variable=doc_type_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(side=tk.RIGHT, padx=5)
+            self.qf_10_02_02_01_entries[f'doc_type_{doc_type}'] = doc_type_var
+        
+        self.create_form_field_doc_02_02_01(section1_frame, "الرقم المرجعي للوثيقة:", "reference_number")
+        self.create_form_field_doc_02_02_01(section1_frame, "رقم الإصدار الحالي:", "current_version")
+        self.create_date_field_doc_02_02_01(section1_frame, "تاريخ الإصدار:", "issue_date")
+        self.create_form_field_doc_02_02_01(section1_frame, "القسم / الإدارة المالكة للوثيقة:", "owner_department")
+        
+        # ==================== ثانيًا: معلومات المراجعة ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: معلومات المراجعة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_date_field_doc_02_02_01(section2_frame, "تاريخ المراجعة:", "review_date")
+        
+        # Review reason checkboxes
+        review_reason_frame = tk.Frame(section2_frame, bg=self.premium_colors['surface'])
+        review_reason_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        review_reason_label = tk.Label(review_reason_frame, 
+                                     text=self.format_arabic_text("سبب المراجعة:"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['text_light'],
+                                     bg=self.premium_colors['surface'])
+        review_reason_label.pack(anchor="e", padx=5)
+        
+        review_reasons = ["مراجعة دورية", "ملاحظة تدقيق", "تحديث تشريعي", "تعديل داخلي", "أخرى"]
+        for reason in review_reasons:
+            reason_var = tk.BooleanVar()
+            cb = tk.Checkbutton(review_reason_frame, text=self.format_arabic_text(reason),
+                              variable=reason_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(side=tk.RIGHT, padx=5)
+            self.qf_10_02_02_01_entries[f'review_reason_{reason}'] = reason_var
+        
+        # ==================== ثالثًا: نتائج المراجعة ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: نتائج المراجعة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Document status after review
+        status_frame = tk.Frame(section3_frame, bg=self.premium_colors['surface'])
+        status_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        status_label = tk.Label(status_frame, 
+                              text=self.format_arabic_text("حالة الوثيقة بعد المراجعة:"),
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'])
+        status_label.pack(anchor="e", padx=5)
+        
+        statuses = ["لا حاجة إلى تعديل", "مطلوب تحديث", "إلغاء الوثيقة", "دمج الوثيقة مع وثيقة أخرى"]
+        for status in statuses:
+            status_var = tk.BooleanVar()
+            cb = tk.Checkbutton(status_frame, text=self.format_arabic_text(status),
+                              variable=status_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(anchor="e", padx=5, pady=2)
+            self.qf_10_02_02_01_entries[f'status_{status}'] = status_var
+        
+        # Reviewer notes
+        notes_frame = tk.Frame(section3_frame, bg=self.premium_colors['surface'])
+        notes_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        notes_label = tk.Label(notes_frame, 
+                             text=self.format_arabic_text("ملاحظات المراجع:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", padx=5)
+        
+        notes_text = tk.Text(notes_frame, height=4, width=60, font=self.fonts['body'],
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        notes_text.pack(fill=tk.X, padx=5, pady=5)
+        self.qf_10_02_02_01_entries['reviewer_notes'] = notes_text
+        
+        # ==================== رابعًا: التوصيات ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: التوصيات"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Recommendations checkboxes
+        recommendations = ["الإبقاء على الوثيقة كما هي", "إجراء تعديلات طفيفة", "إجراء تعديلات جوهرية", "إصدار جديد برقم وتاريخ جديد", "إلغاء الوثيقة"]
+        for rec in recommendations:
+            rec_var = tk.BooleanVar()
+            cb = tk.Checkbutton(section4_frame, text=self.format_arabic_text(rec),
+                              variable=rec_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(anchor="e", padx=15, pady=2)
+            self.qf_10_02_02_01_entries[f'recommendation_{rec}'] = rec_var
+        
+        # ==================== خامسًا: اعتماد المراجعة ====================
+        section5_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("خامسًا: اعتماد المراجعة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section5_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_01(section5_frame, "اسم المراجع:", "reviewer_name")
+        self.create_form_field_doc_02_02_01(section5_frame, "الوظيفة:", "reviewer_position")
+        self.create_form_field_doc_02_02_01(section5_frame, "التوقيع:", "reviewer_signature")
+        self.create_date_field_doc_02_02_01(section5_frame, "التاريخ:", "reviewer_date")
+        
+        self.create_form_field_doc_02_02_01(section5_frame, "اعتماد مسؤول التوثيق - الاسم:", "approver_name")
+        self.create_form_field_doc_02_02_01(section5_frame, "التوقيع:", "approver_signature")
+        self.create_date_field_doc_02_02_01(section5_frame, "التاريخ:", "approver_date")
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-02-01", self.qf_10_02_02_01_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    def create_QF_10_02_02_02_form(self, parent_frame):
+        """QF-10-02-02-02: نموذج توزيع الوثائق"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_02_02_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-02-02: نموذج توزيع الوثائق"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: معلومات الوثيقة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: معلومات الوثيقة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_02(section1_frame, "اسم الوثيقة:", "document_name")
+        
+        # Document type checkboxes
+        doc_type_frame = tk.Frame(section1_frame, bg=self.premium_colors['surface'])
+        doc_type_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        doc_type_label = tk.Label(doc_type_frame, 
+                                text=self.format_arabic_text("نوع الوثيقة:"),
+                                font=self.fonts['body'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        doc_type_label.pack(anchor="e", padx=5)
+        
+        doc_types = ["سياسة", "إجراء", "نموذج", "سجل", "دليل", "أخرى"]
+        for doc_type in doc_types:
+            doc_type_var = tk.BooleanVar()
+            cb = tk.Checkbutton(doc_type_frame, text=self.format_arabic_text(doc_type),
+                              variable=doc_type_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(side=tk.RIGHT, padx=5)
+            self.qf_10_02_02_02_entries[f'doc_type_{doc_type}'] = doc_type_var
+        
+        self.create_form_field_doc_02_02_02(section1_frame, "الرقم المرجعي:", "reference_number")
+        self.create_form_field_doc_02_02_02(section1_frame, "رقم الإصدار:", "version_number")
+        self.create_date_field_doc_02_02_02(section1_frame, "تاريخ الإصدار / التحديث:", "issue_date")
+        self.create_form_field_doc_02_02_02(section1_frame, "جهة الإصدار / القسم المسؤول:", "issuing_department")
+        
+        # ==================== ثانيًا: بيانات التوزيع ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: بيانات التوزيع"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Create distribution table
+        self.create_distribution_table_02_02_02(section2_frame)
+        
+        # ==================== ثالثًا: ملاحظات التوزيع ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: ملاحظات التوزيع"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        notes_text = tk.Text(section3_frame, height=4, width=60, font=self.fonts['body'],
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        notes_text.pack(fill=tk.X, padx=10, pady=10)
+        self.qf_10_02_02_02_entries['distribution_notes'] = notes_text
+        
+        # ==================== رابعًا: مسؤول التوزيع ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: مسؤول التوزيع"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_02(section4_frame, "الاسم:", "distributor_name")
+        self.create_form_field_doc_02_02_02(section4_frame, "الوظيفة:", "distributor_position")
+        self.create_form_field_doc_02_02_02(section4_frame, "التوقيع:", "distributor_signature")
+        self.create_date_field_doc_02_02_02(section4_frame, "التاريخ:", "distributor_date")
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-02-02", self.qf_10_02_02_02_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    def create_QF_10_02_02_03_form(self, parent_frame):
+        """QF-10-02-02-03: نموذج حفظ الوثائق المؤرشفة"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_02_03_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-02-03: نموذج حفظ الوثائق المؤرشفة"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: بيانات الوثيقة المؤرشفة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: بيانات الوثيقة المؤرشفة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_03(section1_frame, "اسم الوثيقة:", "document_name")
+        
+        # Document type checkboxes
+        doc_type_frame = tk.Frame(section1_frame, bg=self.premium_colors['surface'])
+        doc_type_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        doc_type_label = tk.Label(doc_type_frame, 
+                                text=self.format_arabic_text("نوع الوثيقة:"),
+                                font=self.fonts['body'],
+                                fg=self.premium_colors['text_light'],
+                                bg=self.premium_colors['surface'])
+        doc_type_label.pack(anchor="e", padx=5)
+        
+        doc_types = ["سياسة", "إجراء", "نموذج", "سجل", "تقرير", "دليل", "أخرى"]
+        for doc_type in doc_types:
+            doc_type_var = tk.BooleanVar()
+            cb = tk.Checkbutton(doc_type_frame, text=self.format_arabic_text(doc_type),
+                              variable=doc_type_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(side=tk.RIGHT, padx=5)
+            self.qf_10_02_02_03_entries[f'doc_type_{doc_type}'] = doc_type_var
+        
+        self.create_form_field_doc_02_02_03(section1_frame, "الرقم المرجعي:", "reference_number")
+        self.create_form_field_doc_02_02_03(section1_frame, "رقم الإصدار:", "version_number")
+        self.create_date_field_doc_02_02_03(section1_frame, "تاريخ الإصدار:", "issue_date")
+        self.create_date_field_doc_02_02_03(section1_frame, "تاريخ انتهاء الاستخدام الفعلي:", "end_date")
+        
+        # Archive reason checkboxes
+        archive_reason_frame = tk.Frame(section1_frame, bg=self.premium_colors['surface'])
+        archive_reason_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        archive_reason_label = tk.Label(archive_reason_frame, 
+                                      text=self.format_arabic_text("سبب الأرشفة:"),
+                                      font=self.fonts['body'],
+                                      fg=self.premium_colors['text_light'],
+                                      bg=self.premium_colors['surface'])
+        archive_reason_label.pack(anchor="e", padx=5)
+        
+        archive_reasons = ["إصدار أحدث", "انتهاء فترة الاستخدام", "إلغاء الوثيقة", "توجيه إداري", "أخرى"]
+        for reason in archive_reasons:
+            reason_var = tk.BooleanVar()
+            cb = tk.Checkbutton(archive_reason_frame, text=self.format_arabic_text(reason),
+                              variable=reason_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(side=tk.RIGHT, padx=5)
+            self.qf_10_02_02_03_entries[f'archive_reason_{reason}'] = reason_var
+        
+        # ==================== ثانيًا: معلومات الأرشفة ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: معلومات الأرشفة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Archive location checkboxes
+        archive_loc_frame = tk.Frame(section2_frame, bg=self.premium_colors['surface'])
+        archive_loc_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        archive_loc_label = tk.Label(archive_loc_frame, 
+                                   text=self.format_arabic_text("مكان الأرشفة:"),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'])
+        archive_loc_label.pack(anchor="e", padx=5)
+        
+        archive_paper_var = tk.BooleanVar()
+        archive_paper_cb = tk.Checkbutton(archive_loc_frame, text=self.format_arabic_text("أرشيف ورقي"),
+                                        variable=archive_paper_var,
+                                        font=self.fonts['body'],
+                                        fg=self.premium_colors['text_light'],
+                                        bg=self.premium_colors['surface'],
+                                        selectcolor=self.premium_colors['accent'])
+        archive_paper_cb.pack(side=tk.RIGHT, padx=5)
+        self.qf_10_02_02_03_entries['archive_paper'] = archive_paper_var
+        
+        archive_electronic_var = tk.BooleanVar()
+        archive_electronic_cb = tk.Checkbutton(archive_loc_frame, text=self.format_arabic_text("أرشيف إلكتروني"),
+                                              variable=archive_electronic_var,
+                                              font=self.fonts['body'],
+                                              fg=self.premium_colors['text_light'],
+                                              bg=self.premium_colors['surface'],
+                                              selectcolor=self.premium_colors['accent'])
+        archive_electronic_cb.pack(side=tk.RIGHT, padx=5)
+        self.qf_10_02_02_03_entries['archive_electronic'] = archive_electronic_var
+        
+        self.create_form_field_doc_02_02_03(section2_frame, "رمز / رقم الحفظ بالأرشيف:", "archive_code")
+        self.create_form_field_doc_02_02_03(section2_frame, "مدة الاحتفاظ (سنوات):", "retention_period")
+        
+        # ==================== ثالثًا: مسؤول الحفظ ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: مسؤول الحفظ"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_02_03(section3_frame, "الاسم:", "keeper_name")
+        self.create_form_field_doc_02_02_03(section3_frame, "القسم / الإدارة:", "keeper_department")
+        self.create_form_field_doc_02_02_03(section3_frame, "الوظيفة:", "keeper_position")
+        self.create_form_field_doc_02_02_03(section3_frame, "التوقيع:", "keeper_signature")
+        self.create_date_field_doc_02_02_03(section3_frame, "تاريخ الحفظ:", "keep_date")
+        
+        # ==================== رابعًا: ملاحظات إضافية ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: ملاحظات إضافية"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        notes_text = tk.Text(section4_frame, height=4, width=60, font=self.fonts['body'],
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        notes_text.pack(fill=tk.X, padx=10, pady=10)
+        self.qf_10_02_02_03_entries['additional_notes'] = notes_text
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-02-03", self.qf_10_02_02_03_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    # ==================== Helper Methods for QF-10-02-02 Forms ====================
+    
+    def create_form_field_doc_02_02_01(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-02-01 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_02_01_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_02_01(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-02-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_02_01_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_02_01_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_02_01_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    def create_form_field_doc_02_02_02(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-02-02 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_02_02_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_02_02(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-02-02"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_02_02_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_02_02_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_02_02_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    def create_distribution_table_02_02_02(self, parent):
+        """Create distribution table for QF-10-02-02-02"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        # Table headers
+        headers = ["م", "الإدارة / القسم المستلم", "اسم المستلم", "الوظيفة", "وسيلة التوزيع", "تاريخ التوزيع", "التوقيع"]
+        
+        # Create table using grid
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                  text=self.format_arabic_text(header),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['accent'],
+                                  bg=self.premium_colors['background'],
+                                  relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add empty rows for data entry
+        self.qf_10_02_02_02_entries['distribution_rows'] = []
+        for row in range(1, 6):  # 5 empty rows
+            row_data = {}
+            for col, field in enumerate(['number', 'department', 'receiver_name', 'position', 'distribution_method', 'date', 'signature']):
+                if field == 'number':
+                    cell = tk.Label(table_frame, text=str(row),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  relief=tk.SUNKEN, bd=1)
+                else:
+                    cell = tk.Entry(table_frame, font=self.fonts['body'], width=12,
+                                  bg=self.premium_colors['background'],
+                                  fg=self.premium_colors['text_light'],
+                                  insertbackground=self.premium_colors['accent'])
+                
+                cell.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+                row_data[field] = cell
+            
+            self.qf_10_02_02_02_entries['distribution_rows'].append(row_data)
+        
+        # Configure column weights
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_form_field_doc_02_02_03(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-02-03 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_02_03_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_02_03(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-02-03"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_02_03_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_02_03_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_02_03_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    # ==================== QF-10-02-03 Form Implementations ====================
+    
+    def create_QF_10_02_03_01_form(self, parent_frame):
+        """QF-10-02-03-01: نموذج تحديد السجلات وحفظها"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_03_01_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-03-01: نموذج تحديد السجلات وحفظها"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: معلومات عامة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: معلومات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_01(section1_frame, "اسم الجهة / المؤسسة:", "institution_name")
+        self.create_form_field_doc_02_03_01(section1_frame, "القسم / الإدارة:", "department")
+        self.create_form_field_doc_02_03_01(section1_frame, "مسؤول إعداد النموذج:", "form_preparer")
+        self.create_date_field_doc_02_03_01(section1_frame, "تاريخ الإعداد / التحديث:", "preparation_date")
+        
+        # ==================== ثانيًا: جدول تحديد السجلات ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: جدول تحديد السجلات"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Create records table
+        self.create_records_table_02_03_01(section2_frame)
+        
+        # ==================== ثالثًا: ملاحظات عامة ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: ملاحظات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        notes_text = tk.Text(section3_frame, height=4, width=60, font=self.fonts['body'],
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        notes_text.pack(fill=tk.X, padx=10, pady=10)
+        self.qf_10_02_03_01_entries['general_notes'] = notes_text
+        
+        # ==================== رابعًا: اعتماد المسؤول ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: اعتماد المسؤول"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_01(section4_frame, "الاسم:", "approver_name")
+        self.create_form_field_doc_02_03_01(section4_frame, "الوظيفة:", "approver_position")
+        self.create_form_field_doc_02_03_01(section4_frame, "التوقيع:", "approver_signature")
+        self.create_date_field_doc_02_03_01(section4_frame, "التاريخ:", "approval_date")
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-03-01", self.qf_10_02_03_01_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    def create_QF_10_02_03_02_form(self, parent_frame):
+        """QF-10-02-03-02: نموذج إجراء استرجاع السجلات"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_03_02_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-03-02: نموذج إجراء استرجاع السجلات"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: معلومات الطلب ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: معلومات الطلب"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_02(section1_frame, "رقم الطلب:", "request_number")
+        self.create_date_field_doc_02_03_02(section1_frame, "تاريخ الطلب:", "request_date")
+        self.create_form_field_doc_02_03_02(section1_frame, "اسم مقدم الطلب:", "requester_name")
+        self.create_form_field_doc_02_03_02(section1_frame, "الوظيفة / القسم:", "requester_position")
+        
+        # ==================== ثانيًا: تفاصيل السجلات المطلوبة ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: تفاصيل السجلات المطلوبة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_02(section2_frame, "اسم السجل / الوثيقة:", "record_name")
+        self.create_form_field_doc_02_03_02(section2_frame, "الرقم المرجعي:", "reference_number")
+        self.create_date_field_doc_02_03_02(section2_frame, "التاريخ / الفترة الزمنية:", "time_period")
+        self.create_form_field_doc_02_03_02(section2_frame, "الغرض من الاسترجاع:", "retrieval_purpose")
+        
+        # ==================== ثالثًا: معلومات الاسترجاع ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: معلومات الاسترجاع"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_date_field_doc_02_03_02(section3_frame, "تاريخ الاسترجاع:", "retrieval_date")
+        self.create_form_field_doc_02_03_02(section3_frame, "مكان حفظ السجل:", "storage_location")
+        
+        # Record status checkboxes
+        status_frame = tk.Frame(section3_frame, bg=self.premium_colors['surface'])
+        status_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        status_label = tk.Label(status_frame, 
+                              text=self.format_arabic_text("حالة السجل:"),
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'])
+        status_label.pack(anchor="e", padx=5)
+        
+        statuses = ["موجود وسليم", "موجود مع تلف جزئي", "غير موجود", "تم تدميره حسب السياسة"]
+        for status in statuses:
+            status_var = tk.BooleanVar()
+            cb = tk.Checkbutton(status_frame, text=self.format_arabic_text(status),
+                              variable=status_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(anchor="e", padx=15, pady=2)
+            self.qf_10_02_03_02_entries[f'status_{status}'] = status_var
+        
+        # Results notes
+        results_frame = tk.Frame(section3_frame, bg=self.premium_colors['surface'])
+        results_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        results_label = tk.Label(results_frame, 
+                               text=self.format_arabic_text("نتائج الاسترجاع:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        results_label.pack(anchor="e", padx=5)
+        
+        results_text = tk.Text(results_frame, height=4, width=60, font=self.fonts['body'],
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        results_text.pack(fill=tk.X, padx=5, pady=5)
+        self.qf_10_02_03_02_entries['retrieval_results'] = results_text
+        
+        # ==================== رابعًا: توقيع المسؤول ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: توقيع المسؤول"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_02(section4_frame, "اسم مسؤول الأرشيف:", "archive_manager_name")
+        self.create_form_field_doc_02_03_02(section4_frame, "التوقيع:", "manager_signature")
+        self.create_date_field_doc_02_03_02(section4_frame, "التاريخ:", "signature_date")
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-03-02", self.qf_10_02_03_02_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    def create_QF_10_02_03_03_form(self, parent_frame):
+        """QF-10-02-03-03: نموذج إجراءات التخلص من السجلات"""
+        # Create scrollable frame
+        canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary
+        self.qf_10_02_03_03_entries = {}
+        
+        # Header
+        header_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['accent'])
+        header_frame.pack(fill=tk.X, pady=(0, 20))
+        
+        title_text = "QF-10-02-03-03: نموذج إجراءات التخلص من السجلات"
+        title_label = tk.Label(header_frame, 
+                             text=self.format_arabic_text(title_text), 
+                             font=self.fonts['subtitle'],
+                             fg='white',
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(expand=True)
+        
+        # ==================== أولاً: معلومات عامة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولاً: معلومات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        self.create_form_field_doc_02_03_03(section1_frame, "رقم محضر التخلص:", "disposal_record_number")
+        self.create_date_field_doc_02_03_03(section1_frame, "تاريخ إعداد المحضر:", "record_date")
+        self.create_form_field_doc_02_03_03(section1_frame, "الجهة / المؤسسة:", "institution_name")
+        self.create_form_field_doc_02_03_03(section1_frame, "القسم المسؤول:", "responsible_department")
+        
+        # ==================== ثانيًا: تفاصيل السجلات المراد التخلص منها ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: تفاصيل السجلات المراد التخلص منها"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Create disposal records table
+        self.create_disposal_table_02_03_03(section2_frame)
+        
+        # ==================== ثالثًا: سبب التخلص ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: سبب التخلص"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Disposal reason checkboxes
+        disposal_reasons = ["انتهاء فترة الحفظ القانونية", "تلف السجلات", "توجيه إداري", "تطبيق سياسة الأرشفة", "أخرى"]
+        for reason in disposal_reasons:
+            reason_var = tk.BooleanVar()
+            cb = tk.Checkbutton(section3_frame, text=self.format_arabic_text(reason),
+                              variable=reason_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(anchor="e", padx=15, pady=2)
+            self.qf_10_02_03_03_entries[f'disposal_reason_{reason}'] = reason_var
+        
+        # Other reason text
+        other_reason_frame = tk.Frame(section3_frame, bg=self.premium_colors['surface'])
+        other_reason_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        other_reason_label = tk.Label(other_reason_frame, 
+                                    text=self.format_arabic_text("تفاصيل السبب الآخر:"),
+                                    font=self.fonts['body'],
+                                    fg=self.premium_colors['text_light'],
+                                    bg=self.premium_colors['surface'])
+        other_reason_label.pack(anchor="e", padx=5)
+        
+        other_reason_text = tk.Text(other_reason_frame, height=3, width=60, font=self.fonts['body'],
+                                  bg=self.premium_colors['background'],
+                                  fg=self.premium_colors['text_light'],
+                                  insertbackground=self.premium_colors['accent'])
+        other_reason_text.pack(fill=tk.X, padx=5, pady=5)
+        self.qf_10_02_03_03_entries['other_reason_details'] = other_reason_text
+        
+        # ==================== رابعًا: طريقة التخلص ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: طريقة التخلص"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Disposal method checkboxes
+        disposal_methods = ["تمزيق (للوثائق الورقية)", "حذف آمن (للملفات الإلكترونية)", "حرق", "إعادة تدوير", "أخرى"]
+        for method in disposal_methods:
+            method_var = tk.BooleanVar()
+            cb = tk.Checkbutton(section4_frame, text=self.format_arabic_text(method),
+                              variable=method_var,
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'],
+                              selectcolor=self.premium_colors['accent'])
+            cb.pack(anchor="e", padx=15, pady=2)
+            self.qf_10_02_03_03_entries[f'disposal_method_{method}'] = method_var
+        
+        self.create_date_field_doc_02_03_03(section4_frame, "تاريخ التخلص:", "disposal_date")
+        self.create_form_field_doc_02_03_03(section4_frame, "مكان التخلص:", "disposal_location")
+        
+        # ==================== خامسًا: لجنة الإشراف على التخلص ====================
+        section5_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("خامسًا: لجنة الإشراف على التخلص"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section5_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Committee members
+        for i in range(1, 4):  # 3 committee members
+            self.create_form_field_doc_02_03_03(section5_frame, f"اسم العضو {i}:", f"committee_member_{i}_name")
+            self.create_form_field_doc_02_03_03(section5_frame, f"الوظيفة:", f"committee_member_{i}_position")
+            self.create_form_field_doc_02_03_03(section5_frame, f"التوقيع:", f"committee_member_{i}_signature")
+            
+            # Add separator except after last member
+            if i < 3:
+                separator = tk.Frame(section5_frame, height=1, bg=self.premium_colors['accent'])
+                separator.pack(fill=tk.X, pady=5)
+        
+        self.create_date_field_doc_02_03_03(section5_frame, "تاريخ الإشراف:", "supervision_date")
+        
+        # Form buttons
+        self.create_enhanced_form_buttons(scrollable_frame, "QF-10-02-03-03", self.qf_10_02_03_03_entries)
+        
+        # Mouse wheel scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+
+    # ==================== Helper Methods for QF-10-02-03 Forms ====================
+    
+    def create_form_field_doc_02_03_01(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-03-01 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_03_01_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_03_01(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-03-01"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_03_01_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_03_01_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_03_01_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    def create_records_table_02_03_01(self, parent):
+        """Create records table for QF-10-02-03-01"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        # Table headers
+        headers = ["م", "اسم السجل", "الرقم المرجعي", "الجهة المسؤولة", "وسيلة الحفظ", "مكان الحفظ", "مدة الاحتفاظ", "طريقة الإتلاف", "ملاحظات"]
+        
+        # Create table using grid
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                  text=self.format_arabic_text(header),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['accent'],
+                                  bg=self.premium_colors['background'],
+                                  relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add empty rows for data entry
+        self.qf_10_02_03_01_entries['records_rows'] = []
+        for row in range(1, 6):  # 5 empty rows
+            row_data = {}
+            for col, field in enumerate(['number', 'record_name', 'reference_number', 'responsible_party', 'storage_method', 'storage_location', 'retention_period', 'disposal_method', 'notes']):
+                if field == 'number':
+                    cell = tk.Label(table_frame, text=str(row),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  relief=tk.SUNKEN, bd=1)
+                else:
+                    cell = tk.Entry(table_frame, font=self.fonts['body'], width=10,
+                                  bg=self.premium_colors['background'],
+                                  fg=self.premium_colors['text_light'],
+                                  insertbackground=self.premium_colors['accent'])
+                
+                cell.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+                row_data[field] = cell
+            
+            self.qf_10_02_03_01_entries['records_rows'].append(row_data)
+        
+        # Configure column weights
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
+
+    def create_form_field_doc_02_03_02(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-03-02 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_03_02_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_03_02(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-03-02"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_03_02_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_03_02_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_03_02_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    def create_form_field_doc_02_03_03(self, parent, label_text, field_name):
+        """Create a form field for QF-10-02-03-03 with premium styling"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        entry = tk.Entry(field_frame, font=self.fonts['body'], width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['accent'])
+        entry.pack(side=tk.RIGHT, padx=5, fill=tk.X, expand=True)
+        
+        self.qf_10_02_03_03_entries[field_name] = entry
+        return entry
+
+    def create_date_field_doc_02_03_03(self, parent, label_text, field_name):
+        """Create a date field for QF-10-02-03-03"""
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        label = tk.Label(field_frame, 
+                        text=self.format_arabic_text(label_text),
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        width=25, anchor="e")
+        label.pack(side=tk.RIGHT, padx=5)
+        
+        # Date entry fields
+        date_container = tk.Frame(field_frame, bg=self.premium_colors['surface'])
+        date_container.pack(side=tk.RIGHT, padx=5)
+        
+        # Year
+        year_label = tk.Label(date_container, text=self.format_arabic_text("السنة"),
+                            font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        year_label.pack(side=tk.RIGHT, padx=2)
+        
+        year_entry = tk.Entry(date_container, font=self.fonts['body'], width=6,
+                            bg=self.premium_colors['background'],
+                            fg=self.premium_colors['text_light'],
+                            insertbackground=self.premium_colors['accent'])
+        year_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Month
+        month_label = tk.Label(date_container, text=self.format_arabic_text("الشهر"),
+                             font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        month_label.pack(side=tk.RIGHT, padx=2)
+        
+        month_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                             bg=self.premium_colors['background'],
+                             fg=self.premium_colors['text_light'],
+                             insertbackground=self.premium_colors['accent'])
+        month_entry.pack(side=tk.RIGHT, padx=2)
+        
+        # Day
+        day_label = tk.Label(date_container, text=self.format_arabic_text("اليوم"),
+                           font=self.fonts['body'], fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'])
+        day_label.pack(side=tk.RIGHT, padx=2)
+        
+        day_entry = tk.Entry(date_container, font=self.fonts['body'], width=4,
+                           bg=self.premium_colors['background'],
+                           fg=self.premium_colors['text_light'],
+                           insertbackground=self.premium_colors['accent'])
+        day_entry.pack(side=tk.RIGHT, padx=2)
+        
+        self.qf_10_02_03_03_entries[f'{field_name}_day'] = day_entry
+        self.qf_10_02_03_03_entries[f'{field_name}_month'] = month_entry  
+        self.qf_10_02_03_03_entries[f'{field_name}_year'] = year_entry
+        
+        return {'day': day_entry, 'month': month_entry, 'year': year_entry}
+
+    def create_disposal_table_02_03_03(self, parent):
+        """Create disposal records table for QF-10-02-03-03"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        # Table headers
+        headers = ["م", "اسم السجل/الوثيقة", "الرقم المرجعي", "تاريخ الإنشاء", "مدة الحفظ", "تاريخ انتهاء الصلاحية", "الكمية", "ملاحظات"]
+        
+        # Create table using grid
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                  text=self.format_arabic_text(header),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['accent'],
+                                  bg=self.premium_colors['background'],
+                                  relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Add empty rows for data entry
+        self.qf_10_02_03_03_entries['disposal_rows'] = []
+        for row in range(1, 6):  # 5 empty rows
+            row_data = {}
+            for col, field in enumerate(['number', 'record_name', 'reference_number', 'creation_date', 'retention_period', 'expiry_date', 'quantity', 'notes']):
+                if field == 'number':
+                    cell = tk.Label(table_frame, text=str(row),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  relief=tk.SUNKEN, bd=1)
+                else:
+                    cell = tk.Entry(table_frame, font=self.fonts['body'], width=10,
+                                  bg=self.premium_colors['background'],
+                                  fg=self.premium_colors['text_light'],
+                                  insertbackground=self.premium_colors['accent'])
+                
+                cell.grid(row=row, column=col, sticky="ew", padx=1, pady=1)
+                row_data[field] = cell
+            
+            self.qf_10_02_03_03_entries['disposal_rows'].append(row_data)
+        
+        # Configure column weights
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
 
 
 if __name__ == "__main__":
