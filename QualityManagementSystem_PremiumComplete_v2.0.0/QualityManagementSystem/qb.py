@@ -32854,41 +32854,262 @@ ________________________________________
         if hasattr(self, 'qf_10_02_07_03_entries'):
             self.qf_10_02_07_03_entries[field_name] = self.qf_10_02_07_01_entries.pop(field_name)
 
-    # Placeholder methods for complex components (these would need full implementation)
     def create_preventive_action_details_07_02(self, parent):
-        """Placeholder for preventive action details"""
-        placeholder = tk.Label(parent, text=self.format_arabic_text("تفاصيل الإجراء الوقائي - سيتم تنفيذه"),
-                              font=self.fonts['body'], fg=self.premium_colors['text_light'],
-                              bg=self.premium_colors['surface'])
-        placeholder.pack(pady=10)
+        """Create preventive action details section for QF-10-02-07-02"""
+        details_table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        details_table_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Table structure with labeled fields
+        fields = [
+            ("وصف الإجراء الوقائي المقترح", "action_description"),
+            ("الهدف من الإجراء", "action_objective"), 
+            ("الجهة المنفذة", "implementing_party"),
+            ("التاريخ المتوقع للتنفيذ", "expected_date"),
+            ("الموارد المطلوبة (إن وجدت)", "required_resources")
+        ]
+        
+        for i, (label, field_key) in enumerate(fields):
+            field_frame = tk.Frame(details_table_frame, bg=self.premium_colors['surface'])
+            field_frame.pack(fill="x", padx=5, pady=5)
+            
+            label_widget = tk.Label(field_frame, 
+                                   text=self.format_arabic_text(label + ":"),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['surface'],
+                                   width=30, anchor="e")
+            label_widget.pack(side="right")
+            
+            if field_key == "action_description":
+                # Use text area for description
+                entry = scrolledtext.ScrolledText(field_frame, height=3, 
+                                                font=self.fonts['body'],
+                                                bg=self.premium_colors['background'],
+                                                fg=self.premium_colors['text_light'],
+                                                insertbackground=self.premium_colors['accent'])
+            else:
+                entry = tk.Entry(field_frame, 
+                               font=self.fonts['body'],
+                               bg=self.premium_colors['background'],
+                               fg=self.premium_colors['text_light'],
+                               insertbackground=self.premium_colors['accent'])
+            
+            entry.pack(side="left", fill="x", expand=True, padx=(0, 10))
+            self.qf_10_02_07_02_entries[field_key] = entry
 
     def create_implementation_follow_up_07_02(self, parent):
-        """Placeholder for implementation follow-up"""
-        placeholder = tk.Label(parent, text=self.format_arabic_text("متابعة التنفيذ - سيتم تنفيذه"),
-                              font=self.fonts['body'], fg=self.premium_colors['text_light'],
-                              bg=self.premium_colors['surface'])
-        placeholder.pack(pady=10)
+        """Create implementation follow-up section for QF-10-02-07-02"""
+        follow_up_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        follow_up_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Follow-up checklist
+        follow_up_items = [
+            "تم تنفيذ الإجراء في الموعد المحدد",
+            "تم إشراك الأطراف المعنية", 
+            "تم توثيق الإجراءات",
+            "تم التحقق من فاعلية الإجراء"
+        ]
+        
+        self.qf_10_02_07_02_entries['follow_up_items'] = {}
+        
+        for item in follow_up_items:
+            item_frame = tk.Frame(follow_up_frame, bg=self.premium_colors['surface'])
+            item_frame.pack(fill="x", pady=2)
+            
+            var = tk.BooleanVar()
+            check = tk.Checkbutton(item_frame, 
+                                  text=self.format_arabic_text(item),
+                                  variable=var,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            check.pack(anchor="e")
+            
+            self.qf_10_02_07_02_entries['follow_up_items'][item] = var
 
     def create_post_assessment_07_02(self, parent):
-        """Placeholder for post assessment"""
-        placeholder = tk.Label(parent, text=self.format_arabic_text("التقييم اللاحق - سيتم تنفيذه"),
-                              font=self.fonts['body'], fg=self.premium_colors['text_light'],
-                              bg=self.premium_colors['surface'])
-        placeholder.pack(pady=10)
+        """Create post-assessment section for QF-10-02-07-02"""
+        assessment_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        assessment_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Risk reduction question
+        risk_label = tk.Label(assessment_frame, 
+                            text=self.format_arabic_text("هل تم تقليل احتمال وقوع الخطر؟"),
+                            font=self.fonts['body'],
+                            fg=self.premium_colors['text_light'],
+                            bg=self.premium_colors['surface'])
+        risk_label.pack(anchor="e")
+        
+        self.qf_10_02_07_02_entries['risk_reduced'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_07_02_entries['risk_reduced'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Additional actions question
+        additional_label = tk.Label(assessment_frame, 
+                                  text=self.format_arabic_text("هل يُوصى بإجراءات إضافية؟"),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'])
+        additional_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_07_02_entries['additional_actions'] = tk.StringVar()
+        
+        for option in ["نعم", "لا"]:
+            radio = tk.Radiobutton(assessment_frame, 
+                                  text=self.format_arabic_text(option),
+                                  variable=self.qf_10_02_07_02_entries['additional_actions'],
+                                  value=option,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['surface'],
+                                  selectcolor=self.premium_colors['background'])
+            radio.pack(anchor="e")
+        
+        # Notes and recommendations
+        notes_label = tk.Label(assessment_frame, 
+                             text=self.format_arabic_text("ملاحظات وتوصيات:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", pady=(10, 0))
+        
+        self.qf_10_02_07_02_entries['notes_recommendations'] = scrolledtext.ScrolledText(assessment_frame, 
+                                                                                          height=3, 
+                                                                                          font=self.fonts['body'],
+                                                                                          bg=self.premium_colors['background'],
+                                                                                          fg=self.premium_colors['text_light'],
+                                                                                          insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_02_entries['notes_recommendations'].pack(fill="x", pady=5)
 
     def create_implementation_follow_up_table_07_03(self, parent):
-        """Placeholder for implementation follow-up table"""
-        placeholder = tk.Label(parent, text=self.format_arabic_text("جدول متابعة التنفيذ - سيتم تنفيذه"),
-                              font=self.fonts['body'], fg=self.premium_colors['text_light'],
-                              bg=self.premium_colors['surface'])
-        placeholder.pack(pady=10)
+        """Create implementation follow-up table for QF-10-02-07-03"""
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        
+        follow_up_items = [
+            "تنفيذ الإجراء الوقائي كما هو مخطط",
+            "توثيق تنفيذ الإجراء",
+            "مشاركة الأطراف المعنية",
+            "فاعلية الإجراء في تقليل أو منع الخطر"
+        ]
+        
+        headers = ["م", "عنصر المتابعة", "تم التنفيذ؟", "الملاحظات"]
+        
+        for col, header in enumerate(headers):
+            header_label = tk.Label(table_frame, 
+                                   text=self.format_arabic_text(header),
+                                   font=self.fonts['body'],
+                                   fg=self.premium_colors['text_light'],
+                                   bg=self.premium_colors['primary'],
+                                   relief=tk.RAISED, bd=1)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        self.qf_10_02_07_03_entries['follow_up_items'] = {}
+        
+        for row, item in enumerate(follow_up_items, start=1):
+            # Number
+            num_label = tk.Label(table_frame, text=str(row),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'],
+                               relief=tk.SUNKEN, bd=1)
+            num_label.grid(row=row, column=0, sticky="ew", padx=1, pady=1)
+            
+            # Item description
+            item_label = tk.Label(table_frame, 
+                                 text=self.format_arabic_text(item),
+                                 font=self.fonts['body'],
+                                 fg=self.premium_colors['text_light'],
+                                 bg=self.premium_colors['surface'],
+                                 relief=tk.SUNKEN, bd=1, anchor="e")
+            item_label.grid(row=row, column=1, sticky="ew", padx=1, pady=1)
+            
+            # Checkbox
+            var = tk.BooleanVar()
+            check = tk.Checkbutton(table_frame, variable=var,
+                                 bg=self.premium_colors['surface'],
+                                 fg=self.premium_colors['text_light'],
+                                 selectcolor=self.premium_colors['background'])
+            check.grid(row=row, column=2, padx=1, pady=1)
+            
+            # Notes
+            notes_entry = tk.Entry(table_frame, font=self.fonts['body'],
+                                 bg=self.premium_colors['background'],
+                                 fg=self.premium_colors['text_light'],
+                                 insertbackground=self.premium_colors['accent'])
+            notes_entry.grid(row=row, column=3, sticky="ew", padx=1, pady=1)
+            
+            self.qf_10_02_07_03_entries['follow_up_items'][item] = {
+                'checked': var,
+                'notes': notes_entry
+            }
+        
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1)
 
     def create_effectiveness_assessment_07_03(self, parent):
-        """Placeholder for effectiveness assessment"""
-        placeholder = tk.Label(parent, text=self.format_arabic_text("تقييم الفاعلية - سيتم تنفيذه"),
-                              font=self.fonts['body'], fg=self.premium_colors['text_light'],
-                              bg=self.premium_colors['surface'])
-        placeholder.pack(pady=10)
+        """Create effectiveness assessment for QF-10-02-07-03"""
+        assessment_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        assessment_frame.pack(fill="x", padx=10, pady=10)
+        
+        # Assessment questions
+        questions = [
+            ("مساهمة الإجراء في تقليل الاحتمالية أو شدة الخطر", "risk_reduction"),
+            ("ظهور مؤشرات خطر بعد التنفيذ", "risk_indicators"),
+            ("كفاية الإجراء الوقائي", "action_adequacy")
+        ]
+        
+        for question, key in questions:
+            question_frame = tk.Frame(assessment_frame, bg=self.premium_colors['surface'])
+            question_frame.pack(fill="x", pady=5)
+            
+            question_label = tk.Label(question_frame, 
+                                    text=self.format_arabic_text(question + ":"),
+                                    font=self.fonts['body'],
+                                    fg=self.premium_colors['text_light'],
+                                    bg=self.premium_colors['surface'])
+            question_label.pack(anchor="e")
+            
+            self.qf_10_02_07_03_entries[key] = tk.StringVar()
+            
+            options = ["نعم", "لا"] if key != "action_adequacy" else ["كافٍ", "يحتاج تعديل"]
+            
+            for option in options:
+                radio = tk.Radiobutton(question_frame, 
+                                      text=self.format_arabic_text(option),
+                                      variable=self.qf_10_02_07_03_entries[key],
+                                      value=option,
+                                      font=self.fonts['body'],
+                                      fg=self.premium_colors['text_light'],
+                                      bg=self.premium_colors['surface'],
+                                      selectcolor=self.premium_colors['background'])
+                radio.pack(anchor="e")
+        
+        # Additional notes section
+        notes_label = tk.Label(assessment_frame, 
+                             text=self.format_arabic_text("ملاحظات إضافية / توصيات مستقبلية:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", pady=(15, 5))
+        
+        self.qf_10_02_07_03_entries['additional_notes'] = scrolledtext.ScrolledText(assessment_frame, 
+                                                                                   height=3, 
+                                                                                   font=self.fonts['body'],
+                                                                                   bg=self.premium_colors['background'],
+                                                                                   fg=self.premium_colors['text_light'],
+                                                                                   insertbackground=self.premium_colors['accent'])
+        self.qf_10_02_07_03_entries['additional_notes'].pack(fill="x", pady=5)
 
 if __name__ == "__main__":
     root = tk.Tk()
