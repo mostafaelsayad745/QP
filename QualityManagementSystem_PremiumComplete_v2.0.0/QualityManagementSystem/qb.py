@@ -31288,10 +31288,8 @@ ________________________________________
         for col in range(len(headers)):
             table_frame.grid_columnconfigure(col, weight=1)
 
-    # QP-10-02-06 Corrective Actions Forms
-    
-    def create_QF_10_02_06_01_form(self, parent_frame):
-        """QF-10-02-06-01: سجل حالات عدم المطابقة"""
+    def create_scrollable_form_frame(self, parent_frame):
+        """Create a standardized scrollable frame with proper layout and mouse wheel support"""
         # Create scrollable frame
         canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
         scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
@@ -31304,6 +31302,35 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Add mouse wheel support for better user experience
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        # Configure scrollable_frame to expand to full width - Fix for corner layout issue
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
+        return canvas, scrollbar, scrollable_frame
+
+    # QP-10-02-06 Corrective Actions Forms
+    
+    def create_QF_10_02_06_01_form(self, parent_frame):
+        """QF-10-02-06-01: سجل حالات عدم المطابقة"""
+        # Create standardized scrollable frame with improved layout
+        canvas, scrollbar, scrollable_frame = self.create_scrollable_form_frame(parent_frame)
         
         # Initialize entries dictionary
         self.qf_10_02_06_01_entries = {}
