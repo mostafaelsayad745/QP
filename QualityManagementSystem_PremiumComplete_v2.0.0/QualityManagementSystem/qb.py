@@ -633,6 +633,11 @@ class QBApp:
         # If not found in mappings, return the original name
         return form_name
     
+    def clear_content(self):
+        """Clear all content from the main content frame"""
+        for widget in self.content_frame.winfo_children():
+            widget.destroy()
+    
     def show_welcome_screen(self):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
@@ -7428,6 +7433,291 @@ ________________________________________
         pdf_btn.pack(side=tk.RIGHT, padx=5)
         
         return btn_frame
+    
+    def create_form_field(self, parent, label_text, field_name, row):
+        """Create a form field with premium styling"""
+        # Create frame for each field
+        field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        
+        # Label
+        formatted_label = self.format_arabic_text(label_text)
+        label = tk.Label(field_frame, 
+                        text=formatted_label,
+                        font=self.fonts['body'],
+                        fg=self.premium_colors['text_light'],
+                        bg=self.premium_colors['surface'],
+                        anchor="e")
+        label.pack(side=tk.RIGHT, padx=(0, 10))
+        
+        # Entry field
+        entry = tk.Entry(field_frame, 
+                        font=self.fonts['body'],
+                        width=40,
+                        bg=self.premium_colors['background'],
+                        fg=self.premium_colors['text_light'],
+                        insertbackground=self.premium_colors['text_light'])
+        entry.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(0, 10))
+        
+        # Store in entries dictionary
+        self.qf_10_01_01_entries[field_name] = entry
+        
+        return entry
+    
+    def create_components_table(self, parent):
+        """Create the components details table as specified in the form"""
+        # Table frame
+        table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
+        table_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        # Table headers in Arabic (RTL)
+        headers = [
+            "م", "نوع المكون", "الاسم / العنوان", "الكود المرجعي", 
+            "تاريخ الإصدار", "تاريخ آخر تعديل", "الحالة (فعال/ملغى/محدث)", "ملاحظات"
+        ]
+        
+        # Create header row
+        for col, header in enumerate(headers):
+            formatted_header = self.format_arabic_text(header)
+            header_label = tk.Label(table_frame,
+                                  text=formatted_header,
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['accent'],
+                                  relief=tk.RAISED,
+                                  bd=1,
+                                  padx=5, pady=5)
+            header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
+        
+        # Configure grid weights for proper column sizing
+        for col in range(len(headers)):
+            table_frame.grid_columnconfigure(col, weight=1 if col > 0 else 0)
+        
+        # Default data rows as specified in the requirements
+        default_data = [
+            ["1", "سياسة", "سياسة الجودة العامة", "POL-01", "01/01/2023", "15/06/2024", "فعال", ""],
+            ["2", "إجراء", "إجراء تقييم الكفاءة", "PR-05-02", "10/02/2023", "01/04/2025", "محدث", "تحديث وفق التدقيق الداخلي"],
+            ["3", "نموذج", "نموذج طلب اعتماد", "QF-08-01-01", "05/03/2023", "-", "فعال", ""],
+            ["4", "سجل", "سجل نتائج التقييم", "QF-07-01-02", "15/04/2023", "-", "فعال", ""],
+            ["5", "وثيقة مرجعية", "ISO/IEC 17024:2012", "REF-01", "-", "-", "فعال", "مرجع دولي"]
+        ]
+        
+        # Store table entries for saving/loading
+        self.qf_10_01_01_entries['table_data'] = []
+        
+        # Create data rows
+        for row_idx, row_data in enumerate(default_data, start=1):
+            row_entries = []
+            for col_idx, cell_data in enumerate(row_data):
+                if col_idx == 0:  # Serial number - read only
+                    cell = tk.Label(table_frame,
+                                  text=self.format_arabic_text(cell_data),
+                                  font=self.fonts['body'],
+                                  fg=self.premium_colors['text_light'],
+                                  bg=self.premium_colors['secondary'],
+                                  relief=tk.RAISED,
+                                  bd=1,
+                                  padx=5, pady=2)
+                    cell.grid(row=row_idx, column=col_idx, sticky="ew", padx=1, pady=1)
+                    row_entries.append(cell_data)  # Store the value directly
+                else:
+                    cell = tk.Entry(table_frame,
+                                  font=self.fonts['body'],
+                                  bg=self.premium_colors['background'],
+                                  fg=self.premium_colors['text_light'],
+                                  insertbackground=self.premium_colors['text_light'],
+                                  relief=tk.FLAT,
+                                  bd=1)
+                    cell.insert(0, cell_data)
+                    cell.grid(row=row_idx, column=col_idx, sticky="ew", padx=1, pady=1)
+                    row_entries.append(cell)
+            
+            self.qf_10_01_01_entries['table_data'].append(row_entries)
+        
+        # Add button to add more rows
+        add_row_btn = tk.Button(table_frame,
+                              text=self.format_arabic_text("إضافة صف جديد"),
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['success'],
+                              command=lambda: self.add_table_row(table_frame))
+        add_row_btn.grid(row=len(default_data)+1, column=0, columnspan=len(headers), pady=10)
+    
+    def add_table_row(self, table_frame):
+        """Add a new row to the components table"""
+        current_rows = len(self.qf_10_01_01_entries['table_data'])
+        new_row_num = current_rows + 1
+        
+        # Create new row entries
+        row_entries = []
+        
+        # Serial number
+        serial_label = tk.Label(table_frame,
+                              text=str(new_row_num),
+                              font=self.fonts['body'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['secondary'],
+                              relief=tk.RAISED,
+                              bd=1,
+                              padx=5, pady=2)
+        serial_label.grid(row=new_row_num, column=0, sticky="ew", padx=1, pady=1)
+        row_entries.append(str(new_row_num))
+        
+        # Data columns
+        for col in range(1, 8):  # 7 data columns
+            cell = tk.Entry(table_frame,
+                          font=self.fonts['body'],
+                          bg=self.premium_colors['background'],
+                          fg=self.premium_colors['text_light'],
+                          insertbackground=self.premium_colors['text_light'],
+                          relief=tk.FLAT,
+                          bd=1)
+            cell.grid(row=new_row_num, column=col, sticky="ew", padx=1, pady=1)
+            row_entries.append(cell)
+        
+        # Add to entries list
+        self.qf_10_01_01_entries['table_data'].append(row_entries)
+        
+        # Update add button position
+        add_btn = table_frame.grid_slaves(row=current_rows+1, column=0)[0]
+        add_btn.grid(row=new_row_num+1, column=0, columnspan=8, pady=10)
+    
+    def save_form_data(self, form_name, entries):
+        """Save form data to database - Fixed method"""
+        try:
+            form_data = {}
+            
+            # Handle QF-10-01-01 form specially
+            if form_name == "QF-10-01-01" and hasattr(self, 'qf_10_01_01_entries'):
+                entries = self.qf_10_01_01_entries
+                
+                # Save simple fields
+                for field_name, widget in entries.items():
+                    if field_name == 'table_data':
+                        # Handle table data specially
+                        table_data = []
+                        for row in widget:
+                            row_data = []
+                            for cell in row:
+                                if isinstance(cell, tk.Entry):
+                                    row_data.append(cell.get())
+                                else:
+                                    row_data.append(str(cell))
+                            table_data.append(row_data)
+                        form_data[field_name] = table_data
+                    elif isinstance(widget, tk.Text):
+                        form_data[field_name] = widget.get("1.0", tk.END).strip()
+                    elif isinstance(widget, tk.Entry):
+                        form_data[field_name] = widget.get()
+                    else:
+                        form_data[field_name] = str(widget)
+            else:
+                # Handle other forms normally
+                for field_name, widget in entries.items():
+                    if isinstance(widget, tk.Text):
+                        form_data[field_name] = widget.get("1.0", tk.END).strip()
+                    elif isinstance(widget, tk.Entry):
+                        form_data[field_name] = widget.get()
+                    else:
+                        form_data[field_name] = str(widget)
+            
+            # Save to database
+            success = self.db_manager.save_form_data(
+                form_name=form_name,
+                data=form_data,
+                user_id=self.current_user['id'] if hasattr(self, 'current_user') else 1
+            )
+            
+            if success:
+                messagebox.showinfo("نجح الحفظ", f"تم حفظ النموذج {form_name} بنجاح")
+                self.status_var.set(f"تم حفظ {form_name} بنجاح")
+            else:
+                messagebox.showerror("خطأ في الحفظ", "فشل في حفظ البيانات")
+                
+        except Exception as e:
+            messagebox.showerror("خطأ", f"حدث خطأ أثناء حفظ البيانات:\n{str(e)}")
+    
+    def load_form_data(self, form_name, entries):
+        """Load form data from database - Fixed method"""
+        try:
+            # Load data from database
+            form_data = self.db_manager.load_form_data(form_name)
+            
+            if not form_data:
+                messagebox.showinfo("لا توجد بيانات", f"لا توجد بيانات محفوظة للنموذج {form_name}")
+                return
+            
+            # Handle QF-10-01-01 form specially
+            if form_name == "QF-10-01-01" and hasattr(self, 'qf_10_01_01_entries'):
+                entries = self.qf_10_01_01_entries
+                
+                for field_name, value in form_data.items():
+                    if field_name == 'table_data' and field_name in entries:
+                        # Handle table data specially
+                        table_data = entries[field_name]
+                        for row_idx, row_data in enumerate(value):
+                            if row_idx < len(table_data):
+                                row = table_data[row_idx]
+                                for col_idx, cell_value in enumerate(row_data):
+                                    if col_idx > 0 and col_idx < len(row):  # Skip serial number
+                                        cell = row[col_idx]
+                                        if isinstance(cell, tk.Entry):
+                                            cell.delete(0, tk.END)
+                                            cell.insert(0, str(cell_value))
+                    elif field_name in entries:
+                        widget = entries[field_name]
+                        if isinstance(widget, tk.Text):
+                            widget.delete("1.0", tk.END)
+                            widget.insert("1.0", str(value))
+                        elif isinstance(widget, tk.Entry):
+                            widget.delete(0, tk.END)
+                            widget.insert(0, str(value))
+            else:
+                # Handle other forms normally
+                for field_name, value in form_data.items():
+                    if field_name in entries:
+                        widget = entries[field_name]
+                        if isinstance(widget, tk.Text):
+                            widget.delete("1.0", tk.END)
+                            widget.insert("1.0", str(value))
+                        elif isinstance(widget, tk.Entry):
+                            widget.delete(0, tk.END)
+                            widget.insert(0, str(value))
+            
+            messagebox.showinfo("نجح التحميل", f"تم تحميل بيانات النموذج {form_name} بنجاح")
+            self.status_var.set(f"تم تحميل {form_name} بنجاح")
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"حدث خطأ أثناء تحميل البيانات:\n{str(e)}")
+    
+    def clear_form_data(self, entries):
+        """Clear all form data - Fixed method"""
+        try:
+            # Handle QF-10-01-01 form specially
+            if hasattr(self, 'qf_10_01_01_entries') and entries == self.qf_10_01_01_entries:
+                for field_name, widget in entries.items():
+                    if field_name == 'table_data':
+                        # Clear table data
+                        for row in widget:
+                            for cell in row:
+                                if isinstance(cell, tk.Entry):
+                                    cell.delete(0, tk.END)
+                    elif isinstance(widget, tk.Text):
+                        widget.delete("1.0", tk.END)
+                    elif isinstance(widget, tk.Entry):
+                        widget.delete(0, tk.END)
+            else:
+                # Handle other forms normally
+                for widget in entries.values():
+                    if isinstance(widget, tk.Text):
+                        widget.delete("1.0", tk.END)
+                    elif isinstance(widget, tk.Entry):
+                        widget.delete(0, tk.END)
+            
+            messagebox.showinfo("تم المسح", "تم مسح جميع البيانات من النموذج")
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"حدث خطأ أثناء مسح البيانات:\n{str(e)}")
 
         # حفظ البيانات
         self.forms[form_name]["البيانات"] = [data]
@@ -22732,79 +23022,121 @@ ________________________________________
 
 
     def open_QF_10_01_01_form(self):
-        """QF-10-01-01: سجل مكونات النظام الإداري"""
+        """QF-10-01-01: سجل مكونات النظام الإداري - Complete implementation"""
         self.clear_content()
         
-        # Title
-        title_label = tk.Label(self.content_frame, text="QF-10-01-01: سجل مكونات النظام الإداري", 
-                             font=("Arial", 16, "bold"), bg="#2D0A4D", fg="white")
-        title_label.pack(pady=10)
+        # Create scrollable frame for the long form
+        canvas = tk.Canvas(self.content_frame, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(self.content_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
         
-        # Form frame
-        form_frame = tk.Frame(self.content_frame, bg="#2D0A4D")
-        form_frame.pack(pady=10, padx=20, fill="both", expand=True)
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
         
-        # Form fields
-        entries = {}
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
         
-        # Date
-        tk.Label(form_frame, text="التاريخ:", font=("Arial", 12), bg="#f0f0f0").grid(row=0, column=1, sticky="e", padx=5, pady=5)
-        entries['date'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['date'].grid(row=0, column=0, padx=5, pady=5)
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
         
-        # System Component Name
-        tk.Label(form_frame, text="اسم مكون النظام:", font=("Arial", 12), bg="#f0f0f0").grid(row=1, column=1, sticky="e", padx=5, pady=5)
-        entries['component_name'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['component_name'].grid(row=1, column=0, padx=5, pady=5)
+        # Form data dictionary to store all entries
+        self.qf_10_01_01_entries = {}
         
-        # Component Type
-        tk.Label(form_frame, text="نوع المكون:", font=("Arial", 12), bg="#f0f0f0").grid(row=2, column=1, sticky="e", padx=5, pady=5)
-        entries['component_type'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['component_type'].grid(row=2, column=0, padx=5, pady=5)
+        # Title with premium styling
+        title_text = "QF-10-01-01: سجل مكونات النظام الإداري"
+        formatted_title = self.format_arabic_text(title_text)
+        title_label = tk.Label(scrollable_frame, 
+                             text=formatted_title, 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
         
-        # Component Description
-        tk.Label(form_frame, text="وصف المكون:", font=("Arial", 12), bg="#f0f0f0").grid(row=3, column=1, sticky="e", padx=5, pady=5)
-        entries['component_description'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=4)
-        entries['component_description'].grid(row=3, column=0, padx=5, pady=5)
+        # ==================== أولًا: معلومات عامة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولًا: معلومات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
         
-        # Responsibility
-        tk.Label(form_frame, text="الجهة المسؤولة:", font=("Arial", 12), bg="#f0f0f0").grid(row=4, column=1, sticky="e", padx=5, pady=5)
-        entries['responsibility'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['responsibility'].grid(row=4, column=0, padx=5, pady=5)
+        # General Information Fields
+        self.create_form_field(section1_frame, "اسم الجهة / المؤسسة:", "org_name", 0)
+        self.create_form_field(section1_frame, "الإدارة / القسم المسؤول:", "dept_responsible", 1)
+        self.create_form_field(section1_frame, "اسم مسؤول السجل:", "record_manager", 2)
+        self.create_form_field(section1_frame, "تاريخ آخر تحديث للسجل:", "last_update_date", 3)
         
-        # Implementation Status
-        tk.Label(form_frame, text="حالة التنفيذ:", font=("Arial", 12), bg="#f0f0f0").grid(row=5, column=1, sticky="e", padx=5, pady=5)
-        entries['implementation_status'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['implementation_status'].grid(row=5, column=0, padx=5, pady=5)
+        # ==================== ثانيًا: تفاصيل المكونات ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: تفاصيل المكونات"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
         
-        # Standards Applied
-        tk.Label(form_frame, text="المعايير المطبقة:", font=("Arial", 12), bg="#f0f0f0").grid(row=6, column=1, sticky="e", padx=5, pady=5)
-        entries['standards_applied'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
-        entries['standards_applied'].grid(row=6, column=0, padx=5, pady=5)
+        # Components table with default entries
+        self.create_components_table(section2_frame)
         
-        # Notes
-        tk.Label(form_frame, text="ملاحظات:", font=("Arial", 12), bg="#f0f0f0").grid(row=7, column=1, sticky="e", padx=5, pady=5)
-        entries['notes'] = tk.Text(form_frame, font=("Arial", 12), width=30, height=3)
-        entries['notes'].grid(row=7, column=0, padx=5, pady=5)
+        # ==================== ثالثًا: ملاحظات عامة ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: ملاحظات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
         
-        # Buttons frame
-        buttons_frame = tk.Frame(self.main_content, bg="#f0f0f0")
-        buttons_frame.pack(pady=20)
+        # General Notes text area
+        notes_label = tk.Label(section3_frame, 
+                             text=self.format_arabic_text("ملاحظات:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", padx=10, pady=(0, 5))
         
-        # Save button
-        save_btn = tk.Button(buttons_frame, text="حفظ", font=("Arial", 12), bg="#4CAF50", fg="white",
-                           command=lambda: self.save_form_data("QF_10_01_01", entries))
-        save_btn.pack(side=tk.RIGHT, padx=5)
+        self.qf_10_01_01_entries['general_notes'] = tk.Text(section3_frame, 
+                                                          font=self.fonts['body'],
+                                                          height=6, width=80,
+                                                          bg=self.premium_colors['background'],
+                                                          fg=self.premium_colors['text_light'],
+                                                          insertbackground=self.premium_colors['text_light'])
+        self.qf_10_01_01_entries['general_notes'].pack(fill=tk.X, padx=10, pady=(0, 10))
         
-        # Load button
-        load_btn = tk.Button(buttons_frame, text="تحميل", font=("Arial", 12), bg="#2196F3", fg="white",
-                           command=lambda: self.load_form_data("QF_10_01_01", entries))
-        load_btn.pack(side=tk.RIGHT, padx=5)
+        # ==================== رابعًا: اعتماد السجل ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: اعتماد السجل"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
         
-        # Clear button
-        clear_btn = tk.Button(buttons_frame, text="مسح", font=("Arial", 12), bg="#f44336", fg="white",
-                            command=lambda: self.clear_form_data(entries))
-        clear_btn.pack(side=tk.RIGHT, padx=5)
+        # Approval Fields
+        self.create_form_field(section4_frame, "اسم الشخص المعتمد:", "approver_name", 0)
+        self.create_form_field(section4_frame, "الوظيفة:", "approver_position", 1)
+        self.create_form_field(section4_frame, "التوقيع:", "signature", 2)
+        self.create_form_field(section4_frame, "التاريخ:", "approval_date", 3)
+        
+        # ==================== Action Buttons ====================
+        self.add_form_buttons(scrollable_frame, "QF-10-01-01", self.qf_10_01_01_entries)
+        
+        # Bind mouse wheel for scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
 
 
     def open_QF_10_01_02_form(self):
@@ -22812,12 +23144,12 @@ ________________________________________
         self.clear_content()
         
         # Title
-        title_label = tk.Label(self.main_content, text="QF-10-01-02: تقرير مراجعة النظام الإداري", 
+        title_label = tk.Label(self.content_frame, text="QF-10-01-02: تقرير مراجعة النظام الإداري", 
                              font=("Arial", 16, "bold"), bg="#f0f0f0")
         title_label.pack(pady=10)
         
         # Form frame
-        form_frame = tk.Frame(self.main_content, bg="#f0f0f0")
+        form_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
         form_frame.pack(pady=10, padx=20, fill="both", expand=True)
         
         # Form fields
@@ -22864,7 +23196,7 @@ ________________________________________
         entries['overall_assessment'].grid(row=7, column=0, padx=5, pady=5)
         
         # Buttons frame
-        buttons_frame = tk.Frame(self.main_content, bg="#f0f0f0")
+        buttons_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
         buttons_frame.pack(pady=20)
         
         # Save button
@@ -22888,12 +23220,12 @@ ________________________________________
         self.clear_content()
         
         # Title
-        title_label = tk.Label(self.main_content, text="QF-10-01-03: سجل التحسين المستمر", 
+        title_label = tk.Label(self.content_frame, text="QF-10-01-03: سجل التحسين المستمر", 
                              font=("Arial", 16, "bold"), bg="#f0f0f0")
         title_label.pack(pady=10)
         
         # Form frame
-        form_frame = tk.Frame(self.main_content, bg="#f0f0f0")
+        form_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
         form_frame.pack(pady=10, padx=20, fill="both", expand=True)
         
         # Form fields
@@ -22950,7 +23282,7 @@ ________________________________________
         entries['status'].grid(row=9, column=0, padx=5, pady=5)
         
         # Buttons frame
-        buttons_frame = tk.Frame(self.main_content, bg="#f0f0f0")
+        buttons_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
         buttons_frame.pack(pady=20)
         
         # Save button
