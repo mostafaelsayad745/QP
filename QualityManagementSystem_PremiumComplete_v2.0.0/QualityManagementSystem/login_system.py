@@ -20,12 +20,22 @@ class LoginSystem:
         """عرض نافذة تسجيل الدخول"""
         self.login_window = tk.Tk()
         self.login_window.title("تسجيل الدخول - QB Academy")
-        self.login_window.geometry("500x450")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = self.login_window.winfo_screenwidth()
+        screen_height = self.login_window.winfo_screenheight()
+        
+        # Calculate window size (smaller for login window)
+        width = min(500, int(screen_width * 0.4))
+        height = min(450, int(screen_height * 0.5))
+        
+        self.login_window.geometry(f"{width}x{height}")
         self.login_window.configure(bg="#2D0A4D")
-        self.login_window.resizable(False, False)
+        self.login_window.resizable(True, True)
+        self.login_window.minsize(400, 350)
         
         # توسيط النافذة
-        self.center_window(self.login_window, 500, 450)
+        self.center_window(self.login_window, width, height)
         
         # إطار الرئيسي
         main_frame = tk.Frame(self.login_window, bg="#3C1361", padx=30, pady=30)
@@ -208,8 +218,19 @@ class LoginSystem:
         
         user_window = tk.Toplevel(parent)
         user_window.title("إدارة المستخدمين")
-        user_window.geometry("700x500")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = user_window.winfo_screenwidth()
+        screen_height = user_window.winfo_screenheight()
+        
+        # Calculate window size
+        width = min(700, int(screen_width * 0.6))
+        height = min(500, int(screen_height * 0.6))
+        
+        user_window.geometry(f"{width}x{height}")
         user_window.configure(bg="#2D0A4D")
+        user_window.resizable(True, True)
+        user_window.minsize(500, 400)
         
         # عنوان النافذة
         title_label = tk.Label(user_window,
@@ -285,14 +306,24 @@ class LoginSystem:
         """نافذة إضافة مستخدم جديد"""
         new_user_window = tk.Toplevel(parent)
         new_user_window.title("إضافة مستخدم جديد")
-        new_user_window.geometry("500x600")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = new_user_window.winfo_screenwidth()
+        screen_height = new_user_window.winfo_screenheight()
+        
+        # Calculate window size
+        width = min(500, int(screen_width * 0.5))
+        height = min(600, int(screen_height * 0.7))
+        
+        new_user_window.geometry(f"{width}x{height}")
         new_user_window.configure(bg="#2D0A4D")
         new_user_window.resizable(True, True)
+        new_user_window.minsize(400, 500)
         new_user_window.grab_set()  # Make it modal
         new_user_window.transient(parent)  # Keep it on top of parent
         
         # توسيط النافذة
-        self.center_window(new_user_window, 500, 600)
+        self.center_window(new_user_window, width, height)
         
         # إطار رئيسي مع شريط تمرير
         main_frame = tk.Frame(new_user_window, bg="#2D0A4D")

@@ -55,11 +55,28 @@ class PremiumArabicApp:
     def setup_window(self):
         """Setup main window with premium styling"""
         self.root.title("QB Academy - نظام إدارة الجودة المحدث")
-        self.root.geometry("1400x900")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        
+        # Calculate optimal window size (85% of screen, with minimum and maximum limits)
+        min_width, min_height = 1000, 700
+        max_width, max_height = 1600, 1200
+        
+        width = max(min_width, min(max_width, int(screen_width * 0.85)))
+        height = max(min_height, min(max_height, int(screen_height * 0.85)))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        self.root.geometry(f"{width}x{height}+{x}+{y}")
         self.root.configure(bg='#1a1a2e')
         
-        # Center window
-        self.root.eval('tk::PlaceWindow . center')
+        # Make window resizable and responsive
+        self.root.minsize(min_width, min_height)
+        self.root.maxsize(max_width, max_height)
         
         # Modern window styling
         self.root.attributes('-alpha', 0.98)  # Slight transparency for modern look

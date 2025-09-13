@@ -93,7 +93,27 @@ class QBApp:
     def __init__(self, root):
         self.root = root
         self.root.title(APP_FULL_TITLE)
-        self.root.geometry("1300x850")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        
+        # Calculate optimal window size (85% of screen, with minimum and maximum limits)
+        min_width, min_height = 1000, 700
+        max_width, max_height = 1600, 1200
+        
+        width = max(min_width, min(max_width, int(screen_width * 0.85)))
+        height = max(min_height, min(max_height, int(screen_height * 0.85)))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        self.root.geometry(f"{width}x{height}+{x}+{y}")
+        
+        # Make window resizable and responsive
+        self.root.minsize(min_width, min_height)
+        self.root.maxsize(max_width, max_height)
         
         # Initialize Arabic renderer and premium styling
         self.arabic_renderer = ArabicTextRenderer()
@@ -5853,6 +5873,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
         # إضافة رأس الوثيقة للإجراءات الخاصة
         if "QP-10-02-01" in procedure_name:
             print("Adding document header for QP-10-02-01")
@@ -6159,9 +6186,20 @@ ________________________________________
         
         form_window = tk.Toplevel(self.root)
         form_window.title(form_name)
-        form_window.geometry("1000x700")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = form_window.winfo_screenwidth()
+        screen_height = form_window.winfo_screenheight()
+        
+        # Calculate optimal window size (75% of screen, with minimum limits)
+        min_width, min_height = 800, 600
+        width = max(min_width, int(screen_width * 0.75))
+        height = max(min_height, int(screen_height * 0.75))
+        
+        form_window.geometry(f"{width}x{height}")
         form_window.configure(bg="#2D0A4D")
         form_window.resizable(True, True)
+        form_window.minsize(min_width, min_height)
         
         # Create main frame with scrolling capability
         main_frame = tk.Frame(form_window, bg="#2D0A4D")
@@ -6195,6 +6233,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # عنوان النموذج
         title_frame = tk.Frame(scrollable_frame, bg="#4A1B8D", height=70)
@@ -6625,6 +6670,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
         # حقول النموذج
         fields = self.forms[form_name]["الحقول"]
         data = self.forms[form_name]["البيانات"][0] if self.forms[form_name]["البيانات"] else [""]*len(fields)
@@ -6800,6 +6852,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
         # حقول النموذج
         fields = self.forms[form_name]["الحقول"]
         data = self.forms[form_name]["البيانات"][0] if self.forms[form_name]["البيانات"] else [""]*len(fields)
@@ -6898,6 +6957,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # الحصول على بيانات النموذج
         form_data = self.forms[form_name]["البيانات"][0] if self.forms[form_name]["البيانات"] else None
@@ -7180,6 +7246,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
         # عرض المحتوى النصي للإقرار
         if form_name in self.forms and "المحتوى" in self.forms[form_name]:
             content_frame = tk.Frame(scrollable_frame, bg="#3C1361", padx=20, pady=20)
@@ -7461,6 +7534,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
         # حقول النموذج
         fields = self.forms[form_name]["الحقول"]
         data = self.forms[form_name]["البيانات"][0] if self.forms[form_name]["البيانات"] else [""]*len(fields)
@@ -7544,6 +7624,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # حقول النموذج
         fields = self.forms[form_name]["الحقول"]
@@ -7696,6 +7783,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # عنوان النموذج
         title_label = tk.Label(scrollable_frame, 
@@ -12427,6 +12521,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_evaluator_assessment_record_form(self, parent, form_name):
         """Create evaluator assessment record form for QF-08-01-02"""
@@ -12652,6 +12753,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_evaluator_accreditation_status_form(self, parent, form_name):
         """Create evaluator accreditation status form for QF-08-01-03"""
@@ -13057,6 +13165,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # QP-08.2 Form Creation Methods - اعتماد المراكز
     
@@ -13465,6 +13580,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_center_assessment_report_form(self, parent, form_name):
         """Create center assessment report form for QF-08-02-02"""
@@ -13913,6 +14035,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # QP-08.3 Form Creation Methods - تحديد الكفاءة
     
@@ -14358,6 +14487,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # QP-08.4 Form Creation Methods - متطلبات إضافية
     
@@ -14545,6 +14681,13 @@ ________________________________________
         # Pack canvas and scrollbar
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_evaluator_renewal_suspension_withdrawal_form(self, parent, form_name):
         """Create evaluator renewal/suspension/withdrawal record form for QF-08-01-03"""
@@ -14725,6 +14868,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_center_renewal_withdrawal_form(self, parent, form_name):
         """Create center renewal/withdrawal record form for QF-08-02-03"""
@@ -15156,6 +15306,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_competency_assessment_record_form(self, parent, form_name):
         """Create competency assessment record form for QF-08-03-02"""
@@ -15370,6 +15527,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_additional_requirements_review_form(self, parent, form_name):
         """Create additional requirements review form - QF-08-04-02"""
@@ -15539,6 +15703,13 @@ ________________________________________
         # Pack canvas and scrollbar
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # Save, Update, and Clear Methods for Section 8 Forms
     
@@ -16918,6 +17089,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_exam_results_record_form(self, parent, form_name):
         """Create exam results record form for QF-07-01-02 based on user specifications"""
@@ -17085,6 +17263,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_certification_decisions_record_form(self, parent, form_name):
         """Create certification decisions record form for QF-07-01-03 based on user specifications"""
@@ -17263,6 +17448,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_complaints_report_form(self, parent, form_name):
         """Create complaints report form for QF-07-01-04 based on user specifications"""
@@ -17512,6 +17704,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     def create_records_destruction_report_form(self, parent, form_name):
         """Create records destruction report form for QF-07-01-05 based on user specifications"""
         # إطار التمرير للنموذج
@@ -17743,6 +17942,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_program_information_form(self, parent, form_name):
         """Create program information form for QF-07-02-01 based on user specifications"""
@@ -17924,6 +18130,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_information_update_report_form(self, parent, form_name):
         """Create information update report form for QF-07-02-02 based on user specifications"""
@@ -18134,6 +18347,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_confidentiality_agreement_form(self, parent, form_name):
         """Create confidentiality agreement form for QF-07-03-01"""
@@ -18237,6 +18457,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_personal_data_review_report_form(self, parent, form_name):
         """Create personal data review report form for QF-07-03-02"""
@@ -18332,6 +18559,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_security_incident_report_form(self, parent, form_name):
         """Create security incident report form for QF-07-04-01"""
@@ -18468,6 +18702,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     def create_information_security_log_form(self, parent, form_name):
         """Create information security log form for QF-07-04-02"""
@@ -18579,6 +18820,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # Form handler methods for Section 7
     def save_exam_application(self, form_name, entries):
@@ -19753,6 +20001,13 @@ ________________________________________
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
     def create_applicant_commitment_agreement_form(self, parent, form_name):
         """Create QF-09-01-02: اتفاقية التزام المتقدم بالبرنامج"""
         # إطار التمرير
@@ -20004,6 +20259,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
 
     def save_commitment_agreement_complete(self, form_name, form_entries):
         """Save complete commitment agreement form data"""
@@ -20386,6 +20648,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
 
     def save_qualifications_assessment(self, form_name, form_data):
         """Save qualifications assessment form data"""
@@ -20784,6 +21053,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
 
     def save_experience_assessment(self, form_name, form_data):
         """Save experience assessment form data"""
@@ -21175,6 +21451,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
 
     def save_practical_assessment(self, form_name, form_data):
         """Save practical assessment form data"""
@@ -21522,6 +21805,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
 
     def save_assessment_results_record(self, form_name, form_data):
         """Save assessment results record form data"""
@@ -21746,6 +22036,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
     
     # Helper methods for QF-09-01 forms
     def save_program_application(self, form_name, personal_entries, program_entries, gender_var, study_var):
@@ -22227,6 +22524,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         return scrollable_frame
 
@@ -24814,8 +25118,31 @@ ________________________________________
         # Create popup window instead of clearing main content
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-01: سجل مكونات النظام الإداري")
-        form_window.geometry("1200x800")
+        # Get screen dimensions for responsive sizing
+
+        screen_width = form_window.winfo_screenwidth()
+
+        screen_height = form_window.winfo_screenheight()
+
+        
+
+        # Calculate optimal window size (80% of screen, with minimum limits)
+
+        min_width, min_height = 1000, 700
+
+        width = max(min_width, int(screen_width * 0.8))
+
+        height = max(min_height, int(screen_height * 0.8))
+
+        
+
+        form_window.geometry(f"{width}x{height}")
+
         form_window.configure(bg=self.premium_colors['background'])
+
+        form_window.resizable(True, True)
+
+        form_window.minsize(min_width, min_height)
         
         # Make window resizable and scrollable
         form_window.resizable(True, True)
@@ -24848,6 +25175,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # Form data dictionary to store all entries
         self.qf_10_01_01_entries = {}
@@ -24951,8 +25285,31 @@ ________________________________________
         # Create a new popup window instead of using main window
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-01: سجل مكونات النظام الإداري")
-        form_window.geometry("1200x800")
+        # Get screen dimensions for responsive sizing
+
+        screen_width = form_window.winfo_screenwidth()
+
+        screen_height = form_window.winfo_screenheight()
+
+        
+
+        # Calculate optimal window size (80% of screen, with minimum limits)
+
+        min_width, min_height = 1000, 700
+
+        width = max(min_width, int(screen_width * 0.8))
+
+        height = max(min_height, int(screen_height * 0.8))
+
+        
+
+        form_window.geometry(f"{width}x{height}")
+
         form_window.configure(bg=self.premium_colors['background'])
+
+        form_window.resizable(True, True)
+
+        form_window.minsize(min_width, min_height)
         
         # Create main content frame for the popup window
         content_frame = tk.Frame(form_window, bg=self.premium_colors['background'])
@@ -24973,6 +25330,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # Form data dictionary to store all entries
         self.qf_10_01_01_entries = {}
@@ -25615,8 +25979,31 @@ ________________________________________
         # Create a new popup window instead of using main window
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-02: تقرير مراجعة النظام الإداري")
-        form_window.geometry("1200x800")
+        # Get screen dimensions for responsive sizing
+
+        screen_width = form_window.winfo_screenwidth()
+
+        screen_height = form_window.winfo_screenheight()
+
+        
+
+        # Calculate optimal window size (80% of screen, with minimum limits)
+
+        min_width, min_height = 1000, 700
+
+        width = max(min_width, int(screen_width * 0.8))
+
+        height = max(min_height, int(screen_height * 0.8))
+
+        
+
+        form_window.geometry(f"{width}x{height}")
+
         form_window.configure(bg=self.premium_colors['background'])
+
+        form_window.resizable(True, True)
+
+        form_window.minsize(min_width, min_height)
         
         # Create main content frame for the popup window
         content_frame = tk.Frame(form_window, bg=self.premium_colors['background'])
@@ -25628,8 +26015,31 @@ ________________________________________
         # Create popup window instead of clearing main content
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-02: تقرير مراجعة النظام الإداري")
-        form_window.geometry("1000x700")
+        # Get screen dimensions for responsive sizing
+
+        screen_width = form_window.winfo_screenwidth()
+
+        screen_height = form_window.winfo_screenheight()
+
+        
+
+        # Calculate optimal window size (80% of screen, with minimum limits)
+
+        min_width, min_height = 1000, 700
+
+        width = max(min_width, int(screen_width * 0.8))
+
+        height = max(min_height, int(screen_height * 0.8))
+
+        
+
+        form_window.geometry(f"{width}x{height}")
+
         form_window.configure(bg=self.premium_colors['background'])
+
+        form_window.resizable(True, True)
+
+        form_window.minsize(min_width, min_height)
         
         # Make window resizable
         form_window.resizable(True, True)
@@ -25662,6 +26072,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # Title with premium styling
         title_label = tk.Label(scrollable_frame, 
@@ -25765,8 +26182,31 @@ ________________________________________
         # Create popup window instead of clearing main content
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-03: سجل التحسين المستمر")
-        form_window.geometry("1000x700")
+        # Get screen dimensions for responsive sizing
+
+        screen_width = form_window.winfo_screenwidth()
+
+        screen_height = form_window.winfo_screenheight()
+
+        
+
+        # Calculate optimal window size (80% of screen, with minimum limits)
+
+        min_width, min_height = 1000, 700
+
+        width = max(min_width, int(screen_width * 0.8))
+
+        height = max(min_height, int(screen_height * 0.8))
+
+        
+
+        form_window.geometry(f"{width}x{height}")
+
         form_window.configure(bg=self.premium_colors['background'])
+
+        form_window.resizable(True, True)
+
+        form_window.minsize(min_width, min_height)
         
         # Title
         title_label = tk.Label(self.content_frame, text="QF-10-01-03: سجل التحسين المستمر", 
@@ -25832,6 +26272,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # Title with premium styling
         title_label = tk.Label(scrollable_frame, 
@@ -31076,6 +31523,13 @@ ________________________________________
         
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
         
         # Add mouse wheel support for better user experience
         def _on_mousewheel(event):
