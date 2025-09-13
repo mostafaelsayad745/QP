@@ -8219,7 +8219,7 @@ ________________________________________
             raise Exception(f"Error generating PDF: {str(e)}")
 
     def create_enhanced_form_buttons(self, parent, form_name, entries):
-        """Create enhanced form buttons with full functionality as shown in the UI"""
+        """Create enhanced form buttons with full functionality for any form"""
         btn_frame = tk.Frame(parent, bg=self.premium_colors['background'])
         btn_frame.pack(fill=tk.X, padx=20, pady=20)
         
@@ -8230,7 +8230,7 @@ ________________________________________
                            fg="white",
                            bg="#4CAF50",
                            width=15, height=2,
-                           command=lambda: self.save_qf_10_01_01_form(entries))
+                           command=lambda: self.save_form_data_universal(form_name, entries))
         save_btn.pack(side=tk.LEFT, padx=5)
         
         # تصدير إلى PDF (Export to PDF) - Purple
@@ -8240,7 +8240,7 @@ ________________________________________
                            fg="white",
                            bg="#9C27B0",
                            width=15, height=2,
-                           command=lambda: self.export_qf_10_01_01_to_pdf(entries))
+                           command=lambda: self.export_form_to_pdf_universal(form_name, entries))
         pdf_btn.pack(side=tk.LEFT, padx=5)
         
         # حذف السجل (Delete Record) - Red
@@ -8250,7 +8250,7 @@ ________________________________________
                              fg="white",
                              bg="#F44336",
                              width=15, height=2,
-                             command=lambda: self.delete_qf_10_01_01_record())
+                             command=lambda: self.delete_form_record_universal(form_name))
         delete_btn.pack(side=tk.LEFT, padx=5)
         
         # تعديل السجل (Edit Record) - Dark
@@ -8260,7 +8260,7 @@ ________________________________________
                            fg="white",
                            bg="#424242",
                            width=15, height=2,
-                           command=lambda: self.edit_qf_10_01_01_record(entries))
+                           command=lambda: self.edit_form_record_universal(form_name, entries))
         edit_btn.pack(side=tk.LEFT, padx=5)
         
         # إضافة سجل جديد (Add New Record) - Purple
@@ -8270,12 +8270,251 @@ ________________________________________
                           fg="white",
                           bg="#673AB7",
                           width=15, height=2,
-                          command=lambda: self.add_new_qf_10_01_01_record())
+                          command=lambda: self.add_new_form_record_universal(form_name))
         add_btn.pack(side=tk.LEFT, padx=5)
         
         return btn_frame
+
+    # ==================== Universal Form Database Operations ====================
     
-    def save_qf_10_01_01_form(self, entries):
+    def save_form_data_universal(self, form_name, entries):
+        """Universal form data save method for any QF form"""
+        try:
+            # Create form data dictionary
+            form_data = {}
+            form_data['form_name'] = form_name
+            form_data['save_date'] = datetime.now().isoformat()
+            
+            # Extract data from entries based on widget type
+            for field_name, widget in entries.items():
+                try:
+                    if isinstance(widget, tk.Entry):
+                        form_data[field_name] = widget.get()
+                    elif isinstance(widget, tk.Text):
+                        form_data[field_name] = widget.get(1.0, tk.END).strip()
+                    elif isinstance(widget, tk.BooleanVar):
+                        form_data[field_name] = widget.get()
+                    elif isinstance(widget, list):  # For table data
+                        # Extract table data
+                        table_data = []
+                        for row in widget:
+                            row_data = {}
+                            for cell_name, cell_widget in row.items():
+                                if isinstance(cell_widget, tk.Entry):
+                                    row_data[cell_name] = cell_widget.get()
+                                elif isinstance(cell_widget, tk.Label):
+                                    row_data[cell_name] = cell_widget.cget('text')
+                            table_data.append(row_data)
+                        form_data[field_name] = table_data
+                    else:
+                        # Handle other widget types
+                        try:
+                            form_data[field_name] = str(widget.get())
+                        except:
+                            form_data[field_name] = str(widget)
+                except Exception as field_error:
+                    print(f"Error extracting field {field_name}: {field_error}")
+                    form_data[field_name] = ""
+            
+            # Set form ID
+            form_data['form_id'] = form_name
+            
+            # Save to database using existing database manager
+            success = self.db_manager.save_form_data(form_name, form_data)
+            
+            if success:
+                messagebox.showinfo("حفظ", f"تم حفظ {form_name} بنجاح")
+                self.log_activity(f"Form {form_name} saved successfully")
+            else:
+                messagebox.showerror("خطأ", f"فشل في حفظ {form_name}")
+            
+        except Exception as e:
+            error_msg = f"حدث خطأ أثناء حفظ {form_name}:\n{str(e)}"
+            messagebox.showerror("خطأ", error_msg)
+            print(f"Save error for {form_name}: {e}")
+
+    def export_form_to_pdf_universal(self, form_name, entries):
+        """Universal PDF export method for any QF form"""
+        try:
+            from tkinter import filedialog
+            
+            # Ask user for save location
+            filename = filedialog.asksaveasfilename(
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf")],
+                title=f"حفظ {form_name} كـ PDF"
+            )
+            
+            if filename:
+                # Create PDF document
+                doc = SimpleDocTemplate(filename, pagesize=A4, rightMargin=72, leftMargin=72,
+                                      topMargin=72, bottomMargin=18)
+                
+                # Create story content
+                story = []
+                
+                # Title
+                title_style = ParagraphStyle(
+                    'ArabicTitle',
+                    parent=getSampleStyleSheet()['Title'],
+                    alignment=TA_CENTER,
+                    fontSize=16,
+                    spaceAfter=30
+                )
+                
+                title = Paragraph(f"{form_name}", title_style)
+                story.append(title)
+                story.append(Spacer(1, 12))
+                
+                # Form data
+                data_style = ParagraphStyle(
+                    'ArabicData',
+                    parent=getSampleStyleSheet()['Normal'],
+                    alignment=TA_RIGHT,
+                    fontSize=12,
+                    spaceAfter=12
+                )
+                
+                # Add form fields
+                for field_name, widget in entries.items():
+                    try:
+                        if isinstance(widget, tk.Entry):
+                            value = widget.get()
+                            if value:
+                                text = f"{field_name}: {value}"
+                                para = Paragraph(text, data_style)
+                                story.append(para)
+                        elif isinstance(widget, tk.Text):
+                            value = widget.get(1.0, tk.END).strip()
+                            if value:
+                                text = f"{field_name}: {value}"
+                                para = Paragraph(text, data_style)
+                                story.append(para)
+                        elif isinstance(widget, tk.BooleanVar):
+                            value = "نعم" if widget.get() else "لا"
+                            text = f"{field_name}: {value}"
+                            para = Paragraph(text, data_style)
+                            story.append(para)
+                    except Exception as field_error:
+                        print(f"Error processing field {field_name} for PDF: {field_error}")
+                
+                # Build PDF
+                doc.build(story)
+                messagebox.showinfo("تصدير PDF", f"تم تصدير {form_name} إلى PDF بنجاح")
+                
+        except Exception as e:
+            error_msg = f"حدث خطأ أثناء تصدير {form_name} إلى PDF:\n{str(e)}"
+            messagebox.showerror("خطأ", error_msg)
+            print(f"PDF export error for {form_name}: {e}")
+
+    def delete_form_record_universal(self, form_name):
+        """Universal delete method for any QF form"""
+        try:
+            result = messagebox.askyesno("حذف السجل", 
+                                       f"هل أنت متأكد من حذف سجل {form_name}؟\nلا يمكن التراجع عن هذا الإجراء.")
+            
+            if result:
+                success = self.db_manager.delete_form_data(form_name)
+                if success:
+                    messagebox.showinfo("حذف", f"تم حذف سجل {form_name} بنجاح")
+                    self.log_activity(f"Form {form_name} record deleted")
+                else:
+                    messagebox.showerror("خطأ", f"فشل في حذف سجل {form_name}")
+                    
+        except Exception as e:
+            error_msg = f"حدث خطأ أثناء حذف سجل {form_name}:\n{str(e)}"
+            messagebox.showerror("خطأ", error_msg)
+            print(f"Delete error for {form_name}: {e}")
+
+    def edit_form_record_universal(self, form_name, entries):
+        """Universal edit method for any QF form"""
+        try:
+            # Load existing data from database
+            data = self.db_manager.load_form_data(form_name)
+            
+            if data:
+                # Populate form fields with existing data
+                for field_name, value in data.items():
+                    if field_name in entries:
+                        widget = entries[field_name]
+                        try:
+                            if isinstance(widget, tk.Entry):
+                                widget.delete(0, tk.END)
+                                widget.insert(0, str(value))
+                            elif isinstance(widget, tk.Text):
+                                widget.delete(1.0, tk.END)
+                                widget.insert(1.0, str(value))
+                            elif isinstance(widget, tk.BooleanVar):
+                                widget.set(bool(value))
+                        except Exception as field_error:
+                            print(f"Error populating field {field_name}: {field_error}")
+                
+                messagebox.showinfo("تعديل", f"تم تحميل بيانات {form_name} للتعديل")
+                self.log_activity(f"Form {form_name} loaded for editing")
+            else:
+                messagebox.showinfo("تعديل", f"لا توجد بيانات محفوظة لـ {form_name}")
+                
+        except Exception as e:
+            error_msg = f"حدث خطأ أثناء تحميل بيانات {form_name} للتعديل:\n{str(e)}"
+            messagebox.showerror("خطأ", error_msg)
+            print(f"Edit load error for {form_name}: {e}")
+
+    def add_new_form_record_universal(self, form_name):
+        """Universal add new record method for any QF form"""
+        try:
+            result = messagebox.askyesno("سجل جديد", 
+                                       f"هل تريد مسح {form_name} الحالي لإضافة سجل جديد؟")
+            
+            if result:
+                self.clear_form_universal(form_name)
+                messagebox.showinfo("سجل جديد", f"تم مسح {form_name}. يمكنك الآن إدخال بيانات جديدة")
+                self.log_activity(f"Form {form_name} cleared for new record")
+                
+        except Exception as e:
+            error_msg = f"حدث خطأ أثناء إضافة سجل جديد لـ {form_name}:\n{str(e)}"
+            messagebox.showerror("خطأ", error_msg)
+            print(f"Add new error for {form_name}: {e}")
+
+    def clear_form_universal(self, form_name):
+        """Universal form clearing method for any QF form"""
+        try:
+            # Get the appropriate entries dictionary based on form name
+            entries = None
+            if hasattr(self, f'{form_name.lower().replace("-", "_")}_entries'):
+                entries = getattr(self, f'{form_name.lower().replace("-", "_")}_entries')
+            
+            if entries:
+                for field_name, widget in entries.items():
+                    try:
+                        if isinstance(widget, tk.Entry):
+                            widget.delete(0, tk.END)
+                        elif isinstance(widget, tk.Text):
+                            widget.delete(1.0, tk.END)
+                        elif isinstance(widget, tk.BooleanVar):
+                            widget.set(False)
+                        elif isinstance(widget, list):  # For table data
+                            for row in widget:
+                                for cell_name, cell_widget in row.items():
+                                    if isinstance(cell_widget, tk.Entry):
+                                        cell_widget.delete(0, tk.END)
+                    except Exception as field_error:
+                        print(f"Error clearing field {field_name}: {field_error}")
+            else:
+                print(f"No entries dictionary found for {form_name}")
+                
+        except Exception as e:
+            print(f"Error clearing form {form_name}: {e}")
+
+    def log_activity(self, message):
+        """Log activity with timestamp"""
+        try:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{timestamp}] {message}")
+            # Could also log to file or database if needed
+        except Exception as e:
+            print(f"Error logging activity: {e}")
+
+    # ==================== QF-10-02-01 Form Implementations ====================
         """Save QF-10-01-01 form data to database"""
         try:
             # Collect form data
