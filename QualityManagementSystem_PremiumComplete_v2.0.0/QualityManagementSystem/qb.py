@@ -5683,9 +5683,43 @@ ________________________________________
         form_window.title(form_name)
         form_window.geometry("1000x700")
         form_window.configure(bg="#2D0A4D")
+        form_window.resizable(True, True)
+        
+        # Create main frame with scrolling capability
+        main_frame = tk.Frame(form_window, bg="#2D0A4D")
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Create canvas and scrollbar for scrolling
+        canvas = tk.Canvas(main_frame, bg="#2D0A4D", highlightthickness=0)
+        scrollbar = tk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg="#2D0A4D")
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
         
         # عنوان النموذج
-        title_frame = tk.Frame(form_window, bg="#4A1B8D", height=70)
+        title_frame = tk.Frame(scrollable_frame, bg="#4A1B8D", height=70)
         title_frame.pack(fill=tk.X)
         
         title_label = tk.Label(title_frame, 
@@ -5696,7 +5730,7 @@ ________________________________________
         title_label.pack(pady=20)
         
         # إطار النموذج
-        form_frame = tk.Frame(form_window, bg="#3C1361")
+        form_frame = tk.Frame(scrollable_frame, bg="#3C1361")
         form_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
         
         # حقل تاريخ اليوم
@@ -23904,6 +23938,7 @@ ________________________________________
         self.add_form_buttons(frame, entries, form_name)
 
 
+<<<<<<< HEAD
     def create_QF_10_01_01_form(self, parent_frame):
         """QF-10-01-01: سجل مكونات النظام الإداري - Form content for existing popup window"""
         # Create scrollable frame for the long form
@@ -24005,6 +24040,131 @@ ________________________________________
         
         # ==================== Action Buttons ====================
         self.create_enhanced_form_buttons(scrollable_frame, "QF-10-01-01", self.qf_10_01_01_entries)
+=======
+    def open_QF_10_01_01_form(self):
+        """QF-10-01-01: سجل مكونات النظام الإداري - Complete implementation"""
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-01: سجل مكونات النظام الإداري")
+        form_window.geometry("1200x800")
+        form_window.configure(bg=self.premium_colors['background'])
+        
+        # Make window resizable and scrollable
+        form_window.resizable(True, True)
+        
+        # Create scrollable frame for the long form
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Form data dictionary to store all entries
+        self.qf_10_01_01_entries = {}
+        
+        # Title with premium styling
+        title_text = "QF-10-01-01: سجل مكونات النظام الإداري"
+        formatted_title = self.format_arabic_text(title_text)
+        title_label = tk.Label(scrollable_frame, 
+                             text=formatted_title, 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # ==================== أولًا: معلومات عامة ====================
+        section1_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("أولًا: معلومات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section1_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # General Information Fields
+        self.create_form_field(section1_frame, "اسم الجهة / المؤسسة:", "org_name", 0)
+        self.create_form_field(section1_frame, "الإدارة / القسم المسؤول:", "dept_responsible", 1)
+        self.create_form_field(section1_frame, "اسم مسؤول السجل:", "record_manager", 2)
+        self.create_form_field(section1_frame, "تاريخ آخر تحديث للسجل:", "last_update_date", 3)
+        
+        # ==================== ثانيًا: تفاصيل المكونات ====================
+        section2_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثانيًا: تفاصيل المكونات"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section2_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Components table with default entries
+        self.create_components_table(section2_frame)
+        
+        # ==================== ثالثًا: ملاحظات عامة ====================
+        section3_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("ثالثًا: ملاحظات عامة"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section3_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # General Notes text area
+        notes_label = tk.Label(section3_frame, 
+                             text=self.format_arabic_text("ملاحظات:"),
+                             font=self.fonts['body'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['surface'])
+        notes_label.pack(anchor="e", padx=10, pady=(0, 5))
+        
+        self.qf_10_01_01_entries['general_notes'] = tk.Text(section3_frame, 
+                                                          font=self.fonts['body'],
+                                                          height=6, width=80,
+                                                          bg=self.premium_colors['background'],
+                                                          fg=self.premium_colors['text_light'],
+                                                          insertbackground=self.premium_colors['text_light'])
+        self.qf_10_01_01_entries['general_notes'].pack(fill=tk.X, padx=10, pady=(0, 10))
+        
+        # ==================== رابعًا: اعتماد السجل ====================
+        section4_frame = tk.LabelFrame(scrollable_frame, 
+                                     text=self.format_arabic_text("رابعًا: اعتماد السجل"),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['accent'],
+                                     bg=self.premium_colors['surface'],
+                                     padx=20, pady=15)
+        section4_frame.pack(fill=tk.X, padx=20, pady=(0, 15))
+        
+        # Approval Fields
+        self.create_form_field(section4_frame, "اسم الشخص المعتمد:", "approver_name", 0)
+        self.create_form_field(section4_frame, "الوظيفة:", "approver_position", 1)
+        self.create_form_field(section4_frame, "التوقيع:", "signature", 2)
+        self.create_form_field(section4_frame, "التاريخ:", "approval_date", 3)
+        
+        # ==================== Action Buttons ====================
+        self.add_form_buttons(scrollable_frame, "QF-10-01-01", self.qf_10_01_01_entries)
+>>>>>>> 2c59fbf54a4bbb246d60c25f2d503c28f1de1b90
         
         # Bind mouse wheel for scrolling
         def _on_mousewheel(event):
@@ -24697,6 +24857,7 @@ ________________________________________
                 row_frame.grid_columnconfigure(i, weight=1)
 
     def open_QF_10_01_02_form(self):
+<<<<<<< HEAD
         """QF-10-01-02: تقرير مراجعة النظام الإداري - Complete implementation"""
         # Create a new popup window instead of using main window
         form_window = tk.Toplevel(self.root)
@@ -24710,11 +24871,153 @@ ________________________________________
         
         # Call the comprehensive form creation function
         self.create_QF_10_01_02_form(content_frame)
+=======
+        """QF-10-01-02: تقرير مراجعة النظام الإداري"""
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-02: تقرير مراجعة النظام الإداري")
+        form_window.geometry("1000x700")
+        form_window.configure(bg=self.premium_colors['background'])
+        
+        # Make window resizable
+        form_window.resizable(True, True)
+        
+        # Create scrollable frame
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Title with premium styling
+        title_label = tk.Label(scrollable_frame, 
+                             text=self.format_arabic_text("QF-10-01-02: تقرير مراجعة النظام الإداري"), 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # Form frame with premium styling
+        form_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'], padx=20, pady=20)
+        form_frame.pack(pady=10, padx=20, fill="both", expand=True)
+        
+        # Form fields with premium styling
+        entries = {}
+        
+        # Review Date
+        tk.Label(form_frame, text=self.format_arabic_text("تاريخ المراجعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        entries['review_date'] = tk.Entry(form_frame, font=self.fonts['body'], width=30, 
+                                        bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['review_date'].grid(row=0, column=0, padx=5, pady=5)
+        
+        # Reviewer Name
+        tk.Label(form_frame, text=self.format_arabic_text("اسم المراجع:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=1, column=1, sticky="e", padx=5, pady=5)
+        entries['reviewer_name'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                          bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['reviewer_name'].grid(row=1, column=0, padx=5, pady=5)
+        
+        # Review Scope
+        tk.Label(form_frame, text=self.format_arabic_text("نطاق المراجعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=2, column=1, sticky="e", padx=5, pady=5)
+        entries['review_scope'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                        bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['review_scope'].grid(row=2, column=0, padx=5, pady=5)
+        
+        # Findings
+        tk.Label(form_frame, text=self.format_arabic_text("النتائج:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=3, column=1, sticky="e", padx=5, pady=5)
+        entries['findings'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=4,
+                                    bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['findings'].grid(row=3, column=0, padx=5, pady=5)
+        
+        # Strengths
+        tk.Label(form_frame, text=self.format_arabic_text("نقاط القوة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=4, column=1, sticky="e", padx=5, pady=5)
+        entries['strengths'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                     bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['strengths'].grid(row=4, column=0, padx=5, pady=5)
+        
+        # Improvement Areas
+        tk.Label(form_frame, text=self.format_arabic_text("مجالات التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=5, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_areas'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['improvement_areas'].grid(row=5, column=0, padx=5, pady=5)
+        
+        # Recommendations
+        tk.Label(form_frame, text=self.format_arabic_text("التوصيات:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=6, column=1, sticky="e", padx=5, pady=5)
+        entries['recommendations'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=4,
+                                           bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['recommendations'].grid(row=6, column=0, padx=5, pady=5)
+        
+        # Overall Assessment
+        tk.Label(form_frame, text="التقييم العام:", font=("Arial", 12), bg="#f0f0f0").grid(row=7, column=1, sticky="e", padx=5, pady=5)
+        entries['overall_assessment'] = tk.Entry(form_frame, font=("Arial", 12), width=30)
+        entries['overall_assessment'].grid(row=7, column=0, padx=5, pady=5)
+        
+        # Buttons frame
+        buttons_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
+        buttons_frame.pack(pady=20)
+        
+        # Save button
+        save_btn = tk.Button(buttons_frame, text="حفظ", font=("Arial", 12), bg="#4CAF50", fg="white",
+                           command=lambda: self.save_form_data("QF_10_01_02", entries))
+        save_btn.pack(side=tk.RIGHT, padx=5)
+        
+        # Load button
+        load_btn = tk.Button(buttons_frame, text="تحميل", font=("Arial", 12), bg="#2196F3", fg="white",
+                           command=lambda: self.load_form_data("QF_10_01_02", entries))
+        load_btn.pack(side=tk.RIGHT, padx=5)
+        
+        # Clear button
+        clear_btn = tk.Button(buttons_frame, text="مسح", font=("Arial", 12), bg="#f44336", fg="white",
+                            command=lambda: self.clear_form_data(entries))
+        clear_btn.pack(side=tk.RIGHT, padx=5)
+
+>>>>>>> 2c59fbf54a4bbb246d60c25f2d503c28f1de1b90
 
     def open_QF_10_01_03_form(self):
         """QF-10-01-03: سجل التحسين المستمر"""
-        self.clear_content()
+        # Create popup window instead of clearing main content
+        form_window = tk.Toplevel(self.root)
+        form_window.title("QF-10-01-03: سجل التحسين المستمر")
+        form_window.geometry("1000x700")
+        form_window.configure(bg=self.premium_colors['background'])
         
+<<<<<<< HEAD
         # Title
         title_label = tk.Label(self.content_frame, text="QF-10-01-03: سجل التحسين المستمر", 
                              font=("Arial", 16, "bold"), bg="#f0f0f0")
@@ -24761,6 +25064,103 @@ ________________________________________
                             bg=self.premium_colors['accent'],
                             padx=20, pady=10)
         date_label.pack(side=tk.RIGHT)
+=======
+        # Make window resizable
+        form_window.resizable(True, True)
+        
+        # Create scrollable frame
+        canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
+        scrollbar = tk.Scrollbar(form_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Add mouse wheel scrolling support
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        
+        def _bind_to_mousewheel(event):
+            canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        
+        def _unbind_from_mousewheel(event):
+            canvas.unbind_all("<MouseWheel>")
+        
+        canvas.bind('<Enter>', _bind_to_mousewheel)
+        canvas.bind('<Leave>', _unbind_from_mousewheel)
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Title with premium styling
+        title_label = tk.Label(scrollable_frame, 
+                             text=self.format_arabic_text("QF-10-01-03: سجل التحسين المستمر"), 
+                             font=self.fonts['subtitle'],
+                             fg=self.premium_colors['text_light'],
+                             bg=self.premium_colors['accent'],
+                             padx=20, pady=15)
+        title_label.pack(fill=tk.X, pady=(0, 20))
+        
+        # Form frame with premium styling
+        form_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'], padx=20, pady=20)
+        form_frame.pack(pady=10, padx=20, fill="both", expand=True)
+        
+        # Form fields with premium styling
+        entries = {}
+        
+        # Date
+        tk.Label(form_frame, text=self.format_arabic_text("التاريخ:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=0, column=1, sticky="e", padx=5, pady=5)
+        entries['date'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                 bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['date'].grid(row=0, column=0, padx=5, pady=5)
+        
+        # Improvement ID
+        tk.Label(form_frame, text=self.format_arabic_text("رقم التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=1, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_id'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                           bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['improvement_id'].grid(row=1, column=0, padx=5, pady=5)
+        
+        # Area of Improvement
+        tk.Label(form_frame, text=self.format_arabic_text("مجال التحسين:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=2, column=1, sticky="e", padx=5, pady=5)
+        entries['improvement_area'] = tk.Entry(form_frame, font=self.fonts['body'], width=30,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['improvement_area'].grid(row=2, column=0, padx=5, pady=5)
+        
+        # Current Situation
+        tk.Label(form_frame, text=self.format_arabic_text("الوضع الحالي:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=3, column=1, sticky="e", padx=5, pady=5)
+        entries['current_situation'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['current_situation'].grid(row=3, column=0, padx=5, pady=5)
+        
+        # Proposed Improvement
+        tk.Label(form_frame, text=self.format_arabic_text("التحسين المقترح:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=4, column=1, sticky="e", padx=5, pady=5)
+        entries['proposed_improvement'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                                bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['proposed_improvement'].grid(row=4, column=0, padx=5, pady=5)
+        
+        # Expected Benefits
+        tk.Label(form_frame, text=self.format_arabic_text("الفوائد المتوقعة:"), 
+                font=self.fonts['body'], fg=self.premium_colors['accent'], 
+                bg=self.premium_colors['surface']).grid(row=5, column=1, sticky="e", padx=5, pady=5)
+        entries['expected_benefits'] = tk.Text(form_frame, font=self.fonts['body'], width=30, height=3,
+                                             bg=self.premium_colors['background'], fg=self.premium_colors['text'])
+        entries['expected_benefits'].grid(row=5, column=0, padx=5, pady=5)
+>>>>>>> 2c59fbf54a4bbb246d60c25f2d503c28f1de1b90
         
         # Title
         title_text = "QF-10-01-03: سجل التحسين المستمر"
@@ -24790,12 +25190,18 @@ ________________________________________
         period_frame = tk.Frame(section1_frame, bg=self.premium_colors['surface'])
         period_frame.pack(fill=tk.X, padx=10, pady=5)
         
+<<<<<<< HEAD
         period_label = tk.Label(period_frame, 
                               text=self.format_arabic_text("الفترة الزمنية المغطاة:"),
                               font=self.fonts['body'],
                               fg=self.premium_colors['text_light'],
                               bg=self.premium_colors['surface'])
         period_label.pack(side=tk.RIGHT, padx=10)
+=======
+        # Buttons frame
+        buttons_frame = tk.Frame(self.content_frame, bg="#f0f0f0")
+        buttons_frame.pack(pady=20)
+>>>>>>> 2c59fbf54a4bbb246d60c25f2d503c28f1de1b90
         
         # From date
         from_label = tk.Label(period_frame, 
