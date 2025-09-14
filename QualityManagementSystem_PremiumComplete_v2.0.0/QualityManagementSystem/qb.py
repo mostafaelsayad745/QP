@@ -220,18 +220,20 @@ class QBApp:
                               bg=self.premium_colors['primary'])
         title_label.pack(pady=25)
         
-        # Premium Main Content
+        # Premium Main Content with optimized padding
         main_frame = tk.Frame(self.root, bg=self.premium_colors['background'])
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=30, pady=10)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=5)
         
-        # Premium Sidebar with enhanced styling
-        sidebar_container = tk.Frame(main_frame, bg=self.premium_colors['surface'], width=280)
-        sidebar_container.pack(side=tk.RIGHT, fill=tk.Y, padx=(20, 0))
-        sidebar_container.pack_propagate(False)  # Maintain fixed width
+        # Premium Sidebar with responsive width (15% of window width, min 250px, max 320px)
+        sidebar_width = max(250, min(320, int(width * 0.15)))
+        sidebar_container = tk.Frame(main_frame, bg=self.premium_colors['surface'], width=sidebar_width)
+        sidebar_container.pack(side=tk.RIGHT, fill=tk.Y, padx=(10, 0))
+        sidebar_container.pack_propagate(False)  # Maintain calculated width
         
-        # Create premium canvas and scrollbar for sidebar
+        # Create premium canvas and scrollbar for sidebar with responsive width
+        canvas_width = sidebar_width - 20  # Account for scrollbar and padding
         sidebar_canvas = tk.Canvas(sidebar_container, bg=self.premium_colors['surface'], 
-                                 highlightthickness=0, width=260)
+                                 highlightthickness=0, width=canvas_width)
         sidebar_scrollbar = tk.Scrollbar(sidebar_container, orient="vertical", command=sidebar_canvas.yview,
                                        bg=self.premium_colors['secondary'], 
                                        troughcolor=self.premium_colors['surface'], 
@@ -283,15 +285,15 @@ class QBApp:
                     if len(coords) >= 4:
                         total_height = float(coords[3])
                         
-                        # Show/hide top indicator
+                        # Show/hide top indicator with responsive width
                         if top > 5:  # Small threshold
-                            scroll_top_indicator.place(x=0, y=0, width=260, height=20)
+                            scroll_top_indicator.place(x=0, y=0, width=sidebar_canvas.winfo_width(), height=20)
                         else:
                             scroll_top_indicator.place_forget()
                         
-                        # Show/hide bottom indicator  
+                        # Show/hide bottom indicator with responsive width
                         if bottom < total_height - 5:  # Small threshold
-                            scroll_bottom_indicator.place(x=0, y=sidebar_container.winfo_height()-20, width=260, height=20)
+                            scroll_bottom_indicator.place(x=0, y=sidebar_container.winfo_height()-20, width=sidebar_canvas.winfo_width(), height=20)
                         else:
                             scroll_bottom_indicator.place_forget()
             except:
@@ -684,14 +686,14 @@ class QBApp:
         for widget in self.content_frame.winfo_children():
             widget.destroy()
             
-        # Premium welcome frame with card styling
+        # Premium welcome frame with optimized spacing
         welcome_frame = tk.Frame(self.content_frame, bg=self.premium_colors['background'])
-        welcome_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        welcome_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Welcome card
+        # Welcome card with better fill
         welcome_card = tk.Frame(welcome_frame, bg=self.premium_colors['surface'], 
                                relief=tk.RAISED, bd=2)
-        welcome_card.pack(expand=True, fill=tk.BOTH, padx=20, pady=20)
+        welcome_card.pack(expand=True, fill=tk.BOTH, padx=10, pady=10)
         
         # ترحيب شخصي with premium styling
         if self.current_user:
@@ -6201,9 +6203,9 @@ ________________________________________
         form_window.resizable(True, True)
         form_window.minsize(min_width, min_height)
         
-        # Create main frame with scrolling capability
+        # Create main frame with optimized spacing for better width utilization
         main_frame = tk.Frame(form_window, bg="#2D0A4D")
-        main_frame.pack(fill=tk.BOTH, expand=True)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
         
         # Create canvas and scrollbar for scrolling
         canvas = tk.Canvas(main_frame, bg="#2D0A4D", highlightthickness=0)
@@ -10418,8 +10420,24 @@ ________________________________________
         """عرض نافذة إدارة بيانات النماذج"""
         forms_window = tk.Toplevel(self.root)
         forms_window.title("إدارة بيانات النماذج")
-        forms_window.geometry("800x600")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = forms_window.winfo_screenwidth()
+        screen_height = forms_window.winfo_screenheight()
+        
+        # Calculate optimal window size (80% of screen, with minimum limits)
+        min_width, min_height = 900, 700
+        width = max(min_width, int(screen_width * 0.8))
+        height = max(min_height, int(screen_height * 0.8))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        forms_window.geometry(f"{width}x{height}+{x}+{y}")
         forms_window.configure(bg="#2D0A4D")
+        forms_window.resizable(True, True)
+        forms_window.minsize(min_width, min_height)
         
         # Title
         title_label = tk.Label(forms_window, 
@@ -10475,6 +10493,33 @@ ________________________________________
                                bg="#5A2A9C",
                                command=refresh_forms_list)
         refresh_btn.pack(side=tk.LEFT, padx=5)
+        
+        # View/Edit selected form button
+        view_edit_btn = tk.Button(btn_frame,
+                                 text="عرض/تعديل المحدد",
+                                 font=self.arabic_font_bold,
+                                 fg="white",
+                                 bg="#2196F3",
+                                 command=lambda: self.view_edit_selected_form(tree))
+        view_edit_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Delete selected form button
+        delete_btn = tk.Button(btn_frame,
+                              text="حذف المحدد",
+                              font=self.arabic_font_bold,
+                              fg="white",
+                              bg="#F44336",
+                              command=lambda: self.delete_selected_form(tree, refresh_forms_list))
+        delete_btn.pack(side=tk.LEFT, padx=5)
+        
+        # Export selected form to PDF button
+        export_single_btn = tk.Button(btn_frame,
+                                     text="تصدير المحدد إلى PDF",
+                                     font=self.arabic_font_bold,
+                                     fg="white",
+                                     bg="#9C27B0",
+                                     command=lambda: self.export_selected_form_to_pdf(tree))
+        export_single_btn.pack(side=tk.LEFT, padx=5)
         
         # Backup forms data button
         backup_btn = tk.Button(btn_frame,
@@ -33278,6 +33323,218 @@ ________________________________________
                                                                                    fg=self.premium_colors['text_light'],
                                                                                    insertbackground=self.premium_colors['accent'])
         self.qf_10_02_07_03_entries['additional_notes'].pack(fill="x", pady=5)
+
+    def view_edit_selected_form(self, tree):
+        """عرض وتعديل النموذج المحدد"""
+        selection = tree.selection()
+        if not selection:
+            messagebox.showwarning("تحذير", "يرجى اختيار نموذج من القائمة أولاً")
+            return
+        
+        item = tree.item(selection[0])
+        form_name = item['values'][0]
+        
+        # Create edit window
+        edit_window = tk.Toplevel(self.root)
+        edit_window.title(f"تعديل النموذج: {form_name}")
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = edit_window.winfo_screenwidth()
+        screen_height = edit_window.winfo_screenheight()
+        
+        # Calculate optimal window size (75% of screen, with minimum limits)
+        min_width, min_height = 800, 600
+        width = max(min_width, int(screen_width * 0.75))
+        height = max(min_height, int(screen_height * 0.75))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        edit_window.geometry(f"{width}x{height}+{x}+{y}")
+        edit_window.configure(bg="#2D0A4D")
+        edit_window.resizable(True, True)
+        edit_window.minsize(min_width, min_height)
+        
+        # Title
+        title_label = tk.Label(edit_window, 
+                              text=f"تعديل النموذج: {form_name}",
+                              font=("Arial", 16, "bold"),
+                              fg="#FFD700",
+                              bg="#2D0A4D")
+        title_label.pack(pady=10)
+        
+        # Main frame with scrolling
+        main_frame = tk.Frame(edit_window, bg="#2D0A4D")
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
+        
+        # Create canvas and scrollbar for scrolling
+        canvas = tk.Canvas(main_frame, bg="#2D0A4D", highlightthickness=0)
+        scrollbar = tk.Scrollbar(main_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg="#2D0A4D")
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Fix for form layout - ensure content expands to full width
+        def _configure_scroll_width(event):
+            if canvas.find_all():
+                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+        
+        canvas.bind('<Configure>', _configure_scroll_width)
+        
+        canvas.pack(side="left", fill="both", expand=True, padx=(0, 5))
+        scrollbar.pack(side="right", fill="y")
+        
+        # Load and display form data
+        try:
+            stored_forms = self.db_manager.get_all_forms_data()
+            if form_name in stored_forms:
+                form_data = stored_forms[form_name]['data']
+                
+                # Create form fields dynamically
+                entries = {}
+                
+                data_frame = tk.Frame(scrollable_frame, bg="#3C1361", relief=tk.RAISED, bd=2)
+                data_frame.pack(fill="x", padx=10, pady=10)
+                
+                data_label = tk.Label(data_frame,
+                                     text="بيانات النموذج:",
+                                     font=("Arial", 14, "bold"),
+                                     fg="#FFD700",
+                                     bg="#3C1361")
+                data_label.pack(pady=10)
+                
+                if isinstance(form_data, dict):
+                    for key, value in form_data.items():
+                        if key not in ['created_at', 'updated_at', 'form_name']:
+                            field_frame = tk.Frame(data_frame, bg="#3C1361")
+                            field_frame.pack(fill="x", padx=20, pady=5)
+                            
+                            label = tk.Label(field_frame,
+                                           text=f"{key}:",
+                                           font=self.arabic_font_bold,
+                                           fg="white",
+                                           bg="#3C1361",
+                                           anchor="e",
+                                           width=20)
+                            label.pack(side="right", padx=5)
+                            
+                            if isinstance(value, str) and len(value) > 100:
+                                # Use text widget for long text
+                                text_widget = tk.Text(field_frame,
+                                                    height=3,
+                                                    font=self.arabic_font,
+                                                    bg="white",
+                                                    fg="black",
+                                                    wrap=tk.WORD)
+                                text_widget.pack(fill="x", side="left", padx=5)
+                                text_widget.insert("1.0", str(value))
+                                entries[key] = text_widget
+                            else:
+                                # Use entry widget for short text
+                                entry = tk.Entry(field_frame,
+                                               font=self.arabic_font,
+                                               bg="white",
+                                               fg="black")
+                                entry.pack(fill="x", side="left", padx=5)
+                                entry.insert(0, str(value))
+                                entries[key] = entry
+                
+                # Buttons frame
+                btn_frame = tk.Frame(edit_window, bg="#2D0A4D")
+                btn_frame.pack(fill=tk.X, padx=20, pady=10)
+                
+                # Save changes button
+                def save_changes():
+                    try:
+                        updated_data = {}
+                        for key, widget in entries.items():
+                            if isinstance(widget, tk.Text):
+                                updated_data[key] = widget.get("1.0", tk.END).strip()
+                            else:
+                                updated_data[key] = widget.get()
+                        
+                        # Update in database
+                        self.db_manager.update_form_data(form_name, updated_data, self.current_user['id'])
+                        messagebox.showinfo("نجح", "تم حفظ التغييرات بنجاح")
+                        edit_window.destroy()
+                    except Exception as e:
+                        messagebox.showerror("خطأ", f"فشل في حفظ التغييرات: {str(e)}")
+                
+                save_btn = tk.Button(btn_frame,
+                                   text="حفظ التغييرات",
+                                   font=self.arabic_font_bold,
+                                   fg="white",
+                                   bg="#4CAF50",
+                                   command=save_changes)
+                save_btn.pack(side=tk.LEFT, padx=5)
+                
+                # Cancel button
+                cancel_btn = tk.Button(btn_frame,
+                                     text="إلغاء",
+                                     font=self.arabic_font_bold,
+                                     fg="white",
+                                     bg="#8B0000",
+                                     command=edit_window.destroy)
+                cancel_btn.pack(side=tk.RIGHT, padx=5)
+                
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+                edit_window.destroy()
+                
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تحميل بيانات النموذج: {str(e)}")
+            edit_window.destroy()
+
+    def delete_selected_form(self, tree, refresh_callback):
+        """حذف النموذج المحدد"""
+        selection = tree.selection()
+        if not selection:
+            messagebox.showwarning("تحذير", "يرجى اختيار نموذج من القائمة أولاً")
+            return
+        
+        item = tree.item(selection[0])
+        form_name = item['values'][0]
+        
+        # Confirm deletion
+        if messagebox.askyesno("تأكيد الحذف", f"هل أنت متأكد من حذف النموذج: {form_name}؟\nلا يمكن التراجع عن هذا الإجراء."):
+            try:
+                self.db_manager.delete_form_data(form_name, self.current_user['id'])
+                messagebox.showinfo("نجح", "تم حذف النموذج بنجاح")
+                refresh_callback()
+            except Exception as e:
+                messagebox.showerror("خطأ", f"فشل في حذف النموذج: {str(e)}")
+
+    def export_selected_form_to_pdf(self, tree):
+        """تصدير النموذج المحدد إلى PDF"""
+        selection = tree.selection()
+        if not selection:
+            messagebox.showwarning("تحذير", "يرجى اختيار نموذج من القائمة أولاً")
+            return
+        
+        item = tree.item(selection[0])
+        form_name = item['values'][0]
+        
+        try:
+            # Get form data
+            stored_forms = self.db_manager.get_all_forms_data()
+            if form_name in stored_forms:
+                form_data = stored_forms[form_name]['data']
+                
+                # Use existing PDF export functionality
+                self.export_to_pdf(form_name, form_data)
+                messagebox.showinfo("نجح", f"تم تصدير النموذج {form_name} إلى PDF بنجاح")
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+                
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تصدير النموذج: {str(e)}")
 
 if __name__ == "__main__":
     root = tk.Tk()
