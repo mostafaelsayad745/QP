@@ -8807,8 +8807,6 @@ ________________________________________
                            bd=0,
                            command=command)
             btn.grid(row=0, column=i, sticky="ew", padx=5, pady=5, ipadx=10)
-                          width=15, height=2,
-                          command=lambda: self.add_new_form_record_universal(form_name))
         add_btn.pack(side=tk.LEFT, padx=5)
         
         return btn_frame
