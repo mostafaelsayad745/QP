@@ -8748,56 +8748,36 @@ ________________________________________
             raise Exception(f"Error generating PDF: {str(e)}")
 
     def create_enhanced_form_buttons(self, parent, form_name, entries):
-        """Create enhanced form buttons with full functionality for any form"""
+        """Create enhanced form buttons with improved layout and responsiveness"""
         btn_frame = tk.Frame(parent, bg=self.premium_colors['background'])
-        btn_frame.pack(fill=tk.X, padx=20, pady=20)
+        btn_frame.pack(fill=tk.X, padx=25, pady=25)
         
-        # حفظ النموذج (Save Form) - Green
-        save_btn = tk.Button(btn_frame, 
-                           text=self.format_arabic_text("حفظ النموذج"),
+        # Create buttons with better layout - using grid for better control
+        buttons = [
+            ("حفظ النموذج", "#4CAF50", lambda: self.save_form_data_universal(form_name, entries)),
+            ("تصدير إلى PDF", "#9C27B0", lambda: self.export_form_to_pdf_universal(form_name, entries)),
+            ("حذف السجل", "#F44336", lambda: self.delete_form_record_universal(form_name)),
+            ("تعديل السجل", "#424242", lambda: self.edit_form_record_universal(form_name, entries)),
+            ("إضافة سجل جديد", "#673AB7", lambda: self.add_new_form_record_universal(form_name)),
+            ("مسح النموذج", "#FF9800", lambda: self.clear_form_universal(form_name))
+        ]
+        
+        # Configure grid columns for responsive button layout
+        for i in range(len(buttons)):
+            btn_frame.grid_columnconfigure(i, weight=1, pad=10)
+        
+        # Create buttons with consistent sizing
+        for i, (text, color, command) in enumerate(buttons):
+            btn = tk.Button(btn_frame, 
+                           text=self.format_arabic_text(text),
                            font=self.fonts['body'],
                            fg="white",
-                           bg="#4CAF50",
-                           width=15, height=2,
-                           command=lambda: self.save_form_data_universal(form_name, entries))
-        save_btn.pack(side=tk.LEFT, padx=5)
-        
-        # تصدير إلى PDF (Export to PDF) - Purple
-        pdf_btn = tk.Button(btn_frame, 
-                           text=self.format_arabic_text("تصدير إلى PDF"),
-                           font=self.fonts['body'],
-                           fg="white",
-                           bg="#9C27B0",
-                           width=15, height=2,
-                           command=lambda: self.export_form_to_pdf_universal(form_name, entries))
-        pdf_btn.pack(side=tk.LEFT, padx=5)
-        
-        # حذف السجل (Delete Record) - Red
-        delete_btn = tk.Button(btn_frame, 
-                             text=self.format_arabic_text("حذف السجل"),
-                             font=self.fonts['body'],
-                             fg="white",
-                             bg="#F44336",
-                             width=15, height=2,
-                             command=lambda: self.delete_form_record_universal(form_name))
-        delete_btn.pack(side=tk.LEFT, padx=5)
-        
-        # تعديل السجل (Edit Record) - Dark
-        edit_btn = tk.Button(btn_frame, 
-                           text=self.format_arabic_text("تعديل السجل"),
-                           font=self.fonts['body'],
-                           fg="white",
-                           bg="#424242",
-                           width=15, height=2,
-                           command=lambda: self.edit_form_record_universal(form_name, entries))
-        edit_btn.pack(side=tk.LEFT, padx=5)
-        
-        # إضافة سجل جديد (Add New Record) - Purple
-        add_btn = tk.Button(btn_frame, 
-                          text=self.format_arabic_text("إضافة سجل جديد"),
-                          font=self.fonts['body'],
-                          fg="white",
-                          bg="#673AB7",
+                           bg=color,
+                           height=2,
+                           relief=tk.FLAT,
+                           bd=0,
+                           command=command)
+            btn.grid(row=0, column=i, sticky="ew", padx=5, pady=5, ipadx=10)
                           width=15, height=2,
                           command=lambda: self.add_new_form_record_universal(form_name))
         add_btn.pack(side=tk.LEFT, padx=5)
@@ -9262,29 +9242,31 @@ ________________________________________
         return btn_frame
     
     def create_form_field(self, parent, label_text, field_name, row):
-        """Create a form field with premium styling"""
-        # Create frame for each field
+        """Create a form field with premium styling and better space utilization"""
+        # Create frame for each field with improved layout
         field_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
-        field_frame.pack(fill=tk.X, padx=10, pady=5)
+        field_frame.pack(fill=tk.X, padx=15, pady=8)
         
-        # Label
+        # Label with improved width management
         formatted_label = self.format_arabic_text(label_text)
         label = tk.Label(field_frame, 
                         text=formatted_label,
                         font=self.fonts['body'],
                         fg=self.premium_colors['text_light'],
                         bg=self.premium_colors['surface'],
-                        anchor="e")
-        label.pack(side=tk.RIGHT, padx=(0, 10))
+                        anchor="e",
+                        width=25)  # Fixed width for consistent alignment
+        label.pack(side=tk.RIGHT, padx=(0, 15))
         
-        # Entry field
+        # Entry field with better expansion and sizing
         entry = tk.Entry(field_frame, 
                         font=self.fonts['body'],
-                        width=40,
                         bg=self.premium_colors['background'],
                         fg=self.premium_colors['text_light'],
-                        insertbackground=self.premium_colors['text_light'])
-        entry.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(0, 10))
+                        insertbackground=self.premium_colors['text_light'],
+                        relief=tk.FLAT,
+                        bd=1)
+        entry.pack(side=tk.RIGHT, fill=tk.X, expand=True, padx=(0, 15), ipady=5)
         
         # Store in entries dictionary
         self.qf_10_01_01_entries[field_name] = entry
@@ -9292,10 +9274,10 @@ ________________________________________
         return entry
     
     def create_components_table(self, parent):
-        """Create the components details table as specified in the form"""
-        # Table frame
+        """Create the components details table with improved layout and space utilization"""
+        # Table frame with better padding
         table_frame = tk.Frame(parent, bg=self.premium_colors['surface'])
-        table_frame.pack(fill=tk.X, padx=10, pady=10)
+        table_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
         
         # Table headers in Arabic (RTL)
         headers = [
@@ -9303,7 +9285,7 @@ ________________________________________
             "تاريخ الإصدار", "تاريخ آخر تعديل", "الحالة (فعال/ملغى/محدث)", "ملاحظات"
         ]
         
-        # Create header row
+        # Create header row with improved styling
         for col, header in enumerate(headers):
             formatted_header = self.format_arabic_text(header)
             header_label = tk.Label(table_frame,
@@ -9313,12 +9295,18 @@ ________________________________________
                                   bg=self.premium_colors['accent'],
                                   relief=tk.RAISED,
                                   bd=1,
-                                  padx=5, pady=5)
+                                  padx=8, pady=8)
             header_label.grid(row=0, column=col, sticky="ew", padx=1, pady=1)
         
-        # Configure grid weights for proper column sizing
-        for col in range(len(headers)):
-            table_frame.grid_columnconfigure(col, weight=1 if col > 0 else 0)
+        # Enhanced grid weights for better column sizing
+        table_frame.grid_columnconfigure(0, weight=0, minsize=40)  # Serial number
+        table_frame.grid_columnconfigure(1, weight=1, minsize=120) # Component type
+        table_frame.grid_columnconfigure(2, weight=2, minsize=200) # Name/Title
+        table_frame.grid_columnconfigure(3, weight=1, minsize=120) # Reference code
+        table_frame.grid_columnconfigure(4, weight=1, minsize=100) # Issue date
+        table_frame.grid_columnconfigure(5, weight=1, minsize=100) # Last modified
+        table_frame.grid_columnconfigure(6, weight=1, minsize=150) # Status
+        table_frame.grid_columnconfigure(7, weight=2, minsize=150) # Notes
         
         # Default data rows as specified in the requirements
         default_data = [
@@ -9354,9 +9342,10 @@ ________________________________________
                                   fg=self.premium_colors['text_light'],
                                   insertbackground=self.premium_colors['text_light'],
                                   relief=tk.FLAT,
-                                  bd=1)
+                                  bd=1,
+                                  justify='right')  # Right justify for Arabic text
                     cell.insert(0, cell_data)
-                    cell.grid(row=row_idx, column=col_idx, sticky="ew", padx=1, pady=1)
+                    cell.grid(row=row_idx, column=col_idx, sticky="ew", padx=2, pady=2, ipadx=5, ipady=3)
                     row_entries.append(cell)
             
             self.qf_10_01_01_entries['table_data'].append(row_entries)
@@ -25164,33 +25153,22 @@ ________________________________________
         form_window = tk.Toplevel(self.root)
         form_window.title("QF-10-01-01: سجل مكونات النظام الإداري")
         # Get screen dimensions for responsive sizing
-
         screen_width = form_window.winfo_screenwidth()
-
         screen_height = form_window.winfo_screenheight()
-
         
-
-        # Calculate optimal window size (80% of screen, with minimum limits)
-
-        min_width, min_height = 1000, 700
-
-        width = max(min_width, int(screen_width * 0.8))
-
-        height = max(min_height, int(screen_height * 0.8))
-
+        # Calculate optimal window size (90% of screen, with improved minimum limits)
+        min_width, min_height = 1200, 800
+        width = max(min_width, int(screen_width * 0.9))
+        height = max(min_height, int(screen_height * 0.9))
         
-
-        form_window.geometry(f"{width}x{height}")
-
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        form_window.geometry(f"{width}x{height}+{x}+{y}")
         form_window.configure(bg=self.premium_colors['background'])
-
         form_window.resizable(True, True)
-
         form_window.minsize(min_width, min_height)
-        
-        # Make window resizable and scrollable
-        form_window.resizable(True, True)
         
         # Create scrollable frame for the long form
         canvas = tk.Canvas(form_window, bg=self.premium_colors['background'], highlightthickness=0)
@@ -31556,7 +31534,7 @@ ________________________________________
 
     def create_scrollable_form_frame(self, parent_frame):
         """Create a standardized scrollable frame with proper layout and mouse wheel support"""
-        # Create scrollable frame
+        # Create scrollable frame with improved layout
         canvas = tk.Canvas(parent_frame, bg=self.premium_colors['background'], highlightthickness=0)
         scrollbar = tk.Scrollbar(parent_frame, orient="vertical", command=canvas.yview, 
                                 bg=self.premium_colors['surface'], troughcolor=self.premium_colors['background'])
@@ -31566,13 +31544,17 @@ ________________________________________
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
         
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        # Pack with better space utilization
+        canvas.pack(side="left", fill="both", expand=True, padx=(10, 0), pady=10)
+        scrollbar.pack(side="right", fill="y", pady=10, padx=(0, 10))
         
-        # Fix for form layout - ensure content expands to full width
+        # Enhanced width configuration for better content expansion
         def _configure_scroll_width(event):
-            if canvas.find_all():
-                canvas.itemconfig(canvas.find_all()[0], width=event.width)
+            # Ensure scrollable frame uses full canvas width minus scrollbar
+            canvas_width = event.width - 20  # Account for padding
+            canvas.itemconfig(canvas.find_all()[0], width=canvas_width)
+            # Also update the scrollable frame's minimum width
+            scrollable_frame.config(width=canvas_width)
         
         canvas.bind('<Configure>', _configure_scroll_width)
         
@@ -31588,13 +31570,6 @@ ________________________________________
         
         canvas.bind('<Enter>', _bind_to_mousewheel)
         canvas.bind('<Leave>', _unbind_from_mousewheel)
-        
-        # Configure scrollable_frame to expand to full width - Fix for corner layout issue
-        def _configure_scroll_width(event):
-            if canvas.find_all():
-                canvas.itemconfig(canvas.find_all()[0], width=event.width)
-        
-        canvas.bind('<Configure>', _configure_scroll_width)
         
         return canvas, scrollbar, scrollable_frame
 
