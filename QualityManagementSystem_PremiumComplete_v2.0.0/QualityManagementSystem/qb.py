@@ -184,6 +184,16 @@ class QBApp:
         # Initialize file upload manager now that we have a user
         self.file_upload_manager = FileUploadManager(self.root, self.db_manager, self.current_user)
         
+        # Initialize saved forms manager
+        self.saved_forms_manager = SavedFormsManager(
+            self.root, 
+            self.db_manager, 
+            self.current_user, 
+            self.arabic_renderer, 
+            self.premium_colors, 
+            self.fonts
+        )
+        
         self.root.deiconify()  # Show main window
         self.setup_ui()
         self.load_data()
@@ -550,6 +560,17 @@ class QBApp:
                              width=25,
                              command=self.show_file_manager)
         files_btn.pack(fill=tk.X, padx=10, pady=5)
+        
+        # زر إدارة النماذج المحفوظة
+        saved_forms_btn = tk.Button(sidebar_frame, 
+                                   text="📝 إدارة النماذج المحفوظة",
+                                   font=self.arabic_font_bold,
+                                   fg="white",
+                                   bg="#2196F3",
+                                   relief=tk.RAISED,
+                                   width=25,
+                                   command=self.show_saved_forms_manager)
+        saved_forms_btn.pack(fill=tk.X, padx=10, pady=5)
         
         # إضافة قسم إدارة النظام
         system_section_label = tk.Label(sidebar_frame, 
@@ -6193,19 +6214,27 @@ ________________________________________
         screen_width = form_window.winfo_screenwidth()
         screen_height = form_window.winfo_screenheight()
         
-        # Calculate optimal window size (75% of screen, with minimum limits)
-        min_width, min_height = 800, 600
-        width = max(min_width, int(screen_width * 0.75))
-        height = max(min_height, int(screen_height * 0.75))
+        # Calculate optimal window size (90% of screen, with better minimum limits)
+        min_width, min_height = 1000, 700
+        max_width, max_height = 1800, 1400
         
-        form_window.geometry(f"{width}x{height}")
+        # Use 90% of screen size for better content visibility
+        width = max(min_width, min(max_width, int(screen_width * 0.90)))
+        height = max(min_height, min(max_height, int(screen_height * 0.90)))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        form_window.geometry(f"{width}x{height}+{x}+{y}")
         form_window.configure(bg="#2D0A4D")
         form_window.resizable(True, True)
         form_window.minsize(min_width, min_height)
+        form_window.maxsize(max_width, max_height)
         
         # Create main frame with optimized spacing for better width utilization
         main_frame = tk.Frame(form_window, bg="#2D0A4D")
-        main_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # Create canvas and scrollbar for scrolling
         canvas = tk.Canvas(main_frame, bg="#2D0A4D", highlightthickness=0)
@@ -6254,13 +6283,13 @@ ________________________________________
                               bg="#4A1B8D")
         title_label.pack(pady=20)
         
-        # إطار النموذج
+        # إطار النموذج - reduced padding for better space utilization
         form_frame = tk.Frame(scrollable_frame, bg="#3C1361")
-        form_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        form_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=8)
         
-        # حقل تاريخ اليوم
+        # حقل تاريخ اليوم - reduced padding
         date_frame = tk.Frame(form_frame, bg="#3C1361")
-        date_frame.pack(fill=tk.X, padx=20, pady=10)
+        date_frame.pack(fill=tk.X, padx=15, pady=8)
         
         date_label = tk.Label(date_frame, 
                              text="تاريخ اليوم:",
@@ -10536,6 +10565,13 @@ ________________________________________
                              bg="#8B0000",
                              command=forms_window.destroy)
         close_btn.pack(side=tk.RIGHT, padx=5)
+    
+    def show_saved_forms_manager(self):
+        """عرض نافذة إدارة النماذج المحفوظة"""
+        if hasattr(self, 'saved_forms_manager'):
+            self.saved_forms_manager.show_saved_forms_window()
+        else:
+            messagebox.showerror("خطأ", "لم يتم تهيئة مدير النماذج المحفوظة بعد")
     
     def create_contract_form(self, parent, form_name):
         """Create contract form for QF-06-03-01"""
@@ -33510,6 +33546,467 @@ ________________________________________
                 
         except Exception as e:
             messagebox.showerror("خطأ", f"فشل في تصدير النموذج: {str(e)}")
+
+class SavedFormsManager:
+    """مدير النماذج المحفوظة - واجهة شاملة لإدارة النماذج المحفوظة"""
+    
+    def __init__(self, parent, db_manager, current_user, arabic_renderer, premium_colors, fonts):
+        self.parent = parent
+        self.db_manager = db_manager
+        self.current_user = current_user
+        self.arabic_renderer = arabic_renderer
+        self.premium_colors = premium_colors
+        self.fonts = fonts
+        self.forms_window = None
+        
+    def format_arabic_text(self, text):
+        """تنسيق النص العربي"""
+        return self.arabic_renderer.reshape_arabic_text(text)
+    
+    def show_saved_forms_window(self):
+        """عرض نافذة إدارة النماذج المحفوظة"""
+        if self.forms_window and self.forms_window.winfo_exists():
+            self.forms_window.lift()
+            return
+            
+        self.forms_window = tk.Toplevel(self.parent)
+        self.forms_window.title(self.format_arabic_text("إدارة النماذج المحفوظة"))
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = self.forms_window.winfo_screenwidth()
+        screen_height = self.forms_window.winfo_screenheight()
+        
+        # Calculate optimal window size
+        width = max(1200, int(screen_width * 0.85))
+        height = max(700, int(screen_height * 0.85))
+        
+        # Center the window
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        self.forms_window.geometry(f"{width}x{height}+{x}+{y}")
+        self.forms_window.configure(bg=self.premium_colors['background'])
+        self.forms_window.resizable(True, True)
+        self.forms_window.minsize(1000, 600)
+        
+        self.setup_forms_ui()
+        self.load_saved_forms()
+        
+    def setup_forms_ui(self):
+        """إعداد واجهة إدارة النماذج"""
+        
+        # Header frame
+        header_frame = tk.Frame(self.forms_window, bg=self.premium_colors['primary'], height=80)
+        header_frame.pack(fill=tk.X, pady=(0, 10))
+        header_frame.pack_propagate(False)
+        
+        # Title
+        title_label = tk.Label(header_frame,
+                              text=self.format_arabic_text("إدارة النماذج المحفوظة"),
+                              font=self.fonts['title'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['primary'])
+        title_label.pack(pady=20)
+        
+        # Main content frame
+        main_frame = tk.Frame(self.forms_window, bg=self.premium_colors['background'])
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        
+        # Search and filter frame
+        search_frame = tk.Frame(main_frame, bg=self.premium_colors['surface'], height=60)
+        search_frame.pack(fill=tk.X, pady=(0, 10))
+        search_frame.pack_propagate(False)
+        
+        # Search entry
+        search_label = tk.Label(search_frame,
+                               text=self.format_arabic_text("البحث:"),
+                               font=self.fonts['body'],
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+        search_label.pack(side=tk.RIGHT, padx=10, pady=15)
+        
+        self.search_var = tk.StringVar()
+        self.search_var.trace('w', self.filter_forms)
+        search_entry = tk.Entry(search_frame,
+                               textvariable=self.search_var,
+                               font=self.fonts['body'],
+                               bg=self.premium_colors['background'],
+                               fg=self.premium_colors['text_light'],
+                               insertbackground=self.premium_colors['accent'],
+                               width=30)
+        search_entry.pack(side=tk.RIGHT, padx=10, pady=15)
+        
+        # Refresh button
+        refresh_btn = tk.Button(search_frame,
+                               text=self.format_arabic_text("تحديث"),
+                               font=self.fonts['button'],
+                               bg=self.premium_colors['accent'],
+                               fg=self.premium_colors['text_light'],
+                               activebackground=self.premium_colors['hover'],
+                               command=self.load_saved_forms)
+        refresh_btn.pack(side=tk.LEFT, padx=10, pady=15)
+        
+        # Forms list frame
+        list_frame = tk.Frame(main_frame, bg=self.premium_colors['background'])
+        list_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Treeview for forms list
+        columns = ('form_name', 'created_date', 'updated_date', 'created_by')
+        self.forms_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=15)
+        
+        # Configure column headings
+        self.forms_tree.heading('form_name', text=self.format_arabic_text('اسم النموذج'))
+        self.forms_tree.heading('created_date', text=self.format_arabic_text('تاريخ الإنشاء'))
+        self.forms_tree.heading('updated_date', text=self.format_arabic_text('تاريخ التحديث'))
+        self.forms_tree.heading('created_by', text=self.format_arabic_text('منشئ النموذج'))
+        
+        # Configure column widths
+        self.forms_tree.column('form_name', width=300, anchor='center')
+        self.forms_tree.column('created_date', width=150, anchor='center')
+        self.forms_tree.column('updated_date', width=150, anchor='center')
+        self.forms_tree.column('created_by', width=150, anchor='center')
+        
+        # Style the treeview
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure("Treeview",
+                       background=self.premium_colors['surface'],
+                       foreground=self.premium_colors['text_light'],
+                       fieldbackground=self.premium_colors['surface'],
+                       font=self.fonts['body'])
+        style.configure("Treeview.Heading",
+                       background=self.premium_colors['primary'],
+                       foreground=self.premium_colors['text_light'],
+                       font=self.fonts['heading'])
+        
+        # Scrollbars
+        v_scrollbar = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.forms_tree.yview)
+        h_scrollbar = ttk.Scrollbar(list_frame, orient=tk.HORIZONTAL, command=self.forms_tree.xview)
+        self.forms_tree.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
+        
+        # Pack treeview and scrollbars
+        self.forms_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        v_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        h_scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        
+        # Action buttons frame
+        buttons_frame = tk.Frame(main_frame, bg=self.premium_colors['background'], height=80)
+        buttons_frame.pack(fill=tk.X, pady=(10, 0))
+        buttons_frame.pack_propagate(False)
+        
+        # Button configurations
+        button_configs = [
+            ("عرض", self.view_form, self.premium_colors['success']),
+            ("تحرير", self.edit_form, self.premium_colors['accent']),
+            ("نسخ", self.copy_form, self.premium_colors['secondary']),
+            ("حذف", self.delete_form, "#d32f2f"),
+            ("تصدير PDF", self.export_form_pdf, self.premium_colors['primary']),
+            ("إغلاق", self.forms_window.destroy, "#666666")
+        ]
+        
+        for i, (text, command, color) in enumerate(button_configs):
+            btn = tk.Button(buttons_frame,
+                           text=self.format_arabic_text(text),
+                           font=self.fonts['button'],
+                           bg=color,
+                           fg=self.premium_colors['text_light'],
+                           activebackground=self.premium_colors['hover'],
+                           command=command,
+                           width=12)
+            btn.pack(side=tk.RIGHT, padx=5, pady=20)
+            
+    def load_saved_forms(self):
+        """تحميل النماذج المحفوظة"""
+        try:
+            # Clear existing items
+            for item in self.forms_tree.get_children():
+                self.forms_tree.delete(item)
+                
+            # Get all forms data
+            stored_forms = self.db_manager.get_all_forms_data()
+            
+            # Populate treeview
+            for form_name, form_info in stored_forms.items():
+                created_date = form_info.get('created_at', 'غير محدد')
+                updated_date = form_info.get('updated_at', 'غير محدد')
+                created_by = form_info.get('created_by', 'غير محدد')
+                
+                # Format dates
+                if created_date != 'غير محدد':
+                    try:
+                        created_date = datetime.fromisoformat(created_date.replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M')
+                    except:
+                        pass
+                        
+                if updated_date != 'غير محدد':
+                    try:
+                        updated_date = datetime.fromisoformat(updated_date.replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M')
+                    except:
+                        pass
+                
+                self.forms_tree.insert('', 'end', values=(
+                    form_name,
+                    created_date,
+                    updated_date,
+                    created_by
+                ))
+                
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تحميل النماذج: {str(e)}")
+            
+    def filter_forms(self, *args):
+        """تصفية النماذج حسب النص المدخل"""
+        search_text = self.search_var.get().lower()
+        
+        # Clear existing items
+        for item in self.forms_tree.get_children():
+            self.forms_tree.delete(item)
+            
+        try:
+            stored_forms = self.db_manager.get_all_forms_data()
+            
+            for form_name, form_info in stored_forms.items():
+                if search_text in form_name.lower():
+                    created_date = form_info.get('created_at', 'غير محدد')
+                    updated_date = form_info.get('updated_at', 'غير محدد')
+                    created_by = form_info.get('created_by', 'غير محدد')
+                    
+                    # Format dates
+                    if created_date != 'غير محدد':
+                        try:
+                            created_date = datetime.fromisoformat(created_date.replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M')
+                        except:
+                            pass
+                            
+                    if updated_date != 'غير محدد':
+                        try:
+                            updated_date = datetime.fromisoformat(updated_date.replace('Z', '+00:00')).strftime('%Y-%m-%d %H:%M')
+                        except:
+                            pass
+                    
+                    self.forms_tree.insert('', 'end', values=(
+                        form_name,
+                        created_date,
+                        updated_date,
+                        created_by
+                    ))
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تصفية النماذج: {str(e)}")
+            
+    def get_selected_form(self):
+        """الحصول على النموذج المحدد"""
+        selection = self.forms_tree.selection()
+        if not selection:
+            messagebox.showwarning("تحذير", "يرجى اختيار نموذج من القائمة أولاً")
+            return None
+            
+        item = self.forms_tree.item(selection[0])
+        return item['values'][0]
+        
+    def view_form(self):
+        """عرض النموذج المحدد"""
+        form_name = self.get_selected_form()
+        if not form_name:
+            return
+            
+        try:
+            form_data = self.db_manager.load_form_data(form_name)
+            if form_data:
+                self.show_form_data_window(form_name, form_data, read_only=True)
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في عرض النموذج: {str(e)}")
+            
+    def edit_form(self):
+        """تحرير النموذج المحدد"""
+        form_name = self.get_selected_form()
+        if not form_name:
+            return
+            
+        try:
+            form_data = self.db_manager.load_form_data(form_name)
+            if form_data:
+                self.show_form_data_window(form_name, form_data, read_only=False)
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تحرير النموذج: {str(e)}")
+            
+    def copy_form(self):
+        """نسخ النموذج المحدد"""
+        form_name = self.get_selected_form()
+        if not form_name:
+            return
+            
+        try:
+            form_data = self.db_manager.load_form_data(form_name)
+            if form_data:
+                # Create new form name with copy suffix
+                new_form_name = f"{form_name} - نسخة {datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                
+                # Save copy
+                success = self.db_manager.save_form_data(new_form_name, form_data, self.current_user['id'])
+                if success:
+                    messagebox.showinfo("نجح", f"تم نسخ النموذج بنجاح: {new_form_name}")
+                    self.load_saved_forms()
+                else:
+                    messagebox.showerror("خطأ", "فشل في نسخ النموذج")
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في نسخ النموذج: {str(e)}")
+            
+    def delete_form(self):
+        """حذف النموذج المحدد"""
+        form_name = self.get_selected_form()
+        if not form_name:
+            return
+            
+        # Confirm deletion
+        if messagebox.askyesno("تأكيد الحذف", f"هل أنت متأكد من حذف النموذج '{form_name}'؟\nهذا الإجراء لا يمكن التراجع عنه."):
+            try:
+                success = self.db_manager.delete_form_data(form_name, self.current_user['id'])
+                if success:
+                    messagebox.showinfo("نجح", "تم حذف النموذج بنجاح")
+                    self.load_saved_forms()
+                else:
+                    messagebox.showerror("خطأ", "فشل في حذف النموذج")
+            except Exception as e:
+                messagebox.showerror("خطأ", f"فشل في حذف النموذج: {str(e)}")
+                
+    def export_form_pdf(self):
+        """تصدير النموذج إلى PDF"""
+        form_name = self.get_selected_form()
+        if not form_name:
+            return
+            
+        try:
+            form_data = self.db_manager.load_form_data(form_name)
+            if form_data:
+                # Simple PDF export using existing database functionality
+                messagebox.showinfo("تصدير PDF", f"سيتم تصدير النموذج {form_name} قريباً.\nيمكنك استخدام وظيفة التصدير من إدارة النماذج.")
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على بيانات النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تصدير النموذج: {str(e)}")
+            
+    def show_form_data_window(self, form_name, form_data, read_only=True):
+        """عرض بيانات النموذج في نافذة منفصلة"""
+        data_window = tk.Toplevel(self.forms_window)
+        title = "عرض" if read_only else "تحرير"
+        data_window.title(f"{title} النموذج: {form_name}")
+        
+        # Window configuration
+        data_window.geometry("800x600")
+        data_window.configure(bg=self.premium_colors['background'])
+        
+        # Header
+        header_frame = tk.Frame(data_window, bg=self.premium_colors['primary'], height=60)
+        header_frame.pack(fill=tk.X)
+        header_frame.pack_propagate(False)
+        
+        title_label = tk.Label(header_frame,
+                              text=f"{title} النموذج: {form_name}",
+                              font=self.fonts['heading'],
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['primary'])
+        title_label.pack(pady=15)
+        
+        # Content frame with scrollbar
+        content_frame = tk.Frame(data_window, bg=self.premium_colors['background'])
+        content_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
+        
+        canvas = tk.Canvas(content_frame, bg=self.premium_colors['background'])
+        scrollbar = ttk.Scrollbar(content_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Display form data
+        entries = {}
+        for key, value in form_data.items():
+            if key in ['save_date', 'created_at', 'updated_at']:
+                continue
+                
+            field_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'])
+            field_frame.pack(fill="x", padx=10, pady=5)
+            
+            label = tk.Label(field_frame,
+                           text=f"{key}:",
+                           font=self.fonts['body'],
+                           fg=self.premium_colors['text_light'],
+                           bg=self.premium_colors['surface'],
+                           width=20, anchor="e")
+            label.pack(side="right", padx=5)
+            
+            if read_only:
+                value_label = tk.Label(field_frame,
+                                     text=str(value),
+                                     font=self.fonts['body'],
+                                     fg=self.premium_colors['text_light'],
+                                     bg=self.premium_colors['background'],
+                                     anchor="w")
+                value_label.pack(side="left", fill="x", expand=True, padx=5)
+            else:
+                entry = tk.Entry(field_frame,
+                               font=self.fonts['body'],
+                               bg=self.premium_colors['background'],
+                               fg=self.premium_colors['text_light'],
+                               insertbackground=self.premium_colors['accent'])
+                entry.insert(0, str(value))
+                entry.pack(side="left", fill="x", expand=True, padx=5)
+                entries[key] = entry
+        
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        # Buttons frame
+        buttons_frame = tk.Frame(data_window, bg=self.premium_colors['background'], height=60)
+        buttons_frame.pack(fill=tk.X, pady=10)
+        buttons_frame.pack_propagate(False)
+        
+        if not read_only:
+            save_btn = tk.Button(buttons_frame,
+                               text="حفظ التغييرات",
+                               font=self.fonts['button'],
+                               bg=self.premium_colors['success'],
+                               fg=self.premium_colors['text_light'],
+                               command=lambda: self.save_form_changes(form_name, entries, data_window))
+            save_btn.pack(side=tk.RIGHT, padx=10, pady=15)
+        
+        close_btn = tk.Button(buttons_frame,
+                             text="إغلاق",
+                             font=self.fonts['button'],
+                             bg="#666666",
+                             fg=self.premium_colors['text_light'],
+                             command=data_window.destroy)
+        close_btn.pack(side=tk.RIGHT, padx=10, pady=15)
+        
+    def save_form_changes(self, form_name, entries, window):
+        """حفظ التغييرات على النموذج"""
+        try:
+            updated_data = {}
+            for key, entry in entries.items():
+                updated_data[key] = entry.get()
+            
+            updated_data['updated_at'] = datetime.now().isoformat()
+            
+            success = self.db_manager.update_form_data(form_name, updated_data, self.current_user['id'])
+            if success:
+                messagebox.showinfo("نجح", "تم حفظ التغييرات بنجاح")
+                window.destroy()
+                self.load_saved_forms()
+            else:
+                messagebox.showerror("خطأ", "فشل في حفظ التغييرات")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في حفظ التغييرات: {str(e)}")
 
 if __name__ == "__main__":
     root = tk.Tk()
