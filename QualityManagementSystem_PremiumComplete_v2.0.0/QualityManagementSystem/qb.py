@@ -20,8 +20,15 @@ from file_upload_manager import FileUploadManager
 from login_system import LoginSystem
 
 class QBPerfectFormSystem:
-    def __init__(self, root):
+    def __init__(self, root, db_manager=None, current_user=None):
         self.root = root
+        self.db_manager = db_manager
+        self.current_user = current_user
+        
+        # Initialize database manager if not provided
+        if not self.db_manager:
+            from database_manager import DatabaseManager
+            self.db_manager = DatabaseManager()
         
         # Exact QB Academy Premium Colors
         self.premium_colors = {
@@ -43,14 +50,35 @@ class QBPerfectFormSystem:
         self.form_entries = {}
 
     def open_perfect_form(self, form_name, form_type="generic"):
-        """Creates the exact QB Academy form window structure"""
+        """Creates the exact QB Academy form window structure with improved responsiveness"""
         
-        # ==================== EXACT QB WINDOW SETUP ====================
+        # ==================== RESPONSIVE QB WINDOW SETUP ====================
         form_window = tk.Toplevel(self.root)
         form_window.title(form_name)
-        form_window.geometry("1000x700")  # Exact QB size
+        
+        # Get screen dimensions for responsive sizing
+        screen_width = form_window.winfo_screenwidth()
+        screen_height = form_window.winfo_screenheight()
+        
+        # Calculate optimal window size (80% of screen, with minimum limits)
+        min_width, min_height = 1000, 700
+        max_width, max_height = 1400, 900
+        
+        width = max(min_width, min(max_width, int(screen_width * 0.8)))
+        height = max(min_height, min(max_height, int(screen_height * 0.8)))
+        
+        # Center the window on screen
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        form_window.geometry(f"{width}x{height}+{x}+{y}")
         form_window.configure(bg="#2D0A4D")  # Exact QB background
         form_window.resizable(True, True)
+        form_window.minsize(min_width, min_height)
+        
+        # Make window responsive to resizing
+        form_window.grid_rowconfigure(1, weight=1)
+        form_window.grid_columnconfigure(0, weight=1)
         
         # ==================== EXACT QB TITLE HEADER ====================
         title_frame = tk.Frame(form_window, bg="#4A1B8D", height=70)
@@ -376,21 +404,22 @@ class QBPerfectFormSystem:
             ("تصدير إلى PDF", "#9C27B0", lambda: self.export_to_pdf(form_name)),
             ("طباعة", "#2196F3", lambda: self.print_form(form_name)),
             ("تعديل السجل", "#FF9800", lambda: self.edit_record(form_name)),
-            ("حذف السجل", "#F44336", lambda: self.delete_record(form_name))
+            ("حذف السجل", "#F44336", lambda: self.delete_record(form_name)),
+            ("النماذج المرتبطة", "#607D8B", lambda: self.show_related_forms(form_name))
         ]
         
         # Create buttons with exact spacing from Image 1
-        button_width = 120
-        button_spacing = 10
-        start_x = 20
+        button_width = 110
+        button_spacing = 8
+        start_x = 15
         
         for i, (text, color, command) in enumerate(buttons_config):
             btn = tk.Button(btn_frame, 
                            text=self.format_arabic_text(text),
-                           font=('Arial', 9, 'bold'),
+                           font=('Arial', 8, 'bold'),
                            fg="white",
                            bg=color,
-                           width=15, height=2,
+                           width=14, height=2,
                            relief=tk.RAISED,
                            bd=2,
                            command=command)
@@ -407,7 +436,7 @@ class QBPerfectFormSystem:
         return text
 
     def save_form(self, form_name):
-        """Save form data"""
+        """Save form data to database"""
         try:
             # Collect form data
             data = {}
@@ -427,28 +456,418 @@ class QBPerfectFormSystem:
                         table_data.append(widget.item(child)["values"])
                     data[field_name] = table_data
             
-            # Save to database or file (implement your logic here)
-            messagebox.showinfo("نجح الحفظ", f"تم حفظ {form_name} بنجاح")
+            # Add metadata
+            data['form_type'] = form_name
+            data['save_timestamp'] = datetime.now().isoformat()
+            
+            # Get user ID
+            user_id = self.current_user.get('id', 1) if self.current_user else 1
+            
+            # Save to database using the new instance method
+            instance_id = self.db_manager.save_form_instance(
+                form_name=form_name,
+                data=data,
+                user_id=user_id
+            )
+            
+            if instance_id:
+                messagebox.showinfo("نجح الحفظ", f"تم حفظ {form_name} بنجاح\nمعرف السجل: {instance_id}")
+            else:
+                messagebox.showerror("خطأ", "فشل في حفظ النموذج في قاعدة البيانات")
             
         except Exception as e:
             messagebox.showerror("خطأ", f"فشل في حفظ النموذج: {str(e)}")
 
     def export_to_pdf(self, form_name):
-        """Export form to PDF"""
-        messagebox.showinfo("تصدير PDF", f"تم تصدير {form_name} إلى PDF")
+        """Export form to PDF using database manager"""
+        try:
+            # Collect form data
+            data = {}
+            for field_name, widget in self.form_entries.items():
+                if isinstance(widget, tk.Entry):
+                    data[field_name] = widget.get()
+                elif isinstance(widget, tk.Text):
+                    data[field_name] = widget.get("1.0", tk.END).strip()
+                elif isinstance(widget, tk.StringVar):
+                    data[field_name] = widget.get()
+                elif isinstance(widget, tk.BooleanVar):
+                    data[field_name] = widget.get()
+                elif isinstance(widget, ttk.Treeview):
+                    # Handle table data
+                    table_data = []
+                    for child in widget.get_children():
+                        table_data.append(widget.item(child)["values"])
+                    data[field_name] = table_data
+            
+            # Ask user where to save PDF
+            from tkinter import filedialog
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            safe_form_name = "".join(c for c in form_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+            default_name = f"{safe_form_name}_{timestamp}.pdf"
+            
+            file_path = filedialog.asksaveasfilename(
+                defaultextension=".pdf",
+                filetypes=[("PDF files", "*.pdf")],
+                initialfilename=default_name
+            )
+            
+            if file_path:
+                # Generate PDF
+                result_path = self.db_manager.export_form_to_pdf(data, form_name, file_path)
+                
+                if result_path:
+                    messagebox.showinfo("تصدير PDF", f"تم تصدير {form_name} إلى:\n{result_path}")
+                else:
+                    messagebox.showerror("خطأ", "فشل في تصدير النموذج إلى PDF")
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تصدير النموذج: {str(e)}")
 
     def delete_record(self, form_name):
-        """Delete form record"""
-        if messagebox.askyesno("تأكيد الحذف", f"هل تريد حذف {form_name}؟"):
-            messagebox.showinfo("تم الحذف", f"تم حذف {form_name}")
+        """Delete form record after showing related forms"""
+        try:
+            # Show all instances and let user choose which to delete
+            instances = self.db_manager.get_form_instances(form_name)
+            
+            if not instances:
+                messagebox.showinfo("لا توجد بيانات", f"لا توجد سجلات محفوظة للنموذج {form_name}")
+                return
+            
+            # Create selection dialog
+            self.show_instances_for_action(form_name, instances, "delete")
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في حذف السجل: {str(e)}")
 
     def edit_record(self, form_name):
-        """Edit form record"""
-        messagebox.showinfo("تعديل السجل", f"جاري تعديل {form_name}")
+        """Edit form record after showing related forms"""
+        try:
+            # Show all instances and let user choose which to edit
+            instances = self.db_manager.get_form_instances(form_name)
+            
+            if not instances:
+                messagebox.showinfo("لا توجد بيانات", f"لا توجد سجلات محفوظة للنموذج {form_name}")
+                return
+            
+            # Create selection dialog
+            self.show_instances_for_action(form_name, instances, "edit")
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تعديل السجل: {str(e)}")
 
     def print_form(self, form_name):
         """Print form"""
         messagebox.showinfo("طباعة", f"جاري طباعة {form_name}")
+
+    def show_related_forms(self, form_name):
+        """Show all related forms (instances) for this form type"""
+        try:
+            # Get all instances of this form type
+            instances = self.db_manager.get_form_instances(form_name)
+            
+            if not instances:
+                messagebox.showinfo("لا توجد نماذج مرتبطة", f"لا توجد نماذج محفوظة من نوع {form_name}")
+                return
+            
+            # Create related forms window
+            self.create_related_forms_window(form_name, instances)
+            
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في عرض النماذج المرتبطة: {str(e)}")
+
+    def create_related_forms_window(self, form_name, instances):
+        """Create window showing all related form instances"""
+        # Create new window
+        related_window = tk.Toplevel(self.root)
+        related_window.title(f"النماذج المرتبطة - {form_name}")
+        related_window.geometry("900x600")
+        related_window.configure(bg=self.premium_colors['background'])
+        
+        # Title
+        title_frame = tk.Frame(related_window, bg=self.premium_colors['surface'], height=50)
+        title_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        title_label = tk.Label(title_frame, 
+                              text=f"النماذج المرتبطة - {form_name}",
+                              font=('Arial', 14, 'bold'),
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'])
+        title_label.pack(pady=15)
+        
+        # Main content frame
+        content_frame = tk.Frame(related_window, bg=self.premium_colors['background'])
+        content_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+        
+        # Create treeview for instances
+        columns = ('ID', 'تاريخ الإنشاء', 'تاريخ التحديث', 'الإجراءات')
+        tree = ttk.Treeview(content_frame, columns=columns, show='tree headings', height=15)
+        
+        # Configure columns
+        tree.heading('#0', text='اسم النموذج', anchor='e')
+        tree.heading('ID', text='المعرف', anchor='center')
+        tree.heading('تاريخ الإنشاء', text='تاريخ الإنشاء', anchor='center')
+        tree.heading('تاريخ التحديث', text='تاريخ التحديث', anchor='center')
+        tree.heading('الإجراءات', text='الإجراءات', anchor='center')
+        
+        tree.column('#0', width=300, anchor='e')
+        tree.column('ID', width=80, anchor='center')
+        tree.column('تاريخ الإنشاء', width=150, anchor='center')
+        tree.column('تاريخ التحديث', width=150, anchor='center')
+        tree.column('الإجراءات', width=200, anchor='center')
+        
+        # Add scrollbar
+        scrollbar = ttk.Scrollbar(content_frame, orient=tk.VERTICAL, command=tree.yview)
+        tree.configure(yscrollcommand=scrollbar.set)
+        
+        # Pack treeview and scrollbar
+        tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        
+        # Populate tree with instances
+        for instance in instances:
+            created_at = instance['created_at'].split(' ')[0] if instance['created_at'] else ''
+            updated_at = instance['updated_at'].split(' ')[0] if instance['updated_at'] else ''
+            
+            tree.insert('', 'end', 
+                       text=instance['form_name'],
+                       values=(instance['id'], created_at, updated_at, 'متاح'))
+        
+        # Buttons frame
+        buttons_frame = tk.Frame(related_window, bg=self.premium_colors['background'])
+        buttons_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        # Action buttons
+        def view_instance():
+            selected = tree.selection()
+            if selected:
+                item = tree.item(selected[0])
+                instance_id = item['values'][0]
+                self.view_form_instance(instance_id, form_name)
+        
+        def edit_instance():
+            selected = tree.selection()
+            if selected:
+                item = tree.item(selected[0])
+                instance_id = item['values'][0]
+                self.edit_form_instance(instance_id, form_name)
+        
+        def delete_instance():
+            selected = tree.selection()
+            if selected:
+                item = tree.item(selected[0])
+                instance_id = item['values'][0]
+                form_instance_name = item['text']
+                
+                if messagebox.askyesno("تأكيد الحذف", f"هل تريد حذف:\n{form_instance_name}؟"):
+                    user_id = self.current_user.get('id', 1) if self.current_user else 1
+                    success = self.db_manager.delete_form_instance_by_id(instance_id, user_id)
+                    
+                    if success:
+                        tree.delete(selected[0])
+                        messagebox.showinfo("تم الحذف", "تم حذف النموذج بنجاح")
+                    else:
+                        messagebox.showerror("خطأ", "فشل في حذف النموذج")
+        
+        def export_instance():
+            selected = tree.selection()
+            if selected:
+                item = tree.item(selected[0])
+                instance_id = item['values'][0]
+                self.export_instance_to_pdf(instance_id, form_name)
+        
+        # Create buttons
+        btn_view = tk.Button(buttons_frame, text="عرض", bg="#2196F3", fg="white", 
+                           font=('Arial', 10, 'bold'), command=view_instance)
+        btn_view.pack(side=tk.LEFT, padx=5)
+        
+        btn_edit = tk.Button(buttons_frame, text="تعديل", bg="#FF9800", fg="white", 
+                           font=('Arial', 10, 'bold'), command=edit_instance)
+        btn_edit.pack(side=tk.LEFT, padx=5)
+        
+        btn_delete = tk.Button(buttons_frame, text="حذف", bg="#F44336", fg="white", 
+                             font=('Arial', 10, 'bold'), command=delete_instance)
+        btn_delete.pack(side=tk.LEFT, padx=5)
+        
+        btn_export = tk.Button(buttons_frame, text="تصدير PDF", bg="#9C27B0", fg="white", 
+                             font=('Arial', 10, 'bold'), command=export_instance)
+        btn_export.pack(side=tk.LEFT, padx=5)
+        
+        btn_close = tk.Button(buttons_frame, text="إغلاق", bg="#607D8B", fg="white", 
+                            font=('Arial', 10, 'bold'), command=related_window.destroy)
+        btn_close.pack(side=tk.RIGHT, padx=5)
+
+    def view_form_instance(self, instance_id, form_name):
+        """View a specific form instance"""
+        try:
+            instance = self.db_manager.get_form_instance_by_id(instance_id)
+            if instance:
+                self.show_instance_data(instance, "عرض")
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في عرض النموذج: {str(e)}")
+
+    def edit_form_instance(self, instance_id, form_name):
+        """Edit a specific form instance"""
+        try:
+            instance = self.db_manager.get_form_instance_by_id(instance_id)
+            if instance:
+                self.show_instance_data(instance, "تعديل", instance_id)
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تعديل النموذج: {str(e)}")
+
+    def export_instance_to_pdf(self, instance_id, form_name):
+        """Export a specific form instance to PDF"""
+        try:
+            instance = self.db_manager.get_form_instance_by_id(instance_id)
+            if instance:
+                # Ask user where to save PDF
+                from tkinter import filedialog
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                safe_form_name = "".join(c for c in form_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+                default_name = f"{safe_form_name}_ID{instance_id}_{timestamp}.pdf"
+                
+                file_path = filedialog.asksaveasfilename(
+                    defaultextension=".pdf",
+                    filetypes=[("PDF files", "*.pdf")],
+                    initialfilename=default_name
+                )
+                
+                if file_path:
+                    result_path = self.db_manager.export_form_to_pdf(instance['data'], instance['form_name'], file_path)
+                    
+                    if result_path:
+                        messagebox.showinfo("تصدير PDF", f"تم تصدير النموذج إلى:\n{result_path}")
+                    else:
+                        messagebox.showerror("خطأ", "فشل في تصدير النموذج إلى PDF")
+            else:
+                messagebox.showerror("خطأ", "لم يتم العثور على النموذج")
+        except Exception as e:
+            messagebox.showerror("خطأ", f"فشل في تصدير النموذج: {str(e)}")
+
+    def show_instance_data(self, instance, mode, instance_id=None):
+        """Show form instance data in a new window"""
+        # Create new window
+        data_window = tk.Toplevel(self.root)
+        data_window.title(f"{mode} النموذج - {instance['form_name']}")
+        data_window.geometry("800x600")
+        data_window.configure(bg=self.premium_colors['background'])
+        
+        # Title
+        title_frame = tk.Frame(data_window, bg=self.premium_colors['surface'], height=50)
+        title_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        title_label = tk.Label(title_frame, 
+                              text=f"{mode} النموذج - {instance['form_name']}",
+                              font=('Arial', 14, 'bold'),
+                              fg=self.premium_colors['text_light'],
+                              bg=self.premium_colors['surface'])
+        title_label.pack(pady=15)
+        
+        # Content frame with scrollbar
+        canvas = tk.Canvas(data_window, bg=self.premium_colors['background'])
+        scrollbar = ttk.Scrollbar(data_window, orient="vertical", command=canvas.yview)
+        scrollable_frame = tk.Frame(canvas, bg=self.premium_colors['background'])
+        
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+        
+        # Display form data
+        data = instance['data']
+        entries = {}
+        
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key in ['form_type', 'save_timestamp']:
+                    continue
+                    
+                # Create field frame
+                field_frame = tk.Frame(scrollable_frame, bg=self.premium_colors['surface'])
+                field_frame.pack(fill=tk.X, padx=10, pady=5)
+                
+                # Label
+                label = tk.Label(field_frame, text=f"{key}:", 
+                               font=('Arial', 10, 'bold'),
+                               fg=self.premium_colors['text_light'],
+                               bg=self.premium_colors['surface'])
+                label.pack(anchor='e', padx=10, pady=5)
+                
+                # Value widget
+                if isinstance(value, (list, dict)):
+                    # For complex data, use text widget
+                    text_widget = tk.Text(field_frame, height=4, width=70,
+                                        bg=self.premium_colors['background'],
+                                        fg=self.premium_colors['text_light'])
+                    text_widget.insert('1.0', str(value))
+                    if mode == "عرض":
+                        text_widget.config(state='disabled')
+                    text_widget.pack(padx=10, pady=5)
+                    entries[key] = text_widget
+                else:
+                    # For simple data, use entry widget
+                    entry = tk.Entry(field_frame, width=70,
+                                   bg=self.premium_colors['background'],
+                                   fg=self.premium_colors['text_light'])
+                    entry.insert(0, str(value))
+                    if mode == "عرض":
+                        entry.config(state='readonly')
+                    entry.pack(padx=10, pady=5)
+                    entries[key] = entry
+        
+        # Pack canvas and scrollbar
+        canvas.pack(side="left", fill="both", expand=True, padx=(10, 0), pady=10)
+        scrollbar.pack(side="right", fill="y", padx=(0, 10), pady=10)
+        
+        # Buttons frame
+        if mode == "تعديل":
+            buttons_frame = tk.Frame(data_window, bg=self.premium_colors['background'])
+            buttons_frame.pack(fill=tk.X, padx=10, pady=10)
+            
+            def save_changes():
+                try:
+                    # Collect updated data
+                    updated_data = {}
+                    for key, widget in entries.items():
+                        if isinstance(widget, tk.Text):
+                            updated_data[key] = widget.get('1.0', tk.END).strip()
+                        else:
+                            updated_data[key] = widget.get()
+                    
+                    # Update instance in database
+                    user_id = self.current_user.get('id', 1) if self.current_user else 1
+                    success = self.db_manager.update_form_data(
+                        form_name=instance['form_name'],
+                        data=updated_data,
+                        user_id=user_id
+                    )
+                    
+                    if success:
+                        messagebox.showinfo("تم التحديث", "تم تحديث النموذج بنجاح")
+                        data_window.destroy()
+                    else:
+                        messagebox.showerror("خطأ", "فشل في تحديث النموذج")
+                        
+                except Exception as e:
+                    messagebox.showerror("خطأ", f"فشل في حفظ التغييرات: {str(e)}")
+            
+            btn_save = tk.Button(buttons_frame, text="حفظ التغييرات", bg="#4CAF50", fg="white", 
+                               font=('Arial', 10, 'bold'), command=save_changes)
+            btn_save.pack(side=tk.LEFT, padx=5)
+        
+        # Close button
+        buttons_frame = tk.Frame(data_window, bg=self.premium_colors['background'])
+        buttons_frame.pack(fill=tk.X, padx=10, pady=10)
+        
+        btn_close = tk.Button(buttons_frame, text="إغلاق", bg="#607D8B", fg="white", 
+                            font=('Arial', 10, 'bold'), command=data_window.destroy)
+        btn_close.pack(side=tk.RIGHT, padx=5)
 
 # ===== PREMIUM ARABIC TEXT RENDERING =====
 class ArabicTextRenderer:
@@ -579,8 +998,10 @@ class QBApp:
         # Ensure forms table is created before proceeding
         self.db_manager.create_forms_table()
         
-        # Initialize the QB Perfect Form System
-        self.qb_perfect_form_system = QBPerfectFormSystem(self.root)
+        self.current_user = None
+        
+        # Initialize the QB Perfect Form System (will be updated after login)
+        self.qb_perfect_form_system = QBPerfectFormSystem(self.root, self.db_manager, self.current_user)
         
         self.file_upload_manager = None  # Will be initialized after login
         self.login_system = LoginSystem(self.db_manager, self.on_login_success)
@@ -615,6 +1036,9 @@ class QBApp:
     def on_login_success(self, user):
         """Called when user successfully logs in"""
         self.current_user = user
+        
+        # Update the QB Perfect Form System with current user
+        self.qb_perfect_form_system.current_user = self.current_user
         
         # Initialize file upload manager now that we have a user
         self.file_upload_manager = FileUploadManager(self.root, self.db_manager, self.current_user)

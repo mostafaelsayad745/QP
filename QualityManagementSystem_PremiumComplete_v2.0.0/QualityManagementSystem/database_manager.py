@@ -752,3 +752,266 @@ class DatabaseManager:
         except Exception as e:
             print(f"Error creating forms backup: {e}")
             return None
+
+    def get_form_instances(self, form_base_name):
+        """Get all instances of a specific form type (e.g., all QF-09-01-01 forms)"""
+        try:
+            import json
+            
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    SELECT id, form_name, form_data, created_at, updated_at, created_by
+                    FROM form_data 
+                    WHERE form_name LIKE ?
+                    ORDER BY created_at DESC
+                ''', (f"{form_base_name}%",))
+                
+                results = cursor.fetchall()
+                instances = []
+                
+                for row in results:
+                    form_id, form_name, data_str, created_at, updated_at, created_by = row
+                    try:
+                        data = json.loads(data_str)
+                    except json.JSONDecodeError:
+                        data = data_str
+                        
+                    instances.append({
+                        'id': form_id,
+                        'form_name': form_name,
+                        'data': data,
+                        'created_at': created_at,
+                        'updated_at': updated_at,
+                        'created_by': created_by
+                    })
+                
+                return instances
+                
+        except Exception as e:
+            print(f"Error getting form instances: {e}")
+            return []
+
+    def get_form_instance_by_id(self, form_id):
+        """Get a specific form instance by ID"""
+        try:
+            import json
+            
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('''
+                    SELECT id, form_name, form_data, created_at, updated_at, created_by
+                    FROM form_data 
+                    WHERE id = ?
+                ''', (form_id,))
+                
+                result = cursor.fetchone()
+                if result:
+                    form_id, form_name, data_str, created_at, updated_at, created_by = result
+                    try:
+                        data = json.loads(data_str)
+                    except json.JSONDecodeError:
+                        data = data_str
+                        
+                    return {
+                        'id': form_id,
+                        'form_name': form_name,
+                        'data': data,
+                        'created_at': created_at,
+                        'updated_at': updated_at,
+                        'created_by': created_by
+                    }
+                return None
+                
+        except Exception as e:
+            print(f"Error getting form instance by ID: {e}")
+            return None
+
+    def delete_form_instance_by_id(self, form_id, user_id=None):
+        """Delete a specific form instance by ID"""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                
+                # Check if form exists
+                cursor.execute('SELECT form_name FROM form_data WHERE id = ?', (form_id,))
+                result = cursor.fetchone()
+                
+                if result:
+                    form_name = result[0]
+                    
+                    # Delete the form
+                    cursor.execute('DELETE FROM form_data WHERE id = ?', (form_id,))
+                    conn.commit()
+                    
+                    # Log the activity
+                    self.log_activity(user_id, f"حذف نسخة من النموذج {form_name}", "form_data", form_id)
+                    
+                    return True
+                return False
+                
+        except Exception as e:
+            print(f"Error deleting form instance: {e}")
+            return False
+
+    def save_form_instance(self, form_name, data, user_id=None, instance_name=None):
+        """Save a new instance of a form with unique identifier"""
+        try:
+            import json
+            from datetime import datetime
+            
+            # Create unique form name if instance_name provided
+            if instance_name:
+                unique_form_name = f"{form_name}_{instance_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            else:
+                unique_form_name = f"{form_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            
+            # Convert data to JSON string
+            if isinstance(data, (list, dict)):
+                data_json = json.dumps(data, ensure_ascii=False, indent=2)
+            else:
+                data_json = str(data)
+            
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                
+                # Insert new form instance
+                cursor.execute('''
+                    INSERT INTO form_data (form_name, form_data, created_by)
+                    VALUES (?, ?, ?)
+                ''', (unique_form_name, data_json, user_id))
+                
+                record_id = cursor.lastrowid
+                conn.commit()
+                
+                # Log activity
+                self.log_activity(user_id, f"إضافة نسخة جديدة من النموذج {form_name}", "form_data", record_id)
+                
+                return record_id
+                
+        except Exception as e:
+            print(f"Error saving form instance: {e}")
+            return None
+
+    def export_form_to_pdf(self, form_data, form_name, output_path=None):
+        """Export form data to PDF using reportlab"""
+        try:
+            from reportlab.lib.pagesizes import A4, letter
+            from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.lib.units import inch
+            from reportlab.lib import colors
+            from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+            from reportlab.pdfbase import pdfmetrics
+            from reportlab.pdfbase.ttfonts import TTFont
+            from datetime import datetime
+            import os
+            
+            # Set default output path if not provided
+            if not output_path:
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                safe_form_name = "".join(c for c in form_name if c.isalnum() or c in (' ', '-', '_')).rstrip()
+                output_path = f"{safe_form_name}_{timestamp}.pdf"
+            
+            # Create the PDF document
+            doc = SimpleDocTemplate(output_path, pagesize=A4,
+                                  rightMargin=72, leftMargin=72,
+                                  topMargin=72, bottomMargin=18)
+            
+            # Container for the 'Flowable' objects
+            elements = []
+            
+            # Configure styles
+            styles = getSampleStyleSheet()
+            title_style = ParagraphStyle(
+                'CustomTitle',
+                parent=styles['Heading1'],
+                fontSize=16,
+                spaceAfter=30,
+                alignment=TA_CENTER
+            )
+            
+            normal_style = ParagraphStyle(
+                'CustomNormal',
+                parent=styles['Normal'],
+                fontSize=10,
+                spaceAfter=6
+            )
+            
+            # Add title
+            elements.append(Paragraph(form_name, title_style))
+            elements.append(Spacer(1, 12))
+            
+            # Add timestamp
+            elements.append(Paragraph(f"تاريخ التصدير: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", normal_style))
+            elements.append(Spacer(1, 12))
+            
+            # Process form data
+            if isinstance(form_data, dict):
+                # Create table data
+                table_data = [['الحقل', 'القيمة']]
+                
+                for key, value in form_data.items():
+                    if isinstance(value, (list, dict)):
+                        value_str = str(value)
+                    else:
+                        value_str = str(value)
+                    
+                    # Limit value length for better formatting
+                    if len(value_str) > 50:
+                        value_str = value_str[:47] + "..."
+                    
+                    table_data.append([str(key), value_str])
+                
+                # Create and style table
+                table = Table(table_data, colWidths=[2*inch, 4*inch])
+                table.setStyle(TableStyle([
+                    ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                    ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                    ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                    ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                    ('FONTSIZE', (0, 0), (-1, 0), 12),
+                    ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                    ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                    ('FONTSIZE', (0, 1), (-1, -1), 10),
+                    ('GRID', (0, 0), (-1, -1), 1, colors.black)
+                ]))
+                
+                elements.append(table)
+                
+            elif isinstance(form_data, list):
+                # Handle list data (table format)
+                if form_data and isinstance(form_data[0], list):
+                    # It's a 2D table
+                    table = Table(form_data)
+                    table.setStyle(TableStyle([
+                        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('FONTSIZE', (0, 0), (-1, 0), 12),
+                        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                        ('FONTSIZE', (0, 1), (-1, -1), 10),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+                    ]))
+                    elements.append(table)
+                else:
+                    # It's a simple list
+                    for item in form_data:
+                        elements.append(Paragraph(str(item), normal_style))
+            else:
+                # Simple text data
+                elements.append(Paragraph(str(form_data), normal_style))
+            
+            # Build PDF
+            doc.build(elements)
+            
+            return output_path
+            
+        except ImportError:
+            print("ReportLab not available. Cannot generate PDF.")
+            return None
+        except Exception as e:
+            print(f"Error generating PDF: {e}")
+            return None
